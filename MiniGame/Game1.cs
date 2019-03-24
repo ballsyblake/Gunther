@@ -365,7 +365,7 @@ namespace MiniGame
         //Creates blood splatter animation when player or enemy gets hit
         public void Blood(float x, float y, bool isHorse)
         {
-            Sprite3 blood = new Sprite3(true, texBlood, x+10, y-10);
+            Sprite3 blood = new Sprite3(true, texBlood, x-10, y-20);
             blood.setYframes(6);
             if(isHorse)
                 blood.setWidthHeight(texBlood.Width * 0.2f, texBlood.Height / 6 * 0.2f);
