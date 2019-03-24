@@ -15,7 +15,7 @@ namespace MiniGame
     public class Game1 : Game
     {
         //Direction for art, please change if running from different device than where it was created
-        string dir = @"D:\GitHubRepos\MiniGame\MiniGame\MiniGame\Content\Sprites\";
+        string dir = @"C:\Repos\MiniGame\MiniGame\Content\Sprites\";
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -26,9 +26,12 @@ namespace MiniGame
         Texture2D texArrow = null;
         Texture2D texStartBanner = null;
         Texture2D texGoldBanner = null;
+        Texture2D texBook = null;
 
         SpriteList bloodSplat = null;
 
+        Sprite3 book = null;
+        Sprite3 startBanner = null;
         Sprite3 goldBanner = null;
         Sprite3 arrow = null;
         Sprite3 enemy = null;
@@ -43,6 +46,8 @@ namespace MiniGame
         float yy = 500;
 
         KeyboardState k;
+        KeyboardState prevK;
+
         //ImageBackground back1 = null;
 
         Rectangle playArea;
@@ -52,8 +57,7 @@ namespace MiniGame
         bool started = false;
        
 
-        KeyboardState prevK;
-
+        
         int top = 320;
         int bot = 599;
         int lhs = 1;
@@ -63,7 +67,7 @@ namespace MiniGame
         int scrollingSpeed = 2;
         int arrowOffsetX = 60;
         int arrowOffsetY = 10;
-        float spawn = 0;
+        float textFadeTimer = 0;
         Vector2[] anim = new Vector2[8];
         Vector2[] animEnemy = new Vector2[50];
 
@@ -104,15 +108,16 @@ namespace MiniGame
         /// </summary>
         protected override void LoadContent()
         {
-            gameOverText = Content.Load<SpriteFont>("Gold");
+            gameOverText = Content.Load<SpriteFont>("MedievalFont");
             directions = Content.Load<SpriteFont>("Gold");
-            font = Content.Load<SpriteFont>("Gold");
+            font = Content.Load<SpriteFont>("MedievalFont");
             startText = Content.Load<SpriteFont>("Gold");
             playArea = new Rectangle(lhs, top, rhs - lhs, bot - top); // width and height
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             texStartBanner = Util.texFromFile(GraphicsDevice, dir + "startBanner.png");
             texGoldBanner = Util.texFromFile(GraphicsDevice, dir + "goldBanner.png");
+            texBook = Util.texFromFile(GraphicsDevice, dir + "openBookWithText.png");
             
             texBack = Util.texFromFile(GraphicsDevice, dir + "back2.png"); //***
             texHorseRun = Util.texFromFile(GraphicsDevice, dir + "horseRun.png");
@@ -120,6 +125,10 @@ namespace MiniGame
             texBlood = Util.texFromFile(GraphicsDevice, dir + "bloodSide.png");
             texArrow = Util.texFromFile(GraphicsDevice, dir + "Arrow.png");
 
+            book = new Sprite3(true, texBook, 50, 50);
+            book.setWidthHeight(700, 500);
+            startBanner = new Sprite3(true, texStartBanner, 0, 0);
+            startBanner.setWidthHeight(800, 600);
             goldBanner = new Sprite3(true, texGoldBanner, 15, 15);
             goldBanner.setWidthHeight(130, 40);
             horse = new Sprite3(true, texHorseRun, xx, yy);
@@ -197,9 +206,12 @@ namespace MiniGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (textFadeTimer < 3 && started)
+                textFadeTimer += (float) gameTime.ElapsedGameTime.TotalSeconds;
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            prevK = k;
             k = Keyboard.GetState();
 
             if (k.IsKeyDown(Keys.Enter) && !started)
@@ -213,19 +225,20 @@ namespace MiniGame
                 {
                     showbb = !showbb;
                 }
-
-                if (k.IsKeyDown(Keys.Down))
+                if (!gameOver)
                 {
+                    if (k.IsKeyDown(Keys.Down))
+                    {
 
-                    if (horseRun.getSprite(0).getPosY() < bot - horse.getHeight()) horseRun.getSprite(0).setPosY(horseRun.getSprite(0).getPosY() + movementSpeed);
+                        if (horseRun.getSprite(0).getPosY() < bot - horse.getHeight()) horseRun.getSprite(0).setPosY(horseRun.getSprite(0).getPosY() + movementSpeed);
+                    }
+
+                    if (k.IsKeyDown(Keys.Up))
+                    {
+
+                        if (horseRun.getSprite(0).getPosY() > top) horseRun.getSprite(0).setPosY(horseRun.getSprite(0).getPosY() - movementSpeed);
+                    }
                 }
-
-                if (k.IsKeyDown(Keys.Up))
-                {
-
-                    if (horseRun.getSprite(0).getPosY() > top) horseRun.getSprite(0).setPosY(horseRun.getSprite(0).getPosY() - movementSpeed);
-                }
-
 
 
 
@@ -394,14 +407,17 @@ namespace MiniGame
             spriteBatch.DrawString(font, "Gold: " + score, new Vector2(30, 20), Color.Black);
             
             if (!started)
-            {
-                
+                startBanner.Draw(spriteBatch);
+
+            if(textFadeTimer < 3 && started)
                 spriteBatch.DrawString(directions, "< : slow down | > : speed up " + Environment.NewLine + "^ : move up | v : move down" + Environment.NewLine + "spacebar : shoot arrow", new Vector2(400, 10), Color.Black);
-                spriteBatch.DrawString(startText, "Press Enter to Start", new Vector2(300, 400), Color.Black);
-            }
 
             if (gameOver)
-                spriteBatch.DrawString(gameOverText, "You suck, press escape to leave game" + Environment.NewLine + "Return when you get better", new Vector2(200, 400), Color.Red);
+            {
+                book.Draw(spriteBatch);
+                
+            }
+                
                 
             if (showbb)
             {
