@@ -12,14 +12,17 @@ namespace MiniGame
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class Game1 : Game                                                                                                                                                                                                 
     {
-        //Direction for art, please change if running from different device than where it was created
+        //Direction for art, please change according to where you have put the project files
         string dir = @"C:\Repos\MiniGame\MiniGame\Content\Sprites\";
 
         //Graphics stuff
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        //Planning ahead, going to use this for drawing different levels
+        public int level = 1;
 
         //All textures are declared here
         Texture2D texHorseRun = null;
@@ -92,6 +95,9 @@ namespace MiniGame
         private SpriteFont gameOverText;
         private int score = 0;
         float textFadeTimer = 0;
+
+        //Random
+        float deathTimer = 0;
 
         //Set screen size here, declare the content directory and graphics
         public Game1()
@@ -343,6 +349,9 @@ namespace MiniGame
             enemies.animationTick(gameTime);
             bloodSplat.animationTick(gameTime);
 
+            if (gameOver)
+                deathTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             base.Update(gameTime);
         }
 
@@ -410,14 +419,20 @@ namespace MiniGame
 
             //All the elements that are displayed on screen are drawn here
             spriteBatch.Begin();
-            scrolling1.Draw(spriteBatch);
-            scrolling2.Draw(spriteBatch);
-            enemies.Draw(spriteBatch);
-            horseRun.Draw(spriteBatch);
-            bloodSplat.Draw(spriteBatch);
-            arrow.Draw(spriteBatch);
-            goldBanner.Draw(spriteBatch);
-            spriteBatch.DrawString(font, "Gold: " + score, new Vector2(30, 20), Color.Black);
+            switch (level)
+            {
+                default:
+                    scrolling1.Draw(spriteBatch);
+                    scrolling2.Draw(spriteBatch);
+                    enemies.Draw(spriteBatch);
+                    horseRun.Draw(spriteBatch);
+                    bloodSplat.Draw(spriteBatch);
+                    arrow.Draw(spriteBatch);
+                    goldBanner.Draw(spriteBatch);
+                    spriteBatch.DrawString(font, "Gold: " + score, new Vector2(30, 20), Color.Black);
+                    break;
+            }
+            ;
             
             //This is the start screen that goes away once player presses the enter key
             if (!started)
