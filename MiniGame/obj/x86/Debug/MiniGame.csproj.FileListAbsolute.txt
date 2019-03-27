@@ -48,3 +48,7 @@ C:\Repos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.exe
 C:\Repos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.pdb
 C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\MedievalFont.xnb
 D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\MedievalFont.xnb
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\MiniGame.exe.manifest
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\MiniGame.application
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\obj\x86\Debug\MiniGame.exe.manifest
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\obj\x86\Debug\MiniGame.application

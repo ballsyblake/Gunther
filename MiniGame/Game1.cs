@@ -21,7 +21,14 @@ namespace MiniGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //Storing screen width and height
+        public static int screenWidth;
+        public static int screenHeight;
+
+        Camera mainCamera;
+
         //Planning ahead, going to use this for drawing different levels
+        //1 is minigame for now, thinking ahead I will probably have 1 being world map, 2 being minigame and 3 being city
         public int level = 1;
 
         //All textures are declared here
@@ -32,6 +39,7 @@ namespace MiniGame
         Texture2D texStartBanner = null;
         Texture2D texGoldBanner = null;
         Texture2D texBook = null;
+        Texture2D texWorldMap = null;
 
         //All sprite3 variables are delcared here
         Sprite3 book = null;
@@ -40,6 +48,7 @@ namespace MiniGame
         Sprite3 arrow = null;
         Sprite3 enemy = null;
         Sprite3 horse = null;
+        Sprite3 worldMap = null;
 
         //All spritelists are declared here
         SpriteList bloodSplat = null;
@@ -118,6 +127,8 @@ namespace MiniGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            screenHeight = graphics.PreferredBackBufferHeight;
+            screenWidth = graphics.PreferredBackBufferWidth;
             LineBatch.init(GraphicsDevice);
             base.Initialize();
         }
@@ -131,6 +142,8 @@ namespace MiniGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            mainCamera = new Camera();
+
             //Load all the textures and fonts
             gameOverText = Content.Load<SpriteFont>("MedievalFont");
             directions = Content.Load<SpriteFont>("Gold");
@@ -143,11 +156,14 @@ namespace MiniGame
             texEnemy = Util.texFromFile(GraphicsDevice, dir + "Enemy.png");
             texBlood = Util.texFromFile(GraphicsDevice, dir + "bloodSide.png");
             texArrow = Util.texFromFile(GraphicsDevice, dir + "Arrow.png");
+            texWorldMap = Util.texFromFile(GraphicsDevice, dir + "FantasyWorldMap_2.png");
 
             //Define playarea
             playArea = new Rectangle(lhs, top, rhs - lhs, bot - top); // width and height
 
             //Load sprites and change size if necessary
+            worldMap = new Sprite3(true, texWorldMap, -2000, -1000);
+            worldMap.setWidthHeight(6400, 4800);
             book = new Sprite3(true, texBook, 50, 50);
             book.setWidthHeight(700, 500);
             startBanner = new Sprite3(true, texStartBanner, 0, 0);
@@ -170,7 +186,7 @@ namespace MiniGame
             //Player animation setup
             horse.setXframes(8);
             horse.setWidthHeight(1568/8*scale,texHorseRun.Height*scale);
-            horse.setBB(0,0,horse.getWidth()/scale,horse.getHeight()/scale);
+            horse.setBB(0,0,(horse.getWidth()/scale) - 50,horse.getHeight()/scale);
             for (int h = 0; h < anim.Length; h++)
             {
                 anim[h].X = h;
@@ -221,137 +237,189 @@ namespace MiniGame
         /// This is a mess, please forgive me
         protected override void Update(GameTime gameTime)
         {
-            //This timer makes basic instructions disappear after 3 seconds
-            if (textFadeTimer < 3 && started)
-                textFadeTimer += (float) gameTime.ElapsedGameTime.TotalSeconds;
-
-            //Escape key exits game
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            //Keyboard current and previous state
-            prevK = k;
-            k = Keyboard.GetState();
-
-            //Begin all game functionality essentially
-            if (k.IsKeyDown(Keys.Enter) && !started)
+            bool keyDown = false;
+            switch (level)
             {
-                started = true;
-                StartMovement(8);
-            }
-
-            if (started)
-            {
-                //Bounding box activation key
-                if (k.IsKeyDown(Keys.B) && prevK.IsKeyUp(Keys.B))
-                    showbb = !showbb;
-                
-                //Game over is a bool that is used to ensure the player can't move horse after it is dead, causes errors otherwise
-                if (!gameOver)
-                {
-                    //Player movement down
+                case 1:
+                    k = Keyboard.GetState();
+                    if(!started)
+                    {
+                        started = true;
+                        StartMovement(8);
+                    }
+                        
                     if (k.IsKeyDown(Keys.Down))
                     {
-                        if (horseRun.getSprite(0).getPosY() < bot - horse.getHeight()) horseRun.getSprite(0).setPosY(horseRun.getSprite(0).getPosY() + movementSpeed);
+                        keyDown = true;
+                        horse.setPosY(horse.getPosY() + movementSpeed);
                     }
-                    //Player movement up
+                        
                     if (k.IsKeyDown(Keys.Up))
                     {
-                        if (horseRun.getSprite(0).getPosY() > top) horseRun.getSprite(0).setPosY(horseRun.getSprite(0).getPosY() - movementSpeed);
+                        keyDown = true;
+                        horse.setPosY(horse.getPosY() - movementSpeed);
                     }
-                }
-
-                //Enemies movement
-                enemies[0].setPosX(enemies[0].getPosX() - enemyMovementSpeed);
-                //For when enemies walk off screen after passing player, just repositions them
-                if (enemies[0].getPosX() < 0 - texEnemy.Width)
-                {
-                    enemies[0].setVisible(false);
-                    LoadEnemies();
-                }
-
-                //Collision detection, arrow to enemy
-                int ac = enemies.collisionWithRect(arrow.getBoundingBoxAA());
-                if (ac != -1)
-                {
-                    score++;
-                    Blood(enemies.getSprite(ac).getPosX(), enemies.getSprite(ac).getPosY(), false);
-                    enemies.getSprite(ac).setVisible(false);
-                    RepositionArrow();
-                    LoadEnemies();
-                }
-
-                //Allow player to increase or decrease speed 
-                if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                {
-                    enemyMovementSpeed = 5;
-                    horse.setAnimationSequence(anim, 0, 7, 3);
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                {
-                    enemyMovementSpeed = 1;
-                    horse.setAnimationSequence(anim, 0, 7, 15);
-                }
-                else if (started)
-                {
-                    enemyMovementSpeed = 3;
-                    horse.setAnimationSequence(anim, 0, 7, 8);
-                }
-
-                //Scrolling background functionality
-                if (scrolling1.rectangle.X + scrolling1.texture.Width <= 0)
-                    scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.texture.Width;
-                if (scrolling2.rectangle.X + scrolling2.texture.Width <= 0)
-                    scrolling2.rectangle.X = scrolling1.rectangle.X + scrolling1.texture.Width;
-                scrolling1.Update();
-                scrolling2.Update();
-
-                //Game over is a bool that is used to ensure the player can't move horse after it is dead, causes errors otherwise
-                if (!gameOver)
-                {
-                    //Collision detection, enemy to player
-                    int rc = enemies.collisionWithRect(horse.getBoundingBoxAA());
-                    if (rc != -1)
+                        
+                    if (k.IsKeyDown(Keys.Left))
                     {
-                        Blood(horse.getPosX(), horse.getPosY(),true);
-                        movementSpeed = 0;
-                        enemyMovementSpeed = 0;
-                        scrolling1.speed = 0;
-                        scrolling2.speed = 0;
-                        for (int i = 0; i < horseRun.count(); i++)
+                        keyDown = true;
+                        horse.setFlip(SpriteEffects.FlipHorizontally);
+                        horse.setPosX(horse.getPosX() - movementSpeed);
+                    }
+                        
+                    if (k.IsKeyDown(Keys.Right))
+                    {
+                        keyDown = true;
+                        horse.setFlip(SpriteEffects.None);
+                        horse.setPosX(horse.getPosX() + movementSpeed);
+                    }
+                    if (!keyDown)
+                    {
+                        horse.setAnimationSequence(anim, 0, 7, 0);
+                    }
+                    else
+                    {
+                        horse.setAnimationSequence(anim, 0, 7, 8);
+                    }
+                    
+                    horseRun.animationTick(gameTime);
+                    mainCamera.Follow(horse);
+                    break;
+                default:
+                    //This timer makes basic instructions disappear after 3 seconds
+                    if (textFadeTimer < 3 && started)
+                        textFadeTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    //Escape key exits game
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        Exit();
+
+                    //Keyboard current and previous state
+                    prevK = k;
+                    k = Keyboard.GetState();
+
+                    //Begin all game functionality essentially
+                    if (k.IsKeyDown(Keys.Enter) && !started)
+                    {
+                        started = true;
+                        StartMovement(8);
+                    }
+
+                    if (started)
+                    {
+                        //Bounding box activation key
+                        if (k.IsKeyDown(Keys.B) && prevK.IsKeyUp(Keys.B))
+                            showbb = !showbb;
+
+                        //Game over is a bool that is used to ensure the player can't move horse after it is dead, causes errors otherwise
+                        if (!gameOver)
                         {
-                            horseRun.deleteSprite(i);
+                            //Player movement down
+                            if (k.IsKeyDown(Keys.Down))
+                            {
+                                if (horseRun.getSprite(0).getPosY() < bot - horse.getHeight()) horseRun.getSprite(0).setPosY(horseRun.getSprite(0).getPosY() + movementSpeed);
+                            }
+                            //Player movement up
+                            if (k.IsKeyDown(Keys.Up))
+                            {
+                                if (horseRun.getSprite(0).getPosY() > top) horseRun.getSprite(0).setPosY(horseRun.getSprite(0).getPosY() - movementSpeed);
+                            }
                         }
 
-                        gameOver = true;
+                        //Enemies movement
+                        enemies[0].setPosX(enemies[0].getPosX() - enemyMovementSpeed);
+                        //For when enemies walk off screen after passing player, just repositions them
+                        if (enemies[0].getPosX() < 0 - texEnemy.Width)
+                        {
+                            enemies[0].setVisible(false);
+                            LoadEnemies();
+                        }
+
+                        //Collision detection, arrow to enemy
+                        int ac = enemies.collisionWithRect(arrow.getBoundingBoxAA());
+                        if (ac != -1)
+                        {
+                            score++;
+                            Blood(enemies.getSprite(ac).getPosX(), enemies.getSprite(ac).getPosY(), false);
+                            enemies.getSprite(ac).setVisible(false);
+                            RepositionArrow();
+                            LoadEnemies();
+                        }
+
+                        //Allow player to increase or decrease speed 
+                        if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                        {
+                            enemyMovementSpeed = 5;
+                            horse.setAnimationSequence(anim, 0, 7, 3);
+                        }
+                        else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                        {
+                            enemyMovementSpeed = 1;
+                            horse.setAnimationSequence(anim, 0, 7, 15);
+                        }
+                        else if (started)
+                        {
+                            enemyMovementSpeed = 3;
+                            horse.setAnimationSequence(anim, 0, 7, 8);
+                        }
+
+                        //Scrolling background functionality
+                        if (scrolling1.rectangle.X + scrolling1.texture.Width <= 0)
+                            scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.texture.Width;
+                        if (scrolling2.rectangle.X + scrolling2.texture.Width <= 0)
+                            scrolling2.rectangle.X = scrolling1.rectangle.X + scrolling1.texture.Width;
+                        scrolling1.Update();
+                        scrolling2.Update();
+
+                        //Game over is a bool that is used to ensure the player can't move horse after it is dead, causes errors otherwise
+                        if (!gameOver)
+                        {
+                            //Collision detection, enemy to player
+                            int rc = enemies.collisionWithRect(horse.getBoundingBoxAA());
+                            if (rc != -1)
+                            {
+                                Blood(horse.getPosX(), horse.getPosY(), true);
+                                movementSpeed = 0;
+                                enemyMovementSpeed = 0;
+                                scrolling1.speed = 0;
+                                scrolling2.speed = 0;
+                                for (int i = 0; i < horseRun.count(); i++)
+                                {
+                                    horseRun.deleteSprite(i);
+                                }
+
+                                gameOver = true;
+                            }
+                        }
+
+                        //Shooting arrow functionality
+                        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !arrowShot)
+                        {
+                            Arrow();
+                            arrowShot = true;
+                        }
+                        if (arrowShot)
+                        {
+                            arrow.savePosition();
+                            arrow.moveByDeltaXY();
+                        }
+                        if (arrow.getPosX() > 800)
+                        {
+                            RepositionArrow();
+                        }
                     }
-                }
 
-                //Shooting arrow functionality
-                if (Keyboard.GetState().IsKeyDown(Keys.Space) && !arrowShot)
-                {
-                    Arrow();
-                    arrowShot = true;
-                }
-                if (arrowShot)
-                {
-                    arrow.savePosition();
-                    arrow.moveByDeltaXY();
-                }
-                if (arrow.getPosX() > 800)
-                {
-                    RepositionArrow();
-                }
+                    //Animation ticks for anything that is being animated
+                    horseRun.animationTick(gameTime);
+                    enemies.animationTick(gameTime);
+                    bloodSplat.animationTick(gameTime);
+
+                    if (gameOver)
+                        deathTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    break;
             }
-
-            //Animation ticks for anything that is being animated
-            horseRun.animationTick(gameTime);
-            enemies.animationTick(gameTime);
-            bloodSplat.animationTick(gameTime);
-
-            if (gameOver)
-                deathTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            
             base.Update(gameTime);
         }
 
@@ -418,10 +486,17 @@ namespace MiniGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //All the elements that are displayed on screen are drawn here
-            spriteBatch.Begin();
+            spriteBatch.Begin(transformMatrix: mainCamera.Transform);
             switch (level)
             {
+                case 1:
+                    worldMap.Draw(spriteBatch);
+                
+                    //horse.Draw(spriteBatch);
+                    horseRun.Draw(spriteBatch);
+                    break;
                 default:
+                    
                     scrolling1.Draw(spriteBatch);
                     scrolling2.Draw(spriteBatch);
                     enemies.Draw(spriteBatch);
@@ -430,34 +505,35 @@ namespace MiniGame
                     arrow.Draw(spriteBatch);
                     goldBanner.Draw(spriteBatch);
                     spriteBatch.DrawString(font, "Gold: " + score, new Vector2(30, 20), Color.Black);
+                    //This is the start screen that goes away once player presses the enter key
+                    if (!started)
+                        startBanner.Draw(spriteBatch);
+
+                    //This displays some basic instructions for the player
+                    if (textFadeTimer < 3 && started)
+                        spriteBatch.DrawString(directions, "< : slow down | > : speed up " + Environment.NewLine + "^ : move up | v : move down" + Environment.NewLine + "spacebar : shoot arrow", new Vector2(400, 10), Color.Black);
+
+                    //When player dies text and a book appear on screen
+                    if (gameOver && deathTimer > 1)
+                    {
+                        book.Draw(spriteBatch);
+
+                    }
+
+                    //Bounding boxes for player, enemies, arrows and the play area    
+                    if (showbb)
+                    {
+                        enemies.drawInfo(spriteBatch, Color.Red, Color.DarkRed);
+                        horse.drawBB(spriteBatch, Color.Black);
+                        //horse.drawHS(spriteBatch, Color.Green); //don't know if this is required for assessment or not
+                        arrow.drawBB(spriteBatch, Color.Brown);
+                        LineBatch.drawLineRectangle(spriteBatch, playArea, Color.Blue);
+                    }
                     break;
             }
             ;
             
-            //This is the start screen that goes away once player presses the enter key
-            if (!started)
-                startBanner.Draw(spriteBatch);
-
-            //This displays some basic instructions for the player
-            if(textFadeTimer < 3 && started)
-                spriteBatch.DrawString(directions, "< : slow down | > : speed up " + Environment.NewLine + "^ : move up | v : move down" + Environment.NewLine + "spacebar : shoot arrow", new Vector2(400, 10), Color.Black);
-
-            //When player dies text and a book appear on screen
-            if (gameOver)
-            {
-                book.Draw(spriteBatch);
-                
-            }
-                
-            //Bounding boxes for player, enemies, arrows and the play area    
-            if (showbb)
-            {
-                enemies.drawInfo(spriteBatch, Color.Red, Color.DarkRed);
-                horse.drawBB(spriteBatch, Color.Black);
-                //horse.drawHS(spriteBatch, Color.Green); //don't know if this is required for assessment or not
-                arrow.drawBB(spriteBatch, Color.Brown);
-                LineBatch.drawLineRectangle(spriteBatch, playArea, Color.Blue);
-            }
+            
             spriteBatch.End();
 
             base.Draw(gameTime);

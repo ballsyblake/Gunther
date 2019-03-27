@@ -33,7 +33,6 @@ namespace MiniGame
             texture = newTexture;
             rectangle = newRectangle;
             speed = newSpeed;
-            
         }
 
         public void Update()
