@@ -15,7 +15,7 @@ namespace MiniGame
     public class Game1 : Game                                                                                                                                                                                                 
     {
         //Direction for art, please change according to where you have put the project files
-        string dir = @"D:\GitHubRepos\MiniGame\MiniGame\MiniGame\Content\Sprites\";
+        string dir = @"C:\GPT\MiniGame\MiniGame\Content\Sprites\";
 
         //Graphics stuff
         GraphicsDeviceManager graphics;
@@ -29,7 +29,7 @@ namespace MiniGame
 
         //Planning ahead, going to use this for drawing different levels
         //0 is minigame for now, thinking ahead I will probably have 1 being world map, 2 being minigame and 3 being city
-        public int level = 1;
+        public int level = 0;
         public int difficulty = 1;
 
         //All textures are declared here
@@ -352,10 +352,10 @@ namespace MiniGame
                     switch (difficulty)
                     {
                         case 1:
-                            difficultyOffset = 3;
+                            difficultyOffset = 1;
                             break;
                         case 2:
-                            difficultyOffset = 2;
+                            difficultyOffset = 0.5f;
                             break;
                         case 3:
                             difficultyOffset = 0.1f;
@@ -417,10 +417,7 @@ namespace MiniGame
                             if(enemies[e].getVisible())
                                 enemies[e].setPosX(enemies[e].getPosX() - enemyMovementSpeed);
                             if (enemies[e].getPosX() < 0 - texEnemy.Width)
-                                
-                                enemies[e].setVisible(false);
-                                    
-                                   
+                                enemies[e].setVisible(false);          
                         }
 
                         //Collision detection, arrow to enemy
@@ -434,7 +431,7 @@ namespace MiniGame
                                 enemies.getSprite(ac).setVisible(false);
                                 quiver[ea].setVisible(false);
                                 quiver[ea].setPos(new Vector2(0, 0));
-                                LoadEnemies();
+                                //LoadEnemies();
                             }
                         }
                         
@@ -480,7 +477,6 @@ namespace MiniGame
                                 {
                                     horseRun.deleteSprite(i);
                                 }
-
                                 gameOver = true;
                             }
                         }
@@ -511,9 +507,7 @@ namespace MiniGame
                         {
                             arrowTimer = 0;
                             arrowShot = false;
-                        }
-                            
-                        
+                        } 
                     }
 
                     //Animation ticks for anything that is being animated
@@ -523,10 +517,8 @@ namespace MiniGame
 
                     if (gameOver)
                         deathTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
                     break;
             }
-            
             base.Update(gameTime);
         }
 
@@ -541,7 +533,6 @@ namespace MiniGame
         //Sets position of enemy to a random spawn point on the right side of the screen
         public void LoadEnemies()
         {
-            Console.WriteLine("load enemy");
             int randY = random.Next(350, 550);
             for (int i = 0; i < enemies.count(); i++)
             {
@@ -575,6 +566,7 @@ namespace MiniGame
             {
                 animBlood[h].Y = h;
             }
+
             blood.setAnimationSequence(animBlood, 0, 5, 5);
             blood.setAnimFinished(2);
             blood.animationStart();
@@ -661,10 +653,7 @@ namespace MiniGame
 
                     //When player dies text and a book appear on screen
                     if (gameOver && deathTimer > 1)
-                    {
                         book.Draw(spriteBatch);
-
-                    }
 
                     //Bounding boxes for player, enemies, arrows and the play area    
                     if (showbb)

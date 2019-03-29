@@ -31,26 +31,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="296416">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="295424">
       <assemblyIdentity name="MiniGame" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Mf4xcZEk3FJXWnMGoE/NMk7F9/CyJb8q6laGp7w7zmo=</dsig:DigestValue>
+        <dsig:DigestValue>goFbjwhGrlEBJ/ZQ7jo9+nm+JVyBOqx3H1rs4eOJqME=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MonoGame.Framework.dll" size="926720">
-      <assemblyIdentity name="MonoGame.Framework" version="3.7.1.189" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MonoGame.Framework.dll" size="925696">
+      <assemblyIdentity name="MonoGame.Framework" version="3.7.0.1708" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>lfEO7wPb5sDzGP24kwocv8uOf1qK9MYUbb1chzsDWac=</dsig:DigestValue>
+        <dsig:DigestValue>JGj+5K8195klsgjH7YmkX0BSvX7T4hPkn6peuxe8H84=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -138,22 +138,22 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Content\Gold.xnb" size="37905">
+  <file name="Content\Gold.xnb" size="37908">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>yqkaPU/mLxorCUbUh9Cwu4IHtiZCU4PgFAlDg8pYNjk=</dsig:DigestValue>
+      <dsig:DigestValue>X+J3bY3qPthwg6aYrA/O4U18l3cMLUA2hjYwNu61L8E=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\MedievalFont.xnb" size="37905">
+  <file name="Content\MedievalFont.xnb" size="37908">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>MQ9/nV1D5HEzof/PxOkg7UdxBhrR50uQXhljg3lO6Wo=</dsig:DigestValue>
+      <dsig:DigestValue>oH4SKb+HLKrrF3YsSdVwOLD/Ii+wRez5YTM5uEtd5jc=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Icon.ico" size="147541">
