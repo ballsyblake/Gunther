@@ -31,14 +31,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="293856">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="296416">
       <assemblyIdentity name="MiniGame" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ov7l++eYWtVtgEW/10CtoZlztAThjib07t+7NlHJ6PU=</dsig:DigestValue>
+        <dsig:DigestValue>Mf4xcZEk3FJXWnMGoE/NMk7F9/CyJb8q6laGp7w7zmo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -147,13 +147,13 @@
       <dsig:DigestValue>yqkaPU/mLxorCUbUh9Cwu4IHtiZCU4PgFAlDg8pYNjk=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\MedievalFont.xnb" size="21521">
+  <file name="Content\MedievalFont.xnb" size="37905">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>7Fpq1GfncwTww6xJSGriXk/o30OILFHRab9thAItzzw=</dsig:DigestValue>
+      <dsig:DigestValue>MQ9/nV1D5HEzof/PxOkg7UdxBhrR50uQXhljg3lO6Wo=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Icon.ico" size="147541">

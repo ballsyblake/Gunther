@@ -28,8 +28,9 @@ namespace MiniGame
         Camera mainCamera;
 
         //Planning ahead, going to use this for drawing different levels
-        //1 is minigame for now, thinking ahead I will probably have 1 being world map, 2 being minigame and 3 being city
+        //0 is minigame for now, thinking ahead I will probably have 1 being world map, 2 being minigame and 3 being city
         public int level = 1;
+        public int difficulty = 1;
 
         //All textures are declared here
         Texture2D texHorseRun = null;
@@ -54,6 +55,7 @@ namespace MiniGame
         SpriteList bloodSplat = null;
         SpriteList enemies = null;
         SpriteList horseRun = null;
+        SpriteList quiver = null;
         
         //Random variable for, well, you know.. random things
         Random random = new Random();
@@ -71,7 +73,10 @@ namespace MiniGame
         bool arrowShot = false;
         bool showbb = false;
         bool started = false;
-
+        float enemySpawnTimer = 0f;
+        float difficultyOffset = 0f;
+        
+        
         //Boundaries
         Rectangle playArea;
         int top = 320;
@@ -81,8 +86,15 @@ namespace MiniGame
 
         //Movement
         int movementSpeed = 3;
-        int enemyMovementSpeed = 3;
+        int enemyMovementSpeed = 4;
         int scrollingSpeed = 2;
+        int normalPlayer = 8;
+        int normalEnemy = 4;
+        int slowEnemy = 2;
+        int slowPlayer = 15;
+        int fastEnemy = 6;
+        int fastPlayer = 3;
+        int arrowSpeed = 10;
 
         //Arrow related variables
         int arrowOffsetX = 60;
@@ -102,11 +114,16 @@ namespace MiniGame
         private SpriteFont startText;
         private SpriteFont directions;
         private SpriteFont gameOverText;
+        private SpriteFont difficultySelectText;
         private int score = 0;
-        float textFadeTimer = 0;
+        float textFadeTimer = 0f;
+        float arrowTimer = 0f;
+
 
         //Random
         float deathTimer = 0;
+        private Vector2 curPos;
+        
 
         //Set screen size here, declare the content directory and graphics
         public Game1()
@@ -139,15 +156,19 @@ namespace MiniGame
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
+            //Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             mainCamera = new Camera();
+
+            
 
             //Load all the textures and fonts
             gameOverText = Content.Load<SpriteFont>("MedievalFont");
             directions = Content.Load<SpriteFont>("Gold");
             font = Content.Load<SpriteFont>("MedievalFont");
+            difficultySelectText = Content.Load<SpriteFont>("MedievalFont");
+            
             startText = Content.Load<SpriteFont>("Gold");            
             texStartBanner = Util.texFromFile(GraphicsDevice, dir + "startBanner.png");
             texGoldBanner = Util.texFromFile(GraphicsDevice, dir + "goldBanner.png");
@@ -171,50 +192,65 @@ namespace MiniGame
             goldBanner = new Sprite3(true, texGoldBanner, 15, 15);
             goldBanner.setWidthHeight(130, 40);
             horse = new Sprite3(true, texHorseRun, xx, yy);
-            enemy = new Sprite3(true, texEnemy, 850, 400);
-            arrow = new Sprite3(false, texArrow, 0, 0);
-            arrow.setWidthHeight(arrow.getWidth() * 0.09f, arrow.getHeight() * 0.09f);
+
+            
+            
+            
 
             //Load some empty spritelists
             enemies = new SpriteList();
             bloodSplat = new SpriteList();
             horseRun = new SpriteList();
+            quiver = new SpriteList();
+
+            for (int a = 0; a < 5; a++)
+            {
+                arrow = new Sprite3(false, texArrow, 0, 0);
+                arrow.setWidthHeight(arrow.getWidth() * 0.09f, arrow.getHeight() * 0.09f);
+                quiver.addSpriteReuse(arrow);
+            }
 
             //Used to change size of sprites
             float scale = 0.5f;
             
+            
             //Player animation setup
             horse.setXframes(8);
             horse.setWidthHeight(1568/8*scale,texHorseRun.Height*scale);
-            horse.setBB(0,0,(horse.getWidth()/scale) - 50,horse.getHeight()/scale);
+            horse.setBB(30,10,(horse.getWidth()/scale) - 60,horse.getHeight()/scale - 20);
             for (int h = 0; h < anim.Length; h++)
             {
                 anim[h].X = h;
             }
             horseRun.addSpriteReuse(horse);
-            
+
             //enemy.setBBToTexture();
 
             //Enemy animation setup
-            enemy.setXframes(10);
-            enemy.setYframes(5);
-            enemy.setWidthHeight(320 / 10, 160 / 5);
-            enemy.setBB(0, 0, enemy.getWidth(), enemy.getHeight());
-            int count = 0;
-            for (int i = 0; i < 5; i++)
+            for (int k = 0; k < 100; k++)
             {
-                for (int j = 0; j < 10; j++)
+                enemy = new Sprite3(false, texEnemy, 850, 400);
+                enemy.setXframes(10);
+                enemy.setYframes(5);
+                enemy.setWidthHeight(320 / 10, 160 / 5);
+                enemy.setBB(0, 0, enemy.getWidth(), enemy.getHeight());
+                int count = 0;
+                for (int i = 0; i < 5; i++)
                 {
-                    animEnemy[count].X = j;
-                    animEnemy[count].Y = i;
-                    count++;
+                    for (int j = 0; j < 10; j++)
+                    {
+                        animEnemy[count].X = j;
+                        animEnemy[count].Y = i;
+                        count++;
+                    }
                 }
+                enemy.setAnimationSequence(animEnemy, 20, 29, 15);
+                enemy.setAnimFinished(0);
+                enemy.animationStart();
+                enemy.setVisible(false);
+                enemies.addSpriteReuse(enemy);
+                
             }
-            enemy.setAnimationSequence(animEnemy, 20, 29, 5);
-            enemy.setAnimFinished(0);
-            enemy.animationStart();
-            enemies.addSpriteReuse(enemy);
-            
             //Load scrolling background images
             scrolling1 = new Scrolling(Util.texFromFile(GraphicsDevice, dir + "GPT Background 800x600.png"), new Rectangle(0, 0, 800, 600), scrollingSpeed);
             scrolling2 = new Scrolling(Util.texFromFile(GraphicsDevice, dir + "GPT Background2 800x600.png"), new Rectangle(800, 0, 800, 600), scrollingSpeed);
@@ -228,7 +264,7 @@ namespace MiniGame
         {
             // TODO: Unload any non ContentManager content here
         }
-
+        
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -237,10 +273,13 @@ namespace MiniGame
         /// This is a mess, please forgive me
         protected override void Update(GameTime gameTime)
         {
+            //Console.WriteLine(enemies.count());
+            curPos = horse.getPos();
             bool keyDown = false;
             switch (level)
             {
                 case 1:
+                    horse.setWidthHeight(1568 / 8 * 0.3f, texHorseRun.Height * 0.3f);
                     k = Keyboard.GetState();
                     if(!started)
                     {
@@ -251,27 +290,27 @@ namespace MiniGame
                     if (k.IsKeyDown(Keys.Down))
                     {
                         keyDown = true;
-                        horse.setPosY(horse.getPosY() + movementSpeed);
+                        horse.setPosY(horse.getPosY() + movementSpeed - 2);
                     }
                         
                     if (k.IsKeyDown(Keys.Up))
                     {
                         keyDown = true;
-                        horse.setPosY(horse.getPosY() - movementSpeed);
+                        horse.setPosY(horse.getPosY() - movementSpeed + 2);
                     }
                         
                     if (k.IsKeyDown(Keys.Left))
                     {
                         keyDown = true;
                         horse.setFlip(SpriteEffects.FlipHorizontally);
-                        horse.setPosX(horse.getPosX() - movementSpeed);
+                        horse.setPosX(horse.getPosX() - movementSpeed + 2);
                     }
                         
                     if (k.IsKeyDown(Keys.Right))
                     {
                         keyDown = true;
                         horse.setFlip(SpriteEffects.None);
-                        horse.setPosX(horse.getPosX() + movementSpeed);
+                        horse.setPosX(horse.getPosX() + movementSpeed - 2);
                     }
                     if (!keyDown)
                     {
@@ -281,14 +320,61 @@ namespace MiniGame
                     {
                         horse.setAnimationSequence(anim, 0, 7, 8);
                     }
-                    
+                    //387 330
+                    if(curPos.X >= -155 && curPos.X <= -75 && curPos.Y >=330 && curPos.Y <= 387)
+                    {
+                        horse.setPos(xx, yy);
+                        started = false;
+                        horse.setFlip(SpriteEffects.None);
+                        level = 0;
+                    }
+
                     horseRun.animationTick(gameTime);
                     mainCamera.Follow(horse);
+                    
                     break;
                 default:
+                    if (!started)
+                    {
+                        if (k.IsKeyDown(Keys.D1) || k.IsKeyDown(Keys.NumPad1))
+                        {
+                            difficulty = 1;
+                        }
+                        else if (k.IsKeyDown(Keys.D2) || k.IsKeyDown(Keys.NumPad2))
+                        {
+                            difficulty = 2;
+                        }
+                        else if (k.IsKeyDown(Keys.D3) || k.IsKeyDown(Keys.NumPad3))
+                        {
+                            difficulty = 3;
+                        }
+                    }
+                    switch (difficulty)
+                    {
+                        case 1:
+                            difficultyOffset = 3;
+                            break;
+                        case 2:
+                            difficultyOffset = 2;
+                            break;
+                        case 3:
+                            difficultyOffset = 0.1f;
+                            break;
+                        default:
+                            break;
+                    }
+                    horse.setWidthHeight(1568 / 8 * 0.5f, texHorseRun.Height * 0.5f);
                     //This timer makes basic instructions disappear after 3 seconds
                     if (textFadeTimer < 3 && started)
                         textFadeTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if(started)
+                        enemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (enemySpawnTimer > difficultyOffset)
+                    {
+                        enemySpawnTimer = 0;
+                        LoadEnemies();
+                    }
 
                     //Escape key exits game
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -326,41 +412,48 @@ namespace MiniGame
                             }
                         }
 
-                        //Enemies movement
-                        enemies[0].setPosX(enemies[0].getPosX() - enemyMovementSpeed);
-                        //For when enemies walk off screen after passing player, just repositions them
-                        if (enemies[0].getPosX() < 0 - texEnemy.Width)
+                        for (int e = 0; e < enemies.count(); e++)
                         {
-                            enemies[0].setVisible(false);
-                            LoadEnemies();
+                            if(enemies[e].getVisible())
+                                enemies[e].setPosX(enemies[e].getPosX() - enemyMovementSpeed);
+                            if (enemies[e].getPosX() < 0 - texEnemy.Width)
+                                
+                                enemies[e].setVisible(false);
+                                    
+                                   
                         }
 
                         //Collision detection, arrow to enemy
-                        int ac = enemies.collisionWithRect(arrow.getBoundingBoxAA());
-                        if (ac != -1)
+                        for (int ea = 0; ea < quiver.count(); ea++)
                         {
-                            score++;
-                            Blood(enemies.getSprite(ac).getPosX(), enemies.getSprite(ac).getPosY(), false);
-                            enemies.getSprite(ac).setVisible(false);
-                            RepositionArrow();
-                            LoadEnemies();
+                            int ac = enemies.collisionWithRect(quiver[ea].getBoundingBoxAA());
+                            if (ac != -1)
+                            {
+                                score++;
+                                Blood(enemies.getSprite(ac).getPosX(), enemies.getSprite(ac).getPosY(), false);
+                                enemies.getSprite(ac).setVisible(false);
+                                quiver[ea].setVisible(false);
+                                quiver[ea].setPos(new Vector2(0, 0));
+                                LoadEnemies();
+                            }
                         }
+                        
 
                         //Allow player to increase or decrease speed 
                         if (Keyboard.GetState().IsKeyDown(Keys.Right))
                         {
-                            enemyMovementSpeed = 5;
-                            horse.setAnimationSequence(anim, 0, 7, 3);
+                            enemyMovementSpeed = fastEnemy;
+                            horse.setAnimationSequence(anim, 0, 7, fastPlayer);
                         }
                         else if (Keyboard.GetState().IsKeyDown(Keys.Left))
                         {
-                            enemyMovementSpeed = 1;
-                            horse.setAnimationSequence(anim, 0, 7, 15);
+                            enemyMovementSpeed = slowEnemy;
+                            horse.setAnimationSequence(anim, 0, 7, slowPlayer);
                         }
                         else if (started)
                         {
-                            enemyMovementSpeed = 3;
-                            horse.setAnimationSequence(anim, 0, 7, 8);
+                            enemyMovementSpeed = normalEnemy;
+                            horse.setAnimationSequence(anim, 0, 7, normalPlayer);
                         }
 
                         //Scrolling background functionality
@@ -398,15 +491,29 @@ namespace MiniGame
                             Arrow();
                             arrowShot = true;
                         }
+                        for (int a = 0; a < quiver.count(); a++)
+                        {
+                            if (quiver[a].getVisible())
+                            {
+                                quiver[a].savePosition();
+                                quiver[a].moveByDeltaXY();
+                            }
+                            if (quiver[a].getPosX() > 800)
+                            {
+                                quiver[a].setVisible(false);
+                            }
+                        }
                         if (arrowShot)
                         {
-                            arrow.savePosition();
-                            arrow.moveByDeltaXY();
+                            arrowTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                         }
-                        if (arrow.getPosX() > 800)
+                        if (arrowTimer > 0.5f)
                         {
-                            RepositionArrow();
+                            arrowTimer = 0;
+                            arrowShot = false;
                         }
+                            
+                        
                     }
 
                     //Animation ticks for anything that is being animated
@@ -434,9 +541,24 @@ namespace MiniGame
         //Sets position of enemy to a random spawn point on the right side of the screen
         public void LoadEnemies()
         {
+            Console.WriteLine("load enemy");
             int randY = random.Next(350, 550);
-            enemies[0].setPos(new Vector2(850, randY));
-            enemies[0].setVisible(true);
+            for (int i = 0; i < enemies.count(); i++)
+            {
+                Console.WriteLine(enemies[i].getVisible());
+                if (!enemies[i].getVisible())
+                {
+                    enemies[i].setPos(new Vector2(850, randY));
+                    enemies[i].setVisible(true);
+                    return;
+                }
+            }
+            
+        }
+
+        public void ChangeDifficulty(int diff)
+        {
+            difficulty = diff;
         }
 
         //Creates blood splatter animation when player or enemy gets hit
@@ -463,18 +585,20 @@ namespace MiniGame
         //Creates arrow that is shot from player
         public void Arrow()
         {
-            arrow.setPos(new Vector2(horse.getPosX() + arrowOffsetX, horse.getPosY() + arrowOffsetY));
-            arrow.setVisible(true);
-            arrow.setDeltaSpeed(new Vector2(5, 0));
+            Console.WriteLine("called arrow");
+            for (int i = 0; i < quiver.count(); i++)
+            {
+                if (!quiver[i].getVisible())
+                {
+                    Console.WriteLine("created arrow");
+                    quiver[i].setPos(new Vector2(horse.getPosX() + arrowOffsetX, horse.getPosY() + arrowOffsetY));
+                    quiver[i].setVisible(true);
+                    quiver[i].setDeltaSpeed(new Vector2(arrowSpeed, 0));
+                    return;
+                }
+            }
+            
 
-        }
-
-        //Essentially deactives arrow but technically the arrow still exists but its out of the way of play area, will probably change later
-        public void RepositionArrow()
-        {
-            arrowShot = false;
-            arrow.setVisible(false);
-            arrow.setPos(new Vector2(0, 0));
         }
 
         /// <summary>
@@ -486,28 +610,50 @@ namespace MiniGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //All the elements that are displayed on screen are drawn here
-            spriteBatch.Begin(transformMatrix: mainCamera.Transform);
+            
             switch (level)
             {
                 case 1:
+                    spriteBatch.Begin(transformMatrix: mainCamera.Transform);
                     worldMap.Draw(spriteBatch);
-                
+                    spriteBatch.DrawString(font, "Current position: " + curPos, new Vector2(horse.getPosX() -200, horse.getPosY() - 200), Color.White);
                     //horse.Draw(spriteBatch);
                     horseRun.Draw(spriteBatch);
+                    spriteBatch.End();
                     break;
                 default:
-                    
+                    spriteBatch.Begin();
                     scrolling1.Draw(spriteBatch);
                     scrolling2.Draw(spriteBatch);
                     enemies.Draw(spriteBatch);
                     horseRun.Draw(spriteBatch);
                     bloodSplat.Draw(spriteBatch);
-                    arrow.Draw(spriteBatch);
+                    //arrow.Draw(spriteBatch);
+                    quiver.Draw(spriteBatch);
                     goldBanner.Draw(spriteBatch);
                     spriteBatch.DrawString(font, "Gold: " + score, new Vector2(30, 20), Color.Black);
                     //This is the start screen that goes away once player presses the enter key
                     if (!started)
+                    {
                         startBanner.Draw(spriteBatch);
+                        switch (difficulty)
+                        {
+                            case 1:
+                                spriteBatch.DrawString(difficultySelectText, "Current difficulty: Easy", new Vector2(10, 500), Color.Black);
+                                break;
+                            case 2:
+                                spriteBatch.DrawString(difficultySelectText, "Current difficulty: Medium", new Vector2(10, 500), Color.Black);
+                                break;
+                            case 3:
+                                spriteBatch.DrawString(difficultySelectText, "Current difficulty: Hard", new Vector2(10, 500), Color.Black);
+                                break;
+                            default:
+                                spriteBatch.DrawString(difficultySelectText, "Current difficulty: Easy", new Vector2(10, 500), Color.Black);
+                                break;
+                        }
+                        spriteBatch.DrawString(difficultySelectText, "Click 1, 2 or 3 to assign difficulty. 1 = easy | 2 = medium | 3 = hard" + Environment.NewLine, new Vector2(10, 560), Color.Black);
+                    }
+                        
 
                     //This displays some basic instructions for the player
                     if (textFadeTimer < 3 && started)
@@ -526,15 +672,16 @@ namespace MiniGame
                         enemies.drawInfo(spriteBatch, Color.Red, Color.DarkRed);
                         horse.drawBB(spriteBatch, Color.Black);
                         //horse.drawHS(spriteBatch, Color.Green); //don't know if this is required for assessment or not
-                        arrow.drawBB(spriteBatch, Color.Brown);
+                        quiver.drawInfo(spriteBatch, Color.Brown, Color.SandyBrown);
                         LineBatch.drawLineRectangle(spriteBatch, playArea, Color.Blue);
                     }
+                    spriteBatch.End();
                     break;
             }
             ;
             
             
-            spriteBatch.End();
+            
 
             base.Draw(gameTime);
         }
