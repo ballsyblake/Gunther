@@ -81,3 +81,7 @@ C:\GPT\MiniGame\MiniGame\obj\x86\Debug\MiniGame.csproj.CoreCompileInputs.cache
 C:\GPT\MiniGame\MiniGame\obj\x86\Debug\MiniGame.exe.manifest
 C:\GPT\MiniGame\MiniGame\obj\x86\Debug\MiniGame.application
 C:\GPT\MiniGame\MiniGame\obj\x86\Debug\MiniGame.csproj.CopyComplete
+C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\MiniGame.exe.manifest
+C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\MiniGame.application
+C:\Repos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.exe.manifest
+C:\Repos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.application

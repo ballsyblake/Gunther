@@ -101,6 +101,10 @@
     <Compile Include="RC_Framework\RC_Utils3.cs" />
     <Compile Include="RC_Framework\RC_UtilText.cs" />
     <Compile Include="RC_Framework\RC_Waypoint.cs" />
+    <Compile Include="PlayLevel.cs" />
+    <Compile Include="Pause.cs" />
+    <Compile Include="SplashScreen.cs" />
+    <Compile Include="WorldMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

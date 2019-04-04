@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/GPT/MiniGame/MiniGame/Content/MedievalFont.spritefont</SourceFile>
-  <SourceTime>2019-03-29T18:41:30.7123372+11:00</SourceTime>
-  <DestFile>C:/GPT/MiniGame/MiniGame/Content/bin/Windows/Content/MedievalFont.xnb</DestFile>
-  <DestTime>2019-03-29T18:48:58.8013433+11:00</DestTime>
+  <SourceFile>C:/Repos/MiniGame/MiniGame/Content/MedievalFont.spritefont</SourceFile>
+  <SourceTime>2019-04-04T10:41:18.1192079+11:00</SourceTime>
+  <DestFile>C:/Repos/MiniGame/MiniGame/Content/bin/Windows/Content/MedievalFont.xnb</DestFile>
+  <DestTime>2019-04-04T10:44:34.3686643+11:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2018-09-24T07:55:52+10:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

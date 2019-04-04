@@ -15,7 +15,7 @@ namespace MiniGame
     public class Game1 : Game                                                                                                                                                                                                 
     {
         //Direction for art, please change according to where you have put the project files
-        string dir = @"C:\GPT\MiniGame\MiniGame\Content\Sprites\";
+        static public string dir = @"C:\Repos\MiniGame\MiniGame\Content\Sprites\";
 
         //Graphics stuff
         GraphicsDeviceManager graphics;
@@ -25,22 +25,22 @@ namespace MiniGame
         public static int screenWidth;
         public static int screenHeight;
 
-        Camera mainCamera;
+        
 
         //Planning ahead, going to use this for drawing different levels
         //0 is minigame for now, thinking ahead I will probably have 1 being world map, 2 being minigame and 3 being city
-        public int level = 0;
-        public int difficulty = 1;
+        static public int level = 0;
+        static public int difficulty = 1;
 
         //All textures are declared here
-        Texture2D texHorseRun = null;
-        Texture2D texEnemy = null;
-        Texture2D texBlood = null;
-        Texture2D texArrow = null;
-        Texture2D texStartBanner = null;
-        Texture2D texGoldBanner = null;
-        Texture2D texBook = null;
-        Texture2D texWorldMap = null;
+        static public Texture2D texHorseRun = null;
+        static public Texture2D texEnemy = null;
+        static public Texture2D texBlood = null;
+        static public Texture2D texArrow = null;
+        static public Texture2D texStartBanner = null;
+        static public Texture2D texGoldBanner = null;
+        static public Texture2D texBook = null;
+        static public Texture2D texWorldMap = null;
 
         //All sprite3 variables are delcared here
         Sprite3 book = null;
@@ -159,7 +159,7 @@ namespace MiniGame
             //Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            mainCamera = new Camera();
+            
 
             
 
@@ -177,7 +177,7 @@ namespace MiniGame
             texEnemy = Util.texFromFile(GraphicsDevice, dir + "Enemy.png");
             texBlood = Util.texFromFile(GraphicsDevice, dir + "bloodSide.png");
             texArrow = Util.texFromFile(GraphicsDevice, dir + "Arrow.png");
-            texWorldMap = Util.texFromFile(GraphicsDevice, dir + "FantasyWorldMap_2.png");
+            
 
             //Define playarea
             playArea = new Rectangle(lhs, top, rhs - lhs, bot - top); // width and height
@@ -279,58 +279,6 @@ namespace MiniGame
             switch (level)
             {
                 case 1:
-                    horse.setWidthHeight(1568 / 8 * 0.3f, texHorseRun.Height * 0.3f);
-                    k = Keyboard.GetState();
-                    if(!started)
-                    {
-                        started = true;
-                        StartMovement(8);
-                    }
-                        
-                    if (k.IsKeyDown(Keys.Down))
-                    {
-                        keyDown = true;
-                        horse.setPosY(horse.getPosY() + movementSpeed - 2);
-                    }
-                        
-                    if (k.IsKeyDown(Keys.Up))
-                    {
-                        keyDown = true;
-                        horse.setPosY(horse.getPosY() - movementSpeed + 2);
-                    }
-                        
-                    if (k.IsKeyDown(Keys.Left))
-                    {
-                        keyDown = true;
-                        horse.setFlip(SpriteEffects.FlipHorizontally);
-                        horse.setPosX(horse.getPosX() - movementSpeed + 2);
-                    }
-                        
-                    if (k.IsKeyDown(Keys.Right))
-                    {
-                        keyDown = true;
-                        horse.setFlip(SpriteEffects.None);
-                        horse.setPosX(horse.getPosX() + movementSpeed - 2);
-                    }
-                    if (!keyDown)
-                    {
-                        horse.setAnimationSequence(anim, 0, 7, 0);
-                    }
-                    else
-                    {
-                        horse.setAnimationSequence(anim, 0, 7, 8);
-                    }
-                    //387 330
-                    if(curPos.X >= -155 && curPos.X <= -75 && curPos.Y >=330 && curPos.Y <= 387)
-                    {
-                        horse.setPos(xx, yy);
-                        started = false;
-                        horse.setFlip(SpriteEffects.None);
-                        level = 0;
-                    }
-
-                    horseRun.animationTick(gameTime);
-                    mainCamera.Follow(horse);
                     
                     break;
                 default:
@@ -452,7 +400,7 @@ namespace MiniGame
                             enemyMovementSpeed = normalEnemy;
                             horse.setAnimationSequence(anim, 0, 7, normalPlayer);
                         }
-
+                        Console.WriteLine(enemyMovementSpeed);
                         //Scrolling background functionality
                         if (scrolling1.rectangle.X + scrolling1.texture.Width <= 0)
                             scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.texture.Width;
