@@ -14,20 +14,22 @@ namespace MiniGame
 {
     class WorldMap : RC_GameStateParent
     {
+        Sprite3 worldMap = null;
         Camera mainCamera;
+        private Vector2 curPos;
+
         public override void LoadContent()
         {
-            Game1.texWorldMap = Util.texFromFile(graphicsDevice, Game1.dir + "FantasyWorldMap_2.png");
             mainCamera = new Camera();
-
-        }
-        public override void Draw(GameTime gameTime)
-        {
-            throw new NotImplementedException();
+            worldMap = new Sprite3(true, Game1.texWorldMap, -2000, -1000);
+            worldMap.setWidthHeight(6400, 4800);
         }
 
         public override void Update(GameTime gameTime)
         {
+            /*
+            curPos = horse.getPos();
+            bool keyDown = false;
             horse.setWidthHeight(1568 / 8 * 0.3f, texHorseRun.Height * 0.3f);
             k = Keyboard.GetState();
             if (!started)
@@ -80,7 +82,17 @@ namespace MiniGame
 
             horseRun.animationTick(gameTime);
             mainCamera.Follow(horse);
+            */
+        }
 
+        public override void Draw(GameTime gameTime)
+        {
+            spriteBatch.Begin(transformMatrix: mainCamera.Transform);
+            worldMap.Draw(spriteBatch);
+            //spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
+            //horse.Draw(spriteBatch);
+            //horseRun.Draw(spriteBatch);
+            spriteBatch.End();
         }
     }
 }
