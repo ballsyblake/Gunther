@@ -15,7 +15,7 @@ namespace MiniGame
     class SplashScreen : RC_GameStateParent
     {
         static public Texture2D texSplash = null;
-        int timerTicks = 300;
+        int timerTicks = 50;
         public override void LoadContent()
         {
             texSplash = Util.texFromFile(graphicsDevice, Game1.dir + "BBLogoSmall.png");
@@ -26,7 +26,7 @@ namespace MiniGame
             timerTicks--;
             if (timerTicks <= 0)
             {
-                Game1.levelManager.setLevel(0);
+                Game1.levelManager.setLevel(4);
             }
         }
 

@@ -13,21 +13,39 @@ namespace MiniGame
 {
     class Pause : RC_GameStateParent
     {
-        Sprite3 book = null;
+        ImageBackground pause1 = null;
+        ColorField trans = null;
+
         public override void LoadContent()
         {
-            book = new Sprite3(true, Game1.texBook, 50, 50);
-            book.setWidthHeight(700, 500);
+            pause1 = new ImageBackground(Game1.texBook, Color.White, graphicsDevice);
+            pause1.setPos(100, 100);
+            pause1.setWidthHeight(600, 400);
+            trans = new ColorField(new Color(255, 255, 255, 100), new Rectangle(0, 0, 800, 600));
         }
         public override void Update(GameTime gameTime)
         {
+            //Console.WriteLine("this works");
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Enter) && RC_GameStateParent.prevKeyState.IsKeyUp(Keys.Enter)) // ***
+            {
+                //Console.WriteLine("paused");
+                Game1.levelManager.popLevel();
+            }
 
         }
         public override void Draw(GameTime gameTime)
         {
-            book.Draw(spriteBatch);
+            Game1.levelManager.prevStatePlayLevel.Draw(gameTime);
+
+            //spriteBatch.Begin();  // depending on version you may need this
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+
+            trans.Draw(spriteBatch);
+            pause1.Draw(spriteBatch);
+            spriteBatch.End();
+
         }
 
-        
+
     }
 }

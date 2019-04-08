@@ -144,9 +144,6 @@ namespace MiniGame
         }
         public override void Update(GameTime gameTime)
         {
-            RC_GameStateParent.prevKeyState = RC_GameStateParent.keyState;
-            RC_GameStateParent.keyState = Keyboard.GetState();
-
             switch (Game1.difficulty)
             {
                 case 1:
@@ -386,13 +383,11 @@ namespace MiniGame
             if (textFadeTimer < 3)
                 spriteBatch.DrawString(Game1.directions, "< : slow down | > : speed up " + Environment.NewLine + "^ : move up | v : move down" + Environment.NewLine + "spacebar : shoot arrow", new Vector2(400, 10), Color.Black);
 
-            //When player dies text and a book appear on screen
-            if (gameOver && deathTimer > 1)
-                //Level manager stuff
-
+          
             //Bounding boxes for player, enemies, arrows and the play area    
             if (Game1.showbb)
             {
+                Console.WriteLine("bb stuff");
                 enemies.drawInfo(spriteBatch, Color.Red, Color.DarkRed);
                 horse.drawBB(spriteBatch, Color.Black);
                 //horse.drawHS(spriteBatch, Color.Green); //don't know if this is required for assessment or not

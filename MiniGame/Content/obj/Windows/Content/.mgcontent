@@ -4,10 +4,12 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Repos/MiniGame/MiniGame/Content/Gold.spritefont</File>
-    <File>C:/Repos/MiniGame/MiniGame/Content/MedievalFont.spritefont</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/File.spritefont</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Gold.spritefont</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/MedievalFont.spritefont</File>
   </SourceFiles>
   <DestFiles>
+    <File>Enchanted.spritefont</File>
     <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
