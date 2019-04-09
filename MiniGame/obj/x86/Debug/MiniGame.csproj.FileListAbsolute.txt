@@ -85,4 +85,3 @@ C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\MiniGame.exe.manifest
 C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\MiniGame.application
 C:\Repos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.exe.manifest
 C:\Repos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.application
-D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Enchanted.xnb
