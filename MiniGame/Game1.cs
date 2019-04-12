@@ -44,6 +44,7 @@ namespace MiniGame
         static public Texture2D texOpenBook = null;
         static public Texture2D texWood = null;
         static public Texture2D texArrowHead = null;
+        static public Texture2D texControls = null;
 
         //Random variable for, well, you know.. random things
         static public Random random = new Random();
@@ -57,6 +58,7 @@ namespace MiniGame
 
         static public bool showbb = false;
         static public bool endGame = false;
+
 
         //Set screen size here, declare the content directory and graphics
         public Game1()
@@ -112,6 +114,7 @@ namespace MiniGame
             texArrow = Util.texFromFile(GraphicsDevice, dir + "Arrow.png");
             texWood = Util.texFromFile(GraphicsDevice, dir + "wood1.jpg");
             texArrowHead = Util.texFromFile(GraphicsDevice, dir + "arrowHead.png");
+            texControls = Util.texFromFile(GraphicsDevice, dir + "Controls.png");
 
             levelManager = new RC_GameStateManager();
             levelManager.AddLevel(0, new PlayLevel()); // note play level is level 0
