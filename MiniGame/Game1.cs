@@ -15,7 +15,7 @@ namespace MiniGame
     public class Game1 : Game                                                                                                                                                                                                 
     {
         //Direction for art, please change according to where you have put the project files
-        static public string dir = @"D:\GitHubRepos\MiniGame\MiniGame\MiniGame\Content\Sprites\";
+        static public string dir = @"C:\GithubRepos\MiniGame\MiniGame\Content\Sprites\";
 
         //Graphics stuff
         GraphicsDeviceManager graphics;
@@ -45,6 +45,10 @@ namespace MiniGame
         static public Texture2D texWood = null;
         static public Texture2D texArrowHead = null;
         static public Texture2D texControls = null;
+        static public Texture2D texCity = null;
+        static public Texture2D texVillage = null;
+        static public Texture2D texWeaponsShop = null;
+        static public Texture2D texScroll = null;
 
         //Random variable for, well, you know.. random things
         static public Random random = new Random();
@@ -115,6 +119,8 @@ namespace MiniGame
             texWood = Util.texFromFile(GraphicsDevice, dir + "wood1.jpg");
             texArrowHead = Util.texFromFile(GraphicsDevice, dir + "arrowHead.png");
             texControls = Util.texFromFile(GraphicsDevice, dir + "Controls.png");
+            texCity = Util.texFromFile(GraphicsDevice, dir + "Concept_City1.jpg");
+            texScroll = Util.texFromFile(GraphicsDevice, dir + "scroll.png");
 
             levelManager = new RC_GameStateManager();
             levelManager.AddLevel(0, new PlayLevel()); // note play level is level 0
@@ -124,7 +130,7 @@ namespace MiniGame
             levelManager.AddLevel(1, new SplashScreen()); // note splash screen is level 1
             levelManager.getLevel(1).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
             levelManager.getLevel(1).LoadContent();
-            levelManager.setLevel(1);
+            
 
             levelManager.AddLevel(2, new Pause()); // note pause screen is level 2
             levelManager.getLevel(2).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
@@ -137,6 +143,11 @@ namespace MiniGame
             levelManager.AddLevel(4, new MainMenu()); // note main menu is level 4
             levelManager.getLevel(4).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
             levelManager.getLevel(4).LoadContent();
+
+            levelManager.AddLevel(5, new City()); // note main menu is level 5
+            levelManager.getLevel(5).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
+            levelManager.getLevel(5).LoadContent();
+            levelManager.setLevel(5);
         }
 
         /// <summary>

@@ -83,7 +83,6 @@ namespace MiniGame
                         Game1.levelManager.setLevel(3);
                         break;
                     case 1:
-                        //difficulty options
                         arrowHead.setPosX(410);
                         showDifficulty = true;
                         showControls = false;
@@ -108,15 +107,12 @@ namespace MiniGame
                 {
                     case 0:
                         Game1.difficulty = 1;
-                        
                         break;
                     case 1:
                         Game1.difficulty = 2;
-                        
                         break;
                     case 2:
                         Game1.difficulty = 3;
-                        
                         break;
                     case 3:
                         //Nothing
@@ -131,40 +127,20 @@ namespace MiniGame
                 arrowHead.setPosX(150);
                 Console.WriteLine(Game1.difficulty);
             }
-
-            /*if (RC_GameStateParent.keyState.IsKeyDown(Keys.D1) || RC_GameStateParent.keyState.IsKeyDown(Keys.NumPad1))
-            {
-                Game1.difficulty = 1;
-            }
-            else if (RC_GameStateParent.keyState.IsKeyDown(Keys.D2) || RC_GameStateParent.keyState.IsKeyDown(Keys.NumPad2))
-            {
-                Game1.difficulty = 2;
-            }
-            else if (RC_GameStateParent.keyState.IsKeyDown(Keys.D3) || RC_GameStateParent.keyState.IsKeyDown(Keys.NumPad3))
-            {
-                Game1.difficulty = 3;
-            }*/
-
-            //Begin all game functionality essentially
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Enter))
-            {
-               //Level manager stuff               
-            }
         }
         public override void Draw(GameTime gameTime)
         {
-            
             spriteBatch.Begin();
             table.Draw(spriteBatch);
             startBanner.Draw(spriteBatch);
-            //LineBatch.drawLineRectangle(spriteBatch, menuArea, Color.Blue);
+            
             arrowHead.Draw(spriteBatch);
             spriteBatch.DrawString(startGame, "Gunthers Problematic Tale", new Vector2(420, 80), Color.Black);
             spriteBatch.DrawString(startGame, "Start Game", new Vector2(200, 120), Color.Black);
             spriteBatch.DrawString(difficulty, "Select Difficulty", new Vector2(200, 220), Color.Black);
             spriteBatch.DrawString(controlsText, "Controls", new Vector2(200, 320), Color.Black);
             spriteBatch.DrawString(endGame, "Leave Game", new Vector2(200, 420), Color.Black);
-            //LineBatch.drawLineRectangle(spriteBatch, menuArea2, Color.Blue);
+            
             if (showStory)
                 spriteBatch.DrawString(startGame, WrapText(startGame, story, 340f), new Vector2(420, 120), Color.Black, 0f, new Vector2(0, 0), 0.70f, SpriteEffects.None, 0f);
             else if (showDifficulty)
@@ -181,24 +157,6 @@ namespace MiniGame
                 spriteBatch.DrawString(endGame, "Interact", new Vector2(420, 300), Color.Black);
                 spriteBatch.DrawString(endGame, "Attack", new Vector2(420, 360), Color.Black);
             }
-                
-
-            /*switch (Game1.difficulty)
-            {
-                case 1:
-                    spriteBatch.DrawString(Game1.difficultySelectText, "Current difficulty: Easy", new Vector2(10, 500), Color.Black);
-                    break;
-                case 2:
-                    spriteBatch.DrawString(Game1.difficultySelectText, "Current difficulty: Medium", new Vector2(10, 500), Color.Black);
-                    break;
-                case 3:
-                    spriteBatch.DrawString(Game1.difficultySelectText, "Current difficulty: Hard", new Vector2(10, 500), Color.Black);
-                    break;
-                default:
-                    spriteBatch.DrawString(Game1.difficultySelectText, "Current difficulty: Easy", new Vector2(10, 500), Color.Black);
-                    break;
-            }*/
-            //spriteBatch.DrawString(Game1.difficultySelectText, "Click 1, 2 or 3 to assign difficulty. 1 = easy | 2 = medium | 3 = hard" + Environment.NewLine, new Vector2(10, 560), Color.Black);
             spriteBatch.End();
         }
 

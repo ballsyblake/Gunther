@@ -4,8 +4,8 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Gold.spritefont</File>
-    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/MedievalFont.spritefont</File>
+    <File>C:/GithubRepos/MiniGame/MiniGame/Content/Gold.spritefont</File>
+    <File>C:/GithubRepos/MiniGame/MiniGame/Content/MedievalFont.spritefont</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

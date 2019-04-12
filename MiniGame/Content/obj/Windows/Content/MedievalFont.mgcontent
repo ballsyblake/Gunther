@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/MedievalFont.spritefont</SourceFile>
-  <SourceTime>2019-04-08T23:56:31.9286123+10:00</SourceTime>
-  <DestFile>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/bin/Windows/Content/MedievalFont.xnb</DestFile>
-  <DestTime>2019-04-08T23:56:43.6473505+10:00</DestTime>
+  <SourceFile>C:/GithubRepos/MiniGame/MiniGame/Content/MedievalFont.spritefont</SourceFile>
+  <SourceTime>2019-04-12T19:16:08.2861186+10:00</SourceTime>
+  <DestFile>C:/GithubRepos/MiniGame/MiniGame/Content/bin/Windows/Content/MedievalFont.xnb</DestFile>
+  <DestTime>2019-04-12T19:16:53.9686738+10:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
-  <ImporterTime>2018-12-09T03:35:54+11:00</ImporterTime>
+  <ImporterTime>2018-09-24T07:55:52+10:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
-  <ProcessorTime>2018-12-09T03:35:54+11:00</ProcessorTime>
+  <ProcessorTime>2018-09-24T07:55:52+10:00</ProcessorTime>
   <Parameters>
     <Key>PremultiplyAlpha</Key>
     <Value>True</Value>
