@@ -15,13 +15,12 @@ namespace MiniGame
     class City : RC_GameStateParent
     {
         Sprite3 city = null;
-        Sprite3 scroll = null;
+        
         public override void LoadContent()
         {
-            city = new Sprite3(true, Game1.texCity, 0, 0);
+            city = new Sprite3(true, Game1.texCityScreen, 0, 0);
             city.setWidthHeight(800, 600);
-            scroll = new Sprite3(true, Game1.texScroll, 200, 50);
-            scroll.setWidthHeight(400, 500);
+            
         }
         public override void Update(GameTime gameTime)
         {
@@ -31,7 +30,7 @@ namespace MiniGame
         {
             spriteBatch.Begin();
             city.Draw(spriteBatch);
-            scroll.Draw(spriteBatch);
+            
             spriteBatch.End();
         }
     }

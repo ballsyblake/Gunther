@@ -15,7 +15,7 @@ namespace MiniGame
     public class Game1 : Game                                                                                                                                                                                                 
     {
         //Direction for art, please change according to where you have put the project files
-        static public string dir = @"C:\GithubRepos\MiniGame\MiniGame\Content\Sprites\";
+        static public string dir = @"D:\GitHubRepos\MiniGame\MiniGame\MiniGame\Content\Sprites\";
 
         //Graphics stuff
         GraphicsDeviceManager graphics;
@@ -49,6 +49,8 @@ namespace MiniGame
         static public Texture2D texVillage = null;
         static public Texture2D texWeaponsShop = null;
         static public Texture2D texScroll = null;
+        static public Texture2D texPaper = null;
+        static public Texture2D texCityScreen = null;
 
         //Random variable for, well, you know.. random things
         static public Random random = new Random();
@@ -121,6 +123,8 @@ namespace MiniGame
             texControls = Util.texFromFile(GraphicsDevice, dir + "Controls.png");
             texCity = Util.texFromFile(GraphicsDevice, dir + "Concept_City1.jpg");
             texScroll = Util.texFromFile(GraphicsDevice, dir + "scroll.png");
+            texPaper = Util.texFromFile(GraphicsDevice, dir + "oldpaper.png");
+            texCityScreen = Util.texFromFile(GraphicsDevice, dir + "cityScreen.png");
 
             levelManager = new RC_GameStateManager();
             levelManager.AddLevel(0, new PlayLevel()); // note play level is level 0
