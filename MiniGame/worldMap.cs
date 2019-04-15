@@ -16,7 +16,7 @@ namespace MiniGame
     {
         Sprite3 worldMap = null;
         Sprite3 points = null;
-        Sprite3 water = null;
+        Sprite3 land = null;
         Camera mainCamera;
         private Vector2 curPos;
         Sprite3 horse = null;
@@ -25,6 +25,8 @@ namespace MiniGame
         int bot = 2600;
         int left = 450;
         int right = 3490;
+        float timer = 0f;
+        int count = 0;
 
         public override void LoadContent()
         {
@@ -32,11 +34,12 @@ namespace MiniGame
             worldMap = new Sprite3(true, Game1.texWorldMap, 0, 0);
             points = new Sprite3(true, Game1.texPoints, 0, 0);
             
-            water = new Sprite3(true, Game1.texMapWater, 0, 0);
+            land = new Sprite3(true, Game1.texMapLand, 0, 0);
             //worldMap.setWidthHeight(6400, 4800);
             horse = new Sprite3(true, Game1.texHorseRun, 500, 400);
             horse.setXframes(8);
             horse.setWidthHeight(1568 / 8, Game1.texHorseRun.Height);
+            horse.setBB(30, 10, horse.getWidth(), horse.getHeight());
         }
 
         public override void Update(GameTime gameTime)
@@ -47,7 +50,7 @@ namespace MiniGame
             horse.setWidthHeight(1568 / 8 * 0.3f, Game1.texHorseRun.Height * 0.3f);
 
             if (horse.Intersects(points.getBB()))
-                Console.WriteLine("touching points");
+                //Console.WriteLine("touching points");
 
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down))
             {
@@ -74,6 +77,8 @@ namespace MiniGame
                 horse.setFlip(SpriteEffects.None);
                 horse.setPosX(horse.getPosX() + movementSpeed);
             }
+
+            
             /*if (!keyDown)
             {
                 horse.setAnimationSequence(anim, 0, 7, 0);
@@ -94,18 +99,56 @@ namespace MiniGame
             //horseRun.animationTick(gameTime);
             
             mainCamera.Follow(horse);
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (timer % 3 == 0)
+            {
+                CheckWaterCollision(Game1.texMapLand);
+                count++;
+                Console.WriteLine("checked water" + count);
+            }
+                
             
         }
 
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin(transformMatrix: mainCamera.Transform);
+            land.Draw(spriteBatch);
             worldMap.Draw(spriteBatch);
             points.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
             horse.Draw(spriteBatch);
+            
             //horseRun.Draw(spriteBatch);
             spriteBatch.End();
+        }
+
+        bool CheckWaterCollision(Texture2D tex)
+        {
+            
+            uint[] pixelData;
+            int i = 0;
+            uint temp;
+            //int x,y = 0;
+            //Color col;
+
+            pixelData = new uint[tex.Width * tex.Height];
+            tex.GetData(pixelData, 0, tex.Width * tex.Height);
+
+            for (int xx = (int)curPos.X; xx < (int)curPos.X + horse.getWidth(); xx++)
+            {
+                for (int yy = (int)curPos.Y; yy < (int)curPos.Y + horse.getHeight(); yy++)
+                {
+                    temp = pixelData[xx + yy * tex.Width];
+
+                    if (temp == 0)
+                    {
+                        Console.WriteLine("Player is touching water");
+                    }
+                }
+            }
+            tex.SetData(pixelData);
+            return false;
         }
     }
 }

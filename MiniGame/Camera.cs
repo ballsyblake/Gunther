@@ -23,7 +23,7 @@ namespace MiniGame
                 Game1.screenWidth / 2,
                 Game1.screenHeight / 2,
                 0);
-            Console.WriteLine(position.M42);
+            //Console.WriteLine(position.M42);
             if (position.M41 > -479.4)
                 position.M41 = -479.4f;
             if (position.M41 < -3509.4)

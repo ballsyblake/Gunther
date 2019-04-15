@@ -392,13 +392,16 @@ namespace RC_Framework
         /// <param name="cToReplace"></param>
         /// <param name="cToWrite"></param>
         /// <returns></returns>
-        public static int ChangeColourInTexturePNG(Texture2D tex, Color cToReplace, Color cToWrite) // new color(0,0,0,0)
+        public static int ChangeColourInTexturePNG(Texture2D tex, Color cToReplace, Color cToWrite, uint c3) // new color(0,0,0,0)
         {
+            Console.WriteLine("this was called");
         uint[] pixelData;
         int i = 0;
         //int x,y = 0;
         //Color col;
         uint temp;
+            bool test = false;
+            
         uint c1;
         uint c2;
 
@@ -408,31 +411,43 @@ namespace RC_Framework
         if (tex.Format != SurfaceFormat.Color) return 0; // throwing an exception might be a better idea than return
         //Color format is ARGB - in paint.net you need to select 32bit when saving
 
-        cc1[3]=cToReplace.A;
-        cc1[2]=cToReplace.R;
-        cc1[1]=cToReplace.G;
-        cc1[0]=cToReplace.B;
-        c1=BitConverter.ToUInt32(cc1,0);
-
-        cc2[3] = cToWrite.A;
-        cc2[2] = cToWrite.R;
-        cc2[1] = cToWrite.G;
-        cc2[0] = cToWrite.B;
-        c2=BitConverter.ToUInt32(cc2,0);
-
-        pixelData  = new uint[tex.Width * tex.Height];
-        tex.GetData(pixelData, 0, tex.Width * tex.Height);
-
-        for (int xx = 0; xx < tex.Width; xx++)
-        {
-            for (int yy = 0; yy <tex.Height; yy++)
+            cc1[3]=cToReplace.A;
+            cc1[2]=cToReplace.R;
+            cc1[1]=cToReplace.G;
+            cc1[0]=cToReplace.B;
+            c1=BitConverter.ToUInt32(cc1,0);
+            Console.WriteLine(c1);
+            cc2[3] = cToWrite.A;
+            cc2[2] = cToWrite.R;
+            cc2[1] = cToWrite.G;
+            cc2[0] = cToWrite.B;
+            c2=BitConverter.ToUInt32(cc2,0);
+            Console.WriteLine(c2);
+            pixelData  = new uint[tex.Width * tex.Height];
+            tex.GetData(pixelData, 0, tex.Width * tex.Height);
+            
+            for (int xx = 0; xx < tex.Width; xx++)
             {
-            temp=pixelData[xx+yy*tex.Width];
-            if (temp == c1) pixelData[xx+yy*tex.Width]=c2;
+                for (int yy = 0; yy <tex.Height; yy++)
+                {
+                    temp=pixelData[xx+yy*tex.Width];
+                    /*if(!test)
+                        if(temp > 0)
+                        {
+                            test = true;
+                            Console.WriteLine("found this pixel "+temp);
+                        }
+                        */
+                    //Console.WriteLine("found this pixel " + temp);
+                    if (temp == 0)
+                    {
+                        //Console.WriteLine("Found a blue");
+                        pixelData[xx + yy * tex.Width] = c2;
+                    }
+                }
             }
-        }
-        tex.SetData(pixelData);
-        return i;
+            tex.SetData(pixelData);
+            return i;
         }
 
         /*

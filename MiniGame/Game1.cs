@@ -51,6 +51,7 @@ namespace MiniGame
         static public Texture2D texScroll = null;
         static public Texture2D texPaper = null;
         static public Texture2D texCityScreen = null;
+        static public Texture2D texMapLand = null;
 
         //Random variable for, well, you know.. random things
         static public Random random = new Random();
@@ -126,6 +127,8 @@ namespace MiniGame
             texPaper = Util.texFromFile(GraphicsDevice, dir + "oldpaper.png");
             texCityScreen = Util.texFromFile(GraphicsDevice, dir + "cityScreen.png");
 
+            texMapLand = Util.texFromFile(GraphicsDevice, dir + "GPTMapLand.png");
+
             levelManager = new RC_GameStateManager();
             levelManager.AddLevel(0, new PlayLevel()); // note play level is level 0
             levelManager.getLevel(0).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
@@ -151,7 +154,7 @@ namespace MiniGame
             levelManager.AddLevel(5, new City()); // note main menu is level 5
             levelManager.getLevel(5).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
             levelManager.getLevel(5).LoadContent();
-            levelManager.setLevel(5);
+            levelManager.setLevel(3);
         }
 
         /// <summary>
@@ -196,6 +199,8 @@ namespace MiniGame
                 levelManager.pushLevel(2);
             }
             
+
+
             base.Update(gameTime);
         }
 
