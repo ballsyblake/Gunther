@@ -100,14 +100,13 @@ namespace MiniGame
             
             mainCamera.Follow(horse);
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (timer % 3 == 0)
+            if (timer > 1)
             {
+                timer = 0;
                 CheckWaterCollision(Game1.texMapLand);
-                count++;
-                Console.WriteLine("checked water" + count);
             }
-                
-            
+
+            //Console.WriteLine((int)timer);
         }
 
         public override void Draw(GameTime gameTime)
@@ -127,7 +126,7 @@ namespace MiniGame
         {
             
             uint[] pixelData;
-            int i = 0;
+            
             uint temp;
             //int x,y = 0;
             //Color col;
