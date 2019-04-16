@@ -4,9 +4,13 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/cave theme.wav</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/shoot.wav</File>
     <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/File.spritefont</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File>Enchanted.spritefont</File>
   </DestFiles>
 </SourceFileCollection>

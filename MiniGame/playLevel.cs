@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
 using RC_Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace MiniGame
 {
@@ -57,6 +58,10 @@ namespace MiniGame
         int arrowOffsetX = 60;
         int arrowOffsetY = 10;
 
+        //Sound
+        SoundEffectInstance instanceHorse = Game1.soundEffects[1].CreateInstance();
+        
+        
 
         //Arrays for animations
         Vector2[] anim = new Vector2[8];
@@ -71,10 +76,16 @@ namespace MiniGame
         float arrowTimer = 0f;
 
         float deathTimer = 0;
+        bool playing = false;
         
 
         public override void LoadContent()
         {
+            //Sound
+            instanceHorse.IsLooped = true;
+            instanceHorse.Volume = 0.3f;
+            
+
             //Define playarea
             playArea = new Rectangle(lhs, top, rhs - lhs, bot - top); // width and height
 
@@ -144,6 +155,26 @@ namespace MiniGame
         }
         public override void Update(GameTime gameTime)
         {
+            if (gameStateManager.getCurrentLevelNum() == 0 && !playing && !gameOver)
+            {
+                instanceHorse.Play();
+                horse.setActive(true);
+                horse.setPos(xx, yy);
+                for (int totalEnemies = 0; totalEnemies < enemies.count(); totalEnemies++)
+                {
+                    if (enemies[totalEnemies].getActive())
+                        enemies[totalEnemies].setPosX(810);
+                }
+                playing = true;
+            }
+
+            if (playing)
+            {
+
+                scrolling1.speed = scrollingSpeed;
+                scrolling2.speed = scrollingSpeed;
+            }
+
             switch (Game1.difficulty)
             {
                 case 1:
@@ -200,6 +231,9 @@ namespace MiniGame
                 int ac = enemies.collisionWithRect(quiver[ea].getBoundingBoxAA());
                 if (ac != -1)
                 {
+                    Console.WriteLine(enemies.getSprite(ac).getPos());
+                    SoundEffectInstance instanceDeath = Game1.soundEffects[0].CreateInstance();
+                    instanceDeath.Play();
                     score++;
                     Blood(enemies.getSprite(ac).getPosX(), enemies.getSprite(ac).getPosY(), false);
                     enemies.getSprite(ac).setVisible(false);
@@ -211,12 +245,13 @@ namespace MiniGame
 
 
             //Allow player to increase or decrease speed 
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+           
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) && !gameOver)
             {
                 enemyMovementSpeed = fastEnemy;
                 horse.setAnimationSequence(anim, 0, 7, fastPlayer);
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !gameOver)
             {
                 enemyMovementSpeed = slowEnemy;
                 horse.setAnimationSequence(anim, 0, 7, slowPlayer);
@@ -226,6 +261,7 @@ namespace MiniGame
                 enemyMovementSpeed = normalEnemy;
                 horse.setAnimationSequence(anim, 0, 7, normalPlayer);
             }
+            
             //Console.WriteLine(enemyMovementSpeed);
             //Scrolling background functionality
             if (scrolling1.rectangle.X + scrolling1.texture.Width <= 0)
@@ -242,24 +278,30 @@ namespace MiniGame
                 int rc = enemies.collisionWithRect(horse.getBoundingBoxAA());
                 if (rc != -1)
                 {
+                    SoundEffectInstance instanceDeath = Game1.soundEffects[0].CreateInstance();
+                    instanceDeath.Play();
                     Blood(horse.getPosX(), horse.getPosY(), true);
-                    movementSpeed = 0;
-                    enemyMovementSpeed = 0;
+                    
                     scrolling1.speed = 0;
                     scrolling2.speed = 0;
-                    for (int i = 0; i < horseRun.count(); i++)
+                    horse.setActive(false);
+                    horse.setPos(0, 0);
+                    /*for (int i = 0; i < horseRun.count(); i++)
                     {
                         horseRun.deleteSprite(i);
-                    }
+                    }*/
+                    playing = false;
                     gameOver = true;
                 }
             }
 
             //Shooting arrow functionality
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && !arrowShot)
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && !arrowShot && !gameOver)
             {
                 Arrow();
                 arrowShot = true;
+                SoundEffectInstance instanceArrow = Game1.soundEffects[2].CreateInstance();
+                instanceArrow.Play();
             }
             for (int a = 0; a < quiver.count(); a++)
             {
@@ -282,13 +324,36 @@ namespace MiniGame
                 arrowTimer = 0;
                 arrowShot = false;
             }
+
+            for (int totalArrows = 0; totalArrows < quiver.count(); totalArrows++)
+            {
+                if (quiver[totalArrows].getPosX() > 700)
+                {
+                    quiver[totalArrows].setVisible(false);
+                    quiver[totalArrows].setPos(0, 0);
+                }
+                    
+            }
             //Animation ticks for anything that is being animated
             horseRun.animationTick(gameTime);
             enemies.animationTick(gameTime);
             bloodSplat.animationTick(gameTime);
 
             if (gameOver)
+            {
+                
                 deathTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                instanceHorse.Stop();
+            }
+
+            if (deathTimer > 2)
+            {
+                deathTimer = 0;
+                gameOver = false;
+                
+                gameStateManager.setLevel(4);
+            }
+
         }
 
         //This function starts the movement and animation of the player
@@ -375,9 +440,10 @@ namespace MiniGame
             goldBanner.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "Gold: " + score, new Vector2(30, 20), Color.Black);
             //This is the start screen that goes away once player presses the enter key
-            
-            
 
+
+            
+                
 
             //This displays some basic instructions for the player
             if (textFadeTimer < 3)

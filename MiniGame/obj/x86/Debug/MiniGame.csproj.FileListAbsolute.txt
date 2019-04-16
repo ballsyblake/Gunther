@@ -114,3 +114,9 @@ C:\GithubRepos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.application
 C:\GithubRepos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.csproj.CopyComplete
 C:\GithubRepos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.exe
 C:\GithubRepos\MiniGame\MiniGame\obj\x86\Debug\MiniGame.pdb
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\cave theme.xnb
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\deathSounds.xnb
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\horseRun.xnb
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\shoot.xnb
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\arrowHit01.xnb
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\deathSound01.xnb

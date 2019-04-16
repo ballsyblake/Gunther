@@ -27,6 +27,16 @@ namespace MiniGame
         int right = 3490;
         float timer = 0f;
         int count = 0;
+        bool touchingWater = false;
+
+        uint[] pixelData;
+        uint temp;
+
+        bool leftCol = false;
+        bool rightCol = false;
+        bool topCol = false;
+        bool botCol = false;
+
 
         public override void LoadContent()
         {
@@ -40,6 +50,9 @@ namespace MiniGame
             horse.setXframes(8);
             horse.setWidthHeight(1568 / 8, Game1.texHorseRun.Height);
             horse.setBB(30, 10, horse.getWidth(), horse.getHeight());
+
+            pixelData = new uint[Game1.texMapLand.Width * Game1.texMapLand.Height];
+            Game1.texMapLand.GetData(pixelData, 0, Game1.texMapLand.Width * Game1.texMapLand.Height);
         }
 
         public override void Update(GameTime gameTime)
@@ -49,35 +62,34 @@ namespace MiniGame
             bool keyDown = false;
             horse.setWidthHeight(1568 / 8 * 0.3f, Game1.texHorseRun.Height * 0.3f);
 
-            if (horse.Intersects(points.getBB()))
-                //Console.WriteLine("touching points");
-
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down))
+            
+            
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !botCol)
             {
                 keyDown = true;
                 horse.setPosY(horse.getPosY() + movementSpeed);
             }
 
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Up))
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Up) && !topCol)
             {
                 keyDown = true;
                 horse.setPosY(horse.getPosY() - movementSpeed);
             }
 
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Left))
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Left) && !leftCol)
             {
                 keyDown = true;
                 horse.setFlip(SpriteEffects.FlipHorizontally);
                 horse.setPosX(horse.getPosX() - movementSpeed);
             }
 
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Right))
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Right) && !rightCol)
             {
                 keyDown = true;
                 horse.setFlip(SpriteEffects.None);
                 horse.setPosX(horse.getPosX() + movementSpeed);
             }
-
+            
             
             /*if (!keyDown)
             {
@@ -100,11 +112,13 @@ namespace MiniGame
             
             mainCamera.Follow(horse);
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (timer > 1)
+            if (timer > 0.2f)
             {
                 timer = 0;
-                CheckWaterCollision(Game1.texMapLand);
+                //CheckWaterCollision();
             }
+            Console.WriteLine(leftCol);
+            
 
             //Console.WriteLine((int)timer);
         }
@@ -117,37 +131,57 @@ namespace MiniGame
             points.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
             horse.Draw(spriteBatch);
-            
+            CheckWaterCollision();
             //horseRun.Draw(spriteBatch);
             spriteBatch.End();
         }
 
-        bool CheckWaterCollision(Texture2D tex)
+        public void CheckWaterCollision()
         {
-            
-            uint[] pixelData;
-            
-            uint temp;
-            //int x,y = 0;
-            //Color col;
-
-            pixelData = new uint[tex.Width * tex.Height];
-            tex.GetData(pixelData, 0, tex.Width * tex.Height);
-
+            /*temp = pixelData[(int)curPos.X + ((int)horse.getWidth()/2) + (int)curPos.Y + ((int)horse.getHeight()/2) * tex.Width];
+            if (temp == 0)
+                return true;
+            */
+            botCol = false;
+            topCol = false;
+            leftCol = false;
+            rightCol = false;
             for (int xx = (int)curPos.X; xx < (int)curPos.X + horse.getWidth(); xx++)
             {
                 for (int yy = (int)curPos.Y; yy < (int)curPos.Y + horse.getHeight(); yy++)
                 {
-                    temp = pixelData[xx + yy * tex.Width];
-
+                    temp = pixelData[xx + yy * Game1.texMapLand.Width];
+                    
                     if (temp == 0)
                     {
-                        Console.WriteLine("Player is touching water");
+                        
+                        if (xx - curPos.X < horse.getWidth() / 2)
+                        {
+                            leftCol = true;
+                        }
+                           
+                        else if (xx - curPos.X > horse.getWidth() / 2)
+                        {
+                            rightCol = true;
+                        }
+                            
+                        if (yy - curPos.Y < horse.getHeight() / 2)
+                        {
+                            topCol = true;
+                        }
+                            
+                        else if (yy - curPos.Y > horse.getHeight() / 2)
+                        {
+                            botCol = true;
+                        }
+                            
+                        
                     }
                 }
             }
-            tex.SetData(pixelData);
-            return false;
+            //tex.SetData(pixelData);
+            //Console.WriteLine(count);
+            
         }
     }
 }

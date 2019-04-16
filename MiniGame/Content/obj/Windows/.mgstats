@@ -1,2 +1,4 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/cave theme.wav","D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/bin/Windows/Audio/cave theme.xnb","SoundEffectProcessor","SoundEffectContent",49392206,49392233,2.117462
+"D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/shoot.wav","D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/bin/Windows/Audio/shoot.xnb","SoundEffectProcessor","SoundEffectContent",40526,40553,0.2040627
 "D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/File.spritefont","D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/bin/Windows/Enchanted.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0.6159191

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
 using RC_Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace MiniGame
 {
@@ -33,6 +34,8 @@ namespace MiniGame
         bool showDifficulty = false;
         bool showControls = false;
 
+        SoundEffectInstance instanceMusic = Game1.music.CreateInstance();
+
         string story = "This is the story of Gunther. Born into poverty, Gunther has experienced all the hardships this forsaken world has to offer. His father, Funther, was brutally murder by a group of bandits when he was only a young boy. His mother, Munther, on her own with young Gunther had no choice but to sell her body to make ends meet. Eventually they find a brothel in the city of Yict that takes the both of them in and cares for them. Years pass and Gunther reaches the age of 16. He has decided to set out into the chaotic world to find riches and glory with the hopes of one day buying a house for him and his mother to move into and live happily ever after. But first he must test himself...";
 
         public override void LoadContent()
@@ -47,7 +50,10 @@ namespace MiniGame
             controls = new Sprite3(true, Game1.texControls, 500, 200);
             controls.setWidthHeight(150,200);
             arrowHead.setWidthHeight(40, 40);
+
             
+            instanceMusic.IsLooped = true;
+            instanceMusic.Play();
 
             startGame = Content.Load<SpriteFont>("MedievalFont");
             difficulty = Content.Load<SpriteFont>("MedievalFont");
@@ -58,13 +64,16 @@ namespace MiniGame
         }
         public override void Update(GameTime gameTime)
         {
+            
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Down) && arrowCount < 3)
             {
+                Game1.soundEffects[3].Play();
                 arrowHead.setPosY(arrowHead.getPosY() + arrowJump);
                 arrowCount++;
             }
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Up) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Up) && arrowCount > 0)
             {
+                Game1.soundEffects[3].Play();
                 arrowHead.setPosY(arrowHead.getPosY() - arrowJump);
                 arrowCount--;
             }
@@ -77,10 +86,11 @@ namespace MiniGame
 
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Enter) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Enter) && !showDifficulty)
             {
+                instanceMusic.Stop();
                 switch (arrowCount)
                 {
                     case 0:
-                        Game1.levelManager.setLevel(3);
+                        Game1.levelManager.setLevel(0);
                         break;
                     case 1:
                         arrowHead.setPosX(410);

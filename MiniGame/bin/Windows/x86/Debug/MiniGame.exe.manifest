@@ -31,14 +31,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="302592">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="304128">
       <assemblyIdentity name="MiniGame" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>vS0LBgruIotb4GPI1y6n9nYDsS3aojbR2LTESIwZXt8=</dsig:DigestValue>
+        <dsig:DigestValue>E64sUmccnWdtgpifS8+Ca0krDXhcZECYNdSE5yvHyt8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -138,6 +138,60 @@
       </hash>
     </dependentAssembly>
   </dependency>
+  <file name="Content\Audio\arrowHit01.xnb" size="125333">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GL3P+YfDYCpcB6/uDN3w0VafGyk8zDNjR9h6J4eV+vs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Audio\cave theme.xnb" size="49392233">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>puQHf3MEQgwglWgt8T4OZa4zobzdaFnUsUOc/N8X8kg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Audio\deathSound01.xnb" size="126149">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>P1nPJbnFWvEvutyNYKb8w4qhg8exm88oVwCcsucRtvk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Audio\deathSounds.xnb" size="4380169">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TBVmjujbNVxChLDele0fNXt8/67cFPUx1ZUJLawJ800=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Audio\horseRun.xnb" size="551433">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6+K8a/00uRlUUkM0ySXoVZf+qQsLaRndjeO6L4Lpm/c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Audio\shoot.xnb" size="40553">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9ADtXruNDqHhQMhvGN/hCscaOvYD8O7Z5Dgk2MByJHw=</dsig:DigestValue>
+    </hash>
+  </file>
   <file name="Content\Gold.xnb" size="37905">
     <hash>
       <dsig:Transforms>

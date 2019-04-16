@@ -6,6 +6,7 @@ using System;
 using RC_Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 
 namespace MiniGame
 {
@@ -53,6 +54,10 @@ namespace MiniGame
         static public Texture2D texCityScreen = null;
         static public Texture2D texMapLand = null;
 
+        //Sound
+        static public List<SoundEffect> soundEffects;
+        static public SoundEffect music;
+
         //Random variable for, well, you know.. random things
         static public Random random = new Random();
 
@@ -72,6 +77,7 @@ namespace MiniGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            soundEffects = new List<SoundEffect>();
             //Setting the screen resoultion to 600x800
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
@@ -126,8 +132,14 @@ namespace MiniGame
             texScroll = Util.texFromFile(GraphicsDevice, dir + "scroll.png");
             texPaper = Util.texFromFile(GraphicsDevice, dir + "oldpaper.png");
             texCityScreen = Util.texFromFile(GraphicsDevice, dir + "cityScreen.png");
-
             texMapLand = Util.texFromFile(GraphicsDevice, dir + "GPTMapLand.png");
+
+            //Sound
+            soundEffects.Add(Content.Load<SoundEffect>("Audio/deathSound01"));//Death sounds in position 0
+            soundEffects.Add(Content.Load<SoundEffect>("Audio/horseRun"));//horse run sounds in position 1
+            soundEffects.Add(Content.Load<SoundEffect>("Audio/shoot"));//shoot arrow sounds in position 2
+            soundEffects.Add(Content.Load<SoundEffect>("Audio/arrowHit01"));//Menu arrow in position 3
+            music = Content.Load<SoundEffect>("Audio/cave theme");
 
             levelManager = new RC_GameStateManager();
             levelManager.AddLevel(0, new PlayLevel()); // note play level is level 0
