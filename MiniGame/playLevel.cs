@@ -72,6 +72,7 @@ namespace MiniGame
         Scrolling scrolling2;
 
         private int score = 0;
+        int enemiesLeft = 0;
         float textFadeTimer = 0f;
         float arrowTimer = 0f;
 
@@ -435,20 +436,17 @@ namespace MiniGame
             enemies.Draw(spriteBatch);
             horseRun.Draw(spriteBatch);
             bloodSplat.Draw(spriteBatch);
-            //arrow.Draw(spriteBatch);
+            
             quiver.Draw(spriteBatch);
             goldBanner.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "Gold: " + score, new Vector2(30, 20), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Enemies: " + enemiesLeft, new Vector2(750, 20), Color.Black);
             //This is the start screen that goes away once player presses the enter key
 
-
-            
-                
-
             //This displays some basic instructions for the player
-            if (textFadeTimer < 3)
+            /*if (textFadeTimer < 3)
                 spriteBatch.DrawString(Game1.directions, "< : slow down | > : speed up " + Environment.NewLine + "^ : move up | v : move down" + Environment.NewLine + "spacebar : shoot arrow", new Vector2(400, 10), Color.Black);
-
+            */
           
             //Bounding boxes for player, enemies, arrows and the play area    
             if (Game1.showbb)

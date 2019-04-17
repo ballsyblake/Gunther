@@ -91,7 +91,7 @@ namespace MiniGame
                 switch (arrowCount)
                 {
                     case 0:
-                        Game1.levelManager.setLevel(0);
+                        Game1.levelManager.setLevel(3);
                         break;
                     case 1:
                         arrowHead.setPosX(410);

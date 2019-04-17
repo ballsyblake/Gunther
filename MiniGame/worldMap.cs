@@ -78,7 +78,7 @@ namespace MiniGame
                     if (nearestPoint < 30)
                     {
                         City.CurrentLocation(Game1.pointsPos[totalPoints]);
-                        gameStateManager.setLevel(5);
+                        gameStateManager.setLevel(0);
                         return;
                     }
                         
