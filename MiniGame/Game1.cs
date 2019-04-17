@@ -58,6 +58,10 @@ namespace MiniGame
         static public List<SoundEffect> soundEffects;
         static public SoundEffect music;
 
+        //Cities, towns and villages
+        public static Vector2[] pointsPos = new Vector2[22];
+        public static Dictionary<Vector2, string> cities = new Dictionary<Vector2, string>();
+
         //Random variable for, well, you know.. random things
         static public Random random = new Random();
 
@@ -133,6 +137,53 @@ namespace MiniGame
             texPaper = Util.texFromFile(GraphicsDevice, dir + "oldpaper.png");
             texCityScreen = Util.texFromFile(GraphicsDevice, dir + "cityScreen.png");
             texMapLand = Util.texFromFile(GraphicsDevice, dir + "GPTMapLand.png");
+
+            //Points positions
+            pointsPos[0] = new Vector2(277, 260);
+            pointsPos[1] = new Vector2(460, 636);
+            pointsPos[2] = new Vector2(1028, 496);
+            pointsPos[3] = new Vector2(672, 1050);
+            pointsPos[4] = new Vector2(1083, 976);
+            pointsPos[5] = new Vector2(859, 1444);
+            pointsPos[6] = new Vector2(901, 1708);
+            pointsPos[7] = new Vector2(1332, 2102);
+            pointsPos[8] = new Vector2(1003, 2385);
+            pointsPos[9] = new Vector2(1796, 2279);
+            pointsPos[10] = new Vector2(1816, 1862);
+            pointsPos[11] = new Vector2(2290, 1789);
+            pointsPos[12] = new Vector2(2557, 1293);
+            pointsPos[13] = new Vector2(3168, 1187);
+            pointsPos[14] = new Vector2(3699, 711);
+            pointsPos[15] = new Vector2(2998, 213);
+            pointsPos[16] = new Vector2(2501, 716);
+            pointsPos[17] = new Vector2(2418, 296);
+            pointsPos[18] = new Vector2(2570, 2770);
+            pointsPos[19] = new Vector2(3150, 2460);
+            pointsPos[20] = new Vector2(3620, 2050);
+            pointsPos[21] = new Vector2(1870, 1450);
+
+            cities.Add(pointsPos[0], "Kale");
+            cities.Add(pointsPos[1], "Uyarmore");
+            cities.Add(pointsPos[2], "Chuby");
+            cities.Add(pointsPos[3], "Truulnard");
+            cities.Add(pointsPos[4], "Shosmouth");
+            cities.Add(pointsPos[5], "Clournard");
+            cities.Add(pointsPos[6], "Ihester");
+            cities.Add(pointsPos[7], "Ifrore");
+            cities.Add(pointsPos[8], "Tico");
+            cities.Add(pointsPos[9], "Ouisbus");
+            cities.Add(pointsPos[10], "Aresmore");
+            cities.Add(pointsPos[11], "Creavale");
+            cities.Add(pointsPos[12], "Prafburg");
+            cities.Add(pointsPos[13], "Kreunsa");
+            cities.Add(pointsPos[14], "Hieydiff");
+            cities.Add(pointsPos[15], "Bocrough");
+            cities.Add(pointsPos[16], "Chia");
+            cities.Add(pointsPos[17], "Evlouver");
+            cities.Add(pointsPos[18], "Zlale");
+            cities.Add(pointsPos[19], "Arkshire");
+            cities.Add(pointsPos[20], "Arioledo");
+            cities.Add(pointsPos[21], "Qisa");
 
             //Sound
             soundEffects.Add(Content.Load<SoundEffect>("Audio/deathSound01"));//Death sounds in position 0

@@ -53,7 +53,8 @@ namespace MiniGame
 
             
             instanceMusic.IsLooped = true;
-            instanceMusic.Play();
+            if(gameStateManager.getCurrentLevelNum() == 4)
+                instanceMusic.Play();
 
             startGame = Content.Load<SpriteFont>("MedievalFont");
             difficulty = Content.Load<SpriteFont>("MedievalFont");

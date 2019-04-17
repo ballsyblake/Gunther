@@ -15,77 +15,34 @@ namespace MiniGame
     class City : RC_GameStateParent
     {
         Sprite3 city = null;
-        bool test = false;
-        Sprite3 before = null;
-        Sprite3 after = null;
-        Color waterColor = new Color(36, 36, 215, 255);
-        Color testColor;
         
-        
+        bool doneCheck = false;
+        private static Vector2 currentLoc;
+
         public override void LoadContent()
         {
-            city = new Sprite3(true, Game1.texCityScreen, 0, 0);
-
-            testColor = UIntToColor(4007076900);
-            
-            before = new Sprite3(true, Game1.texMapWater, 0, 0);
-            before.setWidthHeight(400, 300);
-            
-            
+            city = new Sprite3(true, Game1.texCityScreen, 0, 0);            
             city.setWidthHeight(800, 600);
             
         }
         public override void Update(GameTime gameTime)
         {
-            if (keyState.IsKeyDown(Keys.D) && !prevKeyState.IsKeyDown(Keys.D))
-            {
-                Util.ChangeColourInTexturePNG(Game1.texMapWater, waterColor, Color.Black, 4291577919);
-                after = new Sprite3(true, Game1.texMapWater, 400, 300);
-                after.setWidthHeight(400, 300);
-                test = true;
-            }
-                
-            /*  4280556781
-                4280556780
-                4280556781
-                4280622573
-                4280556781
-                4280622573
-                4280556781
-                4280556782
-                4280556781
-                4280557038
-                4280556780
-                4280490988
-                4280556781
-                4280622573
-                4280556781
-                4278190080
-                4280556781
-                4280622573
-                4280556781
-                4280556782
-                4280556781
-                4280558807
-            */
-            //Min blue 4292433000
-            //Max blue 4292578930
-            //Difference 145930
-
-
+            
         }
         public override void Draw(GameTime gameTime)
         {
-            graphicsDevice.Clear(UIntToColor(4294967040));
-            //Console.WriteLine("red uint is: " + ColorToUIntBlake(waterColor));
             spriteBatch.Begin();
-            //city.Draw(spriteBatch);
-            before.Draw(spriteBatch);
-            if (test)
-                after.Draw(spriteBatch);
-            
+            city.Draw(spriteBatch);
+            spriteBatch.DrawString(Game1.font, Game1.cities[currentLoc], new Vector2(100, 100), Color.Black);
             spriteBatch.End();
         }
+
+        public static void CurrentLocation(Vector2 loc)
+        {
+            currentLoc = loc;
+        }
+
+        //Some functions for calculating unassigned integers to and from XNA Color
         private Color UIntToColor(uint color)
         {
             byte a = (byte)(color >> 24);

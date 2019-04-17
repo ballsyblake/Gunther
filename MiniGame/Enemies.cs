@@ -16,7 +16,8 @@ namespace MiniGame
         public Texture2D texture;
         public Vector2 position;
         public Vector2 velocity;
-
+        //Sprite3 enemy = null;
+        Sprite3[] enemies = new Sprite3[3];
         public bool isVisible = true;
 
         Random random = new Random();
@@ -24,7 +25,8 @@ namespace MiniGame
 
         public Enemies(Texture2D newTexture, Vector2 newPosition, bool randSpeed)
         {
-            texture = newTexture;
+            
+            /*texture = newTexture;
             position = newPosition;
 
             randX = random.Next(-4,4);
@@ -34,10 +36,13 @@ namespace MiniGame
                 velocity = new Vector2(randX, randY);
             else
                 velocity = new Vector2(1, 1);
+            */
         }
 
         public void Update(GraphicsDevice graphics)
         {
+            //if (Vector2.Distance())
+
             position += velocity;
 
             if (position.X < 0 - texture.Width)

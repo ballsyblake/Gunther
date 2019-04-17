@@ -19,8 +19,9 @@ namespace MiniGame
         Sprite3 land = null;
         Camera mainCamera;
         private Vector2 curPos;
-        Sprite3 horse = null;
-        int movementSpeed = 10;
+        public static Sprite3 horse = null;
+        SpriteList horseRun = null;
+        int movementSpeed = 3;
         int top = 360;
         int bot = 2600;
         int left = 450;
@@ -28,6 +29,9 @@ namespace MiniGame
         float timer = 0f;
         int count = 0;
         bool touchingWater = false;
+
+        Vector2[] anim = new Vector2[8];
+        Vector2[] animEnemy = new Vector2[50];
 
         uint[] pixelData;
         uint temp;
@@ -46,21 +50,43 @@ namespace MiniGame
             
             land = new Sprite3(true, Game1.texMapLand, 0, 0);
             //worldMap.setWidthHeight(6400, 4800);
+            horseRun = new SpriteList();
             horse = new Sprite3(true, Game1.texHorseRun, 500, 400);
             horse.setXframes(8);
-            horse.setWidthHeight(1568 / 8, Game1.texHorseRun.Height);
-            horse.setBB(30, 10, horse.getWidth(), horse.getHeight());
+            horse.setWidthHeight((1568 / 8) * 0.2f, Game1.texHorseRun.Height * 0.2f);
+            //horse.setBB(30, 10, horse.getWidth(), horse.getHeight());
+            for (int h = 0; h < anim.Length; h++)
+            {
+                anim[h].X = h;
+            }
+            horseRun.addSpriteReuse(horse);
+
 
             pixelData = new uint[Game1.texMapLand.Width * Game1.texMapLand.Height];
             Game1.texMapLand.GetData(pixelData, 0, Game1.texMapLand.Width * Game1.texMapLand.Height);
+
         }
 
         public override void Update(GameTime gameTime)
         {
-            
+           
+            if (gameStateManager.getCurrentLevelNum() == 3)
+            {
+                for (int totalPoints = 0; totalPoints < Game1.pointsPos.Count(); totalPoints++)
+                {
+                    float nearestPoint = Vector2.Distance(horse.getPos(), Game1.pointsPos[totalPoints]);
+                    if (nearestPoint < 30)
+                    {
+                        City.CurrentLocation(Game1.pointsPos[totalPoints]);
+                        gameStateManager.setLevel(5);
+                        return;
+                    }
+                        
+                }
+            }
             curPos = horse.getPos();
             bool keyDown = false;
-            horse.setWidthHeight(1568 / 8 * 0.3f, Game1.texHorseRun.Height * 0.3f);
+            //horse.setWidthHeight(1568 / 8 * 0.3f, Game1.texHorseRun.Height * 0.3f);
 
             
             
@@ -89,38 +115,29 @@ namespace MiniGame
                 horse.setFlip(SpriteEffects.None);
                 horse.setPosX(horse.getPosX() + movementSpeed);
             }
-            
-            
-            /*if (!keyDown)
+
+            mainCamera.Follow(horse);
+
+            if (!keyDown)
             {
                 horse.setAnimationSequence(anim, 0, 7, 0);
             }
             else
             {
-                horse.setAnimationSequence(anim, 0, 7, 8);
-            }*/
-            //387 330
-            //Poisition of town, this loads battle scene atm
-            if (curPos.X >= -155 && curPos.X <= -75 && curPos.Y >= 330 && curPos.Y <= 387)
-            {
-                
-                horse.setFlip(SpriteEffects.None);
-                
+                horse.setAnimationSequence(anim, 0, 7, 4);
             }
 
-            //horseRun.animationTick(gameTime);
-            
-            mainCamera.Follow(horse);
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            horseRun.animationTick(gameTime);
+
+
+
+            /*timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (timer > 0.2f)
             {
                 timer = 0;
                 //CheckWaterCollision();
-            }
-            Console.WriteLine(leftCol);
-            
-
-            //Console.WriteLine((int)timer);
+            }*/
         }
 
         public override void Draw(GameTime gameTime)
@@ -151,37 +168,39 @@ namespace MiniGame
                 for (int yy = (int)curPos.Y; yy < (int)curPos.Y + horse.getHeight(); yy++)
                 {
                     temp = pixelData[xx + yy * Game1.texMapLand.Width];
-                    
                     if (temp == 0)
                     {
-                        
-                        if (xx - curPos.X < horse.getWidth() / 2)
+                        if (!leftCol && !rightCol)
                         {
-                            leftCol = true;
+                            if (xx - curPos.X < horse.getWidth() / 2)
+                            {
+                                Console.WriteLine("stuck left");
+                                leftCol = true;
+                            }
+
+                            else if (xx - curPos.X > horse.getWidth() / 2)
+                            {
+                                Console.WriteLine("stuck right");
+                                rightCol = true;
+                            }
                         }
-                           
-                        else if (xx - curPos.X > horse.getWidth() / 2)
+                        if (!topCol && !botCol)
                         {
-                            rightCol = true;
+                            if (yy - curPos.Y < horse.getHeight() / 2)
+                            {
+                                Console.WriteLine("stuck top");
+                                topCol = true;
+                            }
+
+                            else if (yy - curPos.Y > horse.getHeight() / 2)
+                            {
+                                Console.WriteLine("stuck bot");
+                                botCol = true;
+                            }
                         }
-                            
-                        if (yy - curPos.Y < horse.getHeight() / 2)
-                        {
-                            topCol = true;
-                        }
-                            
-                        else if (yy - curPos.Y > horse.getHeight() / 2)
-                        {
-                            botCol = true;
-                        }
-                            
-                        
                     }
                 }
             }
-            //tex.SetData(pixelData);
-            //Console.WriteLine(count);
-            
         }
     }
 }
