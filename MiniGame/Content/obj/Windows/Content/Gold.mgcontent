@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/GPT/MiniGame/MiniGame/Content/Gold.spritefont</SourceFile>
-  <SourceTime>2019-03-29T18:41:30.7113402+11:00</SourceTime>
-  <DestFile>C:/GPT/MiniGame/MiniGame/Content/bin/Windows/Content/Gold.xnb</DestFile>
-  <DestTime>2019-03-29T18:48:58.6085027+11:00</DestTime>
+  <SourceFile>C:/Repo/MiniGame/MiniGame/Content/Gold.spritefont</SourceFile>
+  <SourceTime>2019-04-18T16:11:07.0516871+10:00</SourceTime>
+  <DestFile>C:/Repo/MiniGame/MiniGame/Content/bin/Windows/Content/Gold.xnb</DestFile>
+  <DestTime>2019-04-18T16:19:47.6528422+10:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2018-09-24T07:55:52+10:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

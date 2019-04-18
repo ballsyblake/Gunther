@@ -15,7 +15,7 @@ namespace MiniGame
     public class Game1 : Game                                                                                                                                                                                                 
     {
         //Direction for art, please change according to where you have put the project files
-        string dir = @"C:\GPT\MiniGame\MiniGame\Content\Sprites\";
+        string dir = @"C:\Repo\MiniGame\MiniGame\Content\Sprites\";
 
         //Graphics stuff
         GraphicsDeviceManager graphics;
