@@ -16,7 +16,7 @@ namespace MiniGame
     public class Game1 : Game                                                                                                                                                                                                 
     {
         //Direction for art, please change according to where you have put the project files
-        static public string dir = @"D:\GitHubRepos\MiniGame\MiniGame\MiniGame\Content\Sprites\";
+        static public string dir = @"C:\Repos\MiniGame\MiniGame\Content\Sprites\";
 
         //Graphics stuff
         GraphicsDeviceManager graphics;
@@ -162,7 +162,7 @@ namespace MiniGame
             pointsPos[20] = new Vector2(3620, 2050);
             pointsPos[21] = new Vector2(1870, 1450);
 
-            cities.Add(pointsPos[0], "Kale");
+            cities.Add(pointsPos[0], "Pandia");
             cities.Add(pointsPos[1], "Uyarmore");
             cities.Add(pointsPos[2], "Chuby");
             cities.Add(pointsPos[3], "Truulnard");
@@ -217,7 +217,7 @@ namespace MiniGame
             levelManager.AddLevel(5, new City()); // note main menu is level 5
             levelManager.getLevel(5).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
             levelManager.getLevel(5).LoadContent();
-            levelManager.setLevel(3);
+            levelManager.setLevel(4);
         }
 
         /// <summary>

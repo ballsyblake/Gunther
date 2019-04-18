@@ -120,3 +120,9 @@ D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\ho
 D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\shoot.xnb
 D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\arrowHit01.xnb
 D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\deathSound01.xnb
+C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\arrowHit01.xnb
+C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\cave theme.xnb
+C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\deathSound01.xnb
+C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\deathSounds.xnb
+C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\horseRun.xnb
+C:\Repos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\shoot.xnb
