@@ -60,8 +60,8 @@ namespace MiniGame
 
         //Sound
         SoundEffectInstance instanceHorse = Game1.soundEffects[1].CreateInstance();
-        
-        
+
+        public static int enemyCounter;
 
         //Arrays for animations
         Vector2[] anim = new Vector2[8];
@@ -72,7 +72,7 @@ namespace MiniGame
         Scrolling scrolling2;
 
         private int score = 0;
-        int enemiesLeft = 0;
+        
         float textFadeTimer = 0f;
         float arrowTimer = 0f;
 
@@ -110,7 +110,6 @@ namespace MiniGame
 
             //Used to change size of sprites
             float scale = 0.5f;
-
 
             //Player animation setup
             horse.setXframes(8);
@@ -171,7 +170,6 @@ namespace MiniGame
 
             if (playing)
             {
-
                 scrolling1.speed = scrollingSpeed;
                 scrolling2.speed = scrollingSpeed;
             }
@@ -193,12 +191,13 @@ namespace MiniGame
 
             horse.setWidthHeight(1568 / 8 * 0.5f, Game1.texHorseRun.Height * 0.5f);
             //This timer makes basic instructions disappear after 3 seconds
-            if (textFadeTimer < 3)
+            if (textFadeTimer < 3) { }
                 textFadeTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             enemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (enemySpawnTimer > difficultyOffset)
+            if (enemySpawnTimer > difficultyOffset && enemyCounter > 0)
             {
+                enemyCounter--;
                 enemySpawnTimer = 0;
                 LoadEnemies();
             }
@@ -263,7 +262,7 @@ namespace MiniGame
                 horse.setAnimationSequence(anim, 0, 7, normalPlayer);
             }
             
-            //Console.WriteLine(enemyMovementSpeed);
+            
             //Scrolling background functionality
             if (scrolling1.rectangle.X + scrolling1.texture.Width <= 0)
                 scrolling1.rectangle.X = scrolling2.rectangle.X + scrolling2.texture.Width;
@@ -440,7 +439,7 @@ namespace MiniGame
             quiver.Draw(spriteBatch);
             goldBanner.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "Gold: " + score, new Vector2(30, 20), Color.Black);
-            spriteBatch.DrawString(Game1.font, "Enemies: " + enemiesLeft, new Vector2(750, 20), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Enemies: " + enemyCounter, new Vector2(600, 20), Color.Black);
             //This is the start screen that goes away once player presses the enter key
 
             //This displays some basic instructions for the player

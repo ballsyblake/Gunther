@@ -14,6 +14,7 @@ namespace MiniGame
 {
     class WorldMap : RC_GameStateParent
     {
+        public static float worldTime;
         Sprite3 worldMap = null;
         Sprite3 points = null;
         Sprite3 land = null;
@@ -41,6 +42,7 @@ namespace MiniGame
         bool topCol = false;
         bool botCol = false;
 
+        Enemies[] enemies = new Enemies[3];
 
         public override void LoadContent()
         {
@@ -65,11 +67,15 @@ namespace MiniGame
             pixelData = new uint[Game1.texMapLand.Width * Game1.texMapLand.Height];
             Game1.texMapLand.GetData(pixelData, 0, Game1.texMapLand.Width * Game1.texMapLand.Height);
 
+            enemies[0] = new Enemies(Game1.texEnemy, new Vector2(400, 400));
+            enemies[1] = new Enemies(Game1.texEnemy, new Vector2(600, 600));
+            enemies[2] = new Enemies(Game1.texEnemy, new Vector2(500, 600));
         }
 
         public override void Update(GameTime gameTime)
         {
-           
+            worldTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //Console.WriteLine(worldTime);
             if (gameStateManager.getCurrentLevelNum() == 3)
             {
                 for (int totalPoints = 0; totalPoints < Game1.pointsPos.Count(); totalPoints++)
@@ -131,7 +137,10 @@ namespace MiniGame
             horseRun.animationTick(gameTime);
 
 
-
+            for (int i = 0; i < enemies.Count(); i++)
+            {
+                enemies[i].Update();
+            }
             /*timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (timer > 0.2f)
             {
@@ -147,6 +156,10 @@ namespace MiniGame
             worldMap.Draw(spriteBatch);
             points.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
+            for (int i = 0; i < enemies.Count(); i++)
+            {
+                enemies[i].Draw(spriteBatch);
+            }
             horse.Draw(spriteBatch);
             CheckWaterCollision();
             //horseRun.Draw(spriteBatch);

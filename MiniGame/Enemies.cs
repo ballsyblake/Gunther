@@ -13,44 +13,79 @@ namespace MiniGame
 {
     class Enemies
     {
-        public Texture2D texture;
-        public Vector2 position;
-        public Vector2 velocity;
-        //Sprite3 enemy = null;
-        Sprite3[] enemies = new Sprite3[3];
+        int movementSpeed = 1;
+        public Sprite3 enemy = null;
         public bool isVisible = true;
-
+        Vector2[] waypoints = new Vector2[5];
+        bool moving = false;
+        float stopTimer;
+        float plus =0.01f ;
         Random random = new Random();
-        int randX, randY;
-
-        public Enemies(Texture2D newTexture, Vector2 newPosition, bool randSpeed)
+        int randomValue;
+        
+        public Enemies(Texture2D newTexture, Vector2 newPosition)
         {
-            
-            /*texture = newTexture;
-            position = newPosition;
+            Console.WriteLine("spawned enemy");
+            enemy = new Sprite3(true, newTexture, newPosition.X, newPosition.Y);
+            enemy.setXframes(10);
+            enemy.setYframes(5);
+            enemy.setWidthHeight(320 / 10, 160 / 5);
+            waypoints[0] = new Vector2(enemy.getPosX(), enemy.getPosY());
+            waypoints[1] = new Vector2(enemy.getPosX() + 50, enemy.getPosY());
+            waypoints[2] = new Vector2(enemy.getPosX() - 50, enemy.getPosY());
+            waypoints[3] = new Vector2(enemy.getPosX(), enemy.getPosY() + 50);
+            waypoints[4] = new Vector2(enemy.getPosX(), enemy.getPosY() - 50);
 
-            randX = random.Next(-4,4);
-            randY = random.Next(-4,-1);
-
-            if (randSpeed)
-                velocity = new Vector2(randX, randY);
-            else
-                velocity = new Vector2(1, 1);
-            */
         }
 
-        public void Update(GraphicsDevice graphics)
+        public void Update()
         {
-            //if (Vector2.Distance())
+            if (WorldMap.gameStateManager.getCurrentLevelNum() == 3)
+            {
+                
+                if (Vector2.Distance(enemy.getPos(), WorldMap.horse.getPos()) < 100 && Vector2.Distance(enemy.getPos(), WorldMap.horse.getPos()) > 9)
+                    Attack();
+                else if (Vector2.Distance(enemy.getPos(), WorldMap.horse.getPos()) < 10)
+                {
+                    WorldMap.gameStateManager.setLevel(0);
+                }
+                else if(!moving && stopTimer % 5 == 0 && stopTimer > 0)
+                {
+                    
+                    moving = true;
+                    randomValue = random.Next(0,4);
+                }
+                if (!moving)
+                {
+                    stopTimer += plus;
+                    
+                }
+                Console.WriteLine(stopTimer);
+                if (moving)
+                    Move();
+                
+            }
+        }
 
-            position += velocity;
+        void Move()
+        {
+            
+            Vector2 dir = waypoints[randomValue] - enemy.getPos();
+            dir.Normalize();
+            enemy.setPos(enemy.getPos() + dir * movementSpeed);
+            if (Vector2.Distance(enemy.getPos(), waypoints[randomValue]) < 10)
+                moving = false;
+        }
 
-            if (position.X < 0 - texture.Width)
-                isVisible = false;
+        void Attack()
+        {
+            Vector2 dir = WorldMap.horse.getPos() - enemy.getPos();
+            dir.Normalize();
+            enemy.setPos(enemy.getPos() + dir * movementSpeed);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            enemy.Draw(spriteBatch);
         }
     }
 }
