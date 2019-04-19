@@ -22,7 +22,7 @@ namespace MiniGame
         private Vector2 curPos;
         public static Sprite3 horse = null;
         SpriteList horseRun = null;
-        int movementSpeed = 3;
+        int movementSpeed = 2;
         int top = 360;
         int bot = 2600;
         int left = 450;
@@ -30,19 +30,21 @@ namespace MiniGame
         float timer = 0f;
         int count = 0;
         bool touchingWater = false;
+        int maxEnemies = 5;
 
         Vector2[] anim = new Vector2[8];
         Vector2[] animEnemy = new Vector2[50];
 
-        uint[] pixelData;
+        public static uint[] pixelData;
         uint temp;
 
         bool leftCol = false;
         bool rightCol = false;
         bool topCol = false;
         bool botCol = false;
-
-        Enemies[] enemies = new Enemies[3];
+        public static List<Enemies> enemiesList = new List<Enemies>();
+        
+        Random rand = new Random();
 
         public override void LoadContent()
         {
@@ -66,16 +68,20 @@ namespace MiniGame
 
             pixelData = new uint[Game1.texMapLand.Width * Game1.texMapLand.Height];
             Game1.texMapLand.GetData(pixelData, 0, Game1.texMapLand.Width * Game1.texMapLand.Height);
+            
+            enemiesList.Add(new Enemies(Game1.texEnemy, new Vector2(rand.Next(400, 600), rand.Next(400, 600))));
+            
 
-            enemies[0] = new Enemies(Game1.texEnemy, new Vector2(400, 400));
-            enemies[1] = new Enemies(Game1.texEnemy, new Vector2(600, 600));
-            enemies[2] = new Enemies(Game1.texEnemy, new Vector2(500, 600));
         }
 
         public override void Update(GameTime gameTime)
         {
+            
             worldTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //Console.WriteLine(worldTime);
+            
+            if(worldTime % 10 >= 0 && worldTime % 10 <= 0.02 && enemiesList.Count() < maxEnemies && (int)worldTime > 0)
+                enemiesList.Add(new Enemies(Game1.texEnemy, new Vector2(rand.Next(400, 600), rand.Next(400, 600))));
+            
             if (gameStateManager.getCurrentLevelNum() == 3)
             {
                 for (int totalPoints = 0; totalPoints < Game1.pointsPos.Count(); totalPoints++)
@@ -84,17 +90,15 @@ namespace MiniGame
                     if (nearestPoint < 30)
                     {
                         City.CurrentLocation(Game1.pointsPos[totalPoints]);
-                        gameStateManager.setLevel(0);
+                        gameStateManager.setLevel(5);
                         return;
                     }
                         
                 }
             }
+
             curPos = horse.getPos();
             bool keyDown = false;
-            //horse.setWidthHeight(1568 / 8 * 0.3f, Game1.texHorseRun.Height * 0.3f);
-
-            
             
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !botCol)
             {
@@ -133,20 +137,17 @@ namespace MiniGame
                 horse.setAnimationSequence(anim, 0, 7, 4);
             }
 
-
             horseRun.animationTick(gameTime);
 
-
-            for (int i = 0; i < enemies.Count(); i++)
+            for (int i = 0; i < enemiesList.Count(); i++)
             {
-                enemies[i].Update();
+                
+                if (enemiesList[i].enemyScript == null)
+                    enemiesList.RemoveAt(i);
+                else
+                    enemiesList[i].Update();
             }
-            /*timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (timer > 0.2f)
-            {
-                timer = 0;
-                //CheckWaterCollision();
-            }*/
+            
         }
 
         public override void Draw(GameTime gameTime)
@@ -155,23 +156,20 @@ namespace MiniGame
             land.Draw(spriteBatch);
             worldMap.Draw(spriteBatch);
             points.Draw(spriteBatch);
-            spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
-            for (int i = 0; i < enemies.Count(); i++)
+            //spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
+            
+            for (int i = 0; i < enemiesList.Count(); i++)
             {
-                enemies[i].Draw(spriteBatch);
+                enemiesList[i].Draw(spriteBatch);
             }
+            
             horse.Draw(spriteBatch);
             CheckWaterCollision();
-            //horseRun.Draw(spriteBatch);
             spriteBatch.End();
         }
 
         public void CheckWaterCollision()
         {
-            /*temp = pixelData[(int)curPos.X + ((int)horse.getWidth()/2) + (int)curPos.Y + ((int)horse.getHeight()/2) * tex.Width];
-            if (temp == 0)
-                return true;
-            */
             botCol = false;
             topCol = false;
             leftCol = false;
@@ -187,13 +185,13 @@ namespace MiniGame
                         {
                             if (xx - curPos.X < horse.getWidth() / 2)
                             {
-                                Console.WriteLine("stuck left");
+                                
                                 leftCol = true;
                             }
 
                             else if (xx - curPos.X > horse.getWidth() / 2)
                             {
-                                Console.WriteLine("stuck right");
+                                
                                 rightCol = true;
                             }
                         }
@@ -201,13 +199,13 @@ namespace MiniGame
                         {
                             if (yy - curPos.Y < horse.getHeight() / 2)
                             {
-                                Console.WriteLine("stuck top");
+                                
                                 topCol = true;
                             }
 
                             else if (yy - curPos.Y > horse.getHeight() / 2)
                             {
-                                Console.WriteLine("stuck bot");
+                                
                                 botCol = true;
                             }
                         }

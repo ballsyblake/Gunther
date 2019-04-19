@@ -50,11 +50,9 @@ namespace MiniGame
             controls = new Sprite3(true, Game1.texControls, 500, 200);
             controls.setWidthHeight(150,200);
             arrowHead.setWidthHeight(40, 40);
+            instanceMusic.IsLooped = false;
 
             
-            instanceMusic.IsLooped = true;
-            if(gameStateManager.getCurrentLevelNum() == 4)
-                instanceMusic.Play();
 
             startGame = Content.Load<SpriteFont>("MedievalFont");
             difficulty = Content.Load<SpriteFont>("MedievalFont");
@@ -66,15 +64,17 @@ namespace MiniGame
         public override void Update(GameTime gameTime)
         {
             
+            if (gameStateManager.getCurrentLevelNum() == 4)
+                instanceMusic.Play();
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Down) && arrowCount < 3)
             {
-                Game1.soundEffects[3].Play();
+                Game1.soundEffects[3].Play(0.5f, 0, 0);
                 arrowHead.setPosY(arrowHead.getPosY() + arrowJump);
                 arrowCount++;
             }
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Up) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Up) && arrowCount > 0)
             {
-                Game1.soundEffects[3].Play();
+                Game1.soundEffects[3].Play(0.5f,0,0);
                 arrowHead.setPosY(arrowHead.getPosY() - arrowJump);
                 arrowCount--;
             }

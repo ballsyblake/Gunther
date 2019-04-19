@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Repo/MiniGame/MiniGame/Content/Audio/deathSounds.wav</SourceFile>
-  <SourceTime>2019-04-18T16:20:35.2809395+10:00</SourceTime>
-  <DestFile>C:/Repo/MiniGame/MiniGame/Content/bin/Windows/Content/Audio/deathSounds.xnb</DestFile>
-  <DestTime>2019-04-18T16:21:16.6852402+10:00</DestTime>
+  <SourceFile>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/deathSounds.wav</SourceFile>
+  <SourceTime>2019-04-16T10:35:54.4883561+10:00</SourceTime>
+  <DestFile>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/bin/Windows/Content/Audio/deathSounds.xnb</DestFile>
+  <DestTime>2019-04-19T20:06:09.0514055+10:00</DestTime>
   <Importer>WavImporter</Importer>
-  <ImporterTime>2018-09-24T07:55:52+10:00</ImporterTime>
+  <ImporterTime>2018-12-09T03:35:54+11:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>
-  <ProcessorTime>2018-09-24T07:55:52+10:00</ProcessorTime>
+  <ProcessorTime>2018-12-09T03:35:54+11:00</ProcessorTime>
   <Parameters>
     <Key>Quality</Key>
     <Value>Best</Value>

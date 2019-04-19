@@ -4,14 +4,14 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Repo/MiniGame/MiniGame/Content/Audio/arrowHit01.wav</File>
-    <File>C:/Repo/MiniGame/MiniGame/Content/Audio/cave theme.wav</File>
-    <File>C:/Repo/MiniGame/MiniGame/Content/Audio/deathSound01.wav</File>
-    <File>C:/Repo/MiniGame/MiniGame/Content/Audio/deathSounds.wav</File>
-    <File>C:/Repo/MiniGame/MiniGame/Content/Audio/horseRun.wav</File>
-    <File>C:/Repo/MiniGame/MiniGame/Content/Audio/shoot.wav</File>
-    <File>C:/Repo/MiniGame/MiniGame/Content/Gold.spritefont</File>
-    <File>C:/Repo/MiniGame/MiniGame/Content/MedievalFont.spritefont</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/arrowHit01.wav</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/cave theme.wav</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/deathSound01.wav</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/deathSounds.wav</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/horseRun.wav</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/shoot.wav</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Gold.spritefont</File>
+    <File>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/MedievalFont.spritefont</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
