@@ -53,6 +53,10 @@ namespace MiniGame
         static public Texture2D texPaper = null;
         static public Texture2D texCityScreen = null;
         static public Texture2D texMapLand = null;
+        static public Texture2D texKing = null;
+        static public Texture2D texArmorer = null;
+        static public Texture2D texBarMaid = null;
+        static public Texture2D texTavern = null;
 
         //Sound
         static public List<SoundEffect> soundEffects;
@@ -137,6 +141,11 @@ namespace MiniGame
             texPaper = Util.texFromFile(GraphicsDevice, dir + "oldpaper.png");
             texCityScreen = Util.texFromFile(GraphicsDevice, dir + "cityScreen.png");
             texMapLand = Util.texFromFile(GraphicsDevice, dir + "GPTMapLand.png");
+            texKing = Util.texFromFile(GraphicsDevice, dir + "King.png");
+            texArmorer = Util.texFromFile(GraphicsDevice, dir + "Armorer.png");
+            texBarMaid = Util.texFromFile(GraphicsDevice, dir + "BarMaid.png");
+            texTavern = Util.texFromFile(GraphicsDevice, dir + "Tavern.jpg");
+            texWeaponsShop = Util.texFromFile(GraphicsDevice, dir + "WeaponsShop.jpg");
 
             //Points positions
             pointsPos[0] = new Vector2(277, 260);
