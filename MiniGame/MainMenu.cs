@@ -18,6 +18,7 @@ namespace MiniGame
         Sprite3 startBanner = null;
         Sprite3 arrowHead = null;
         Sprite3 controls = null;
+        Sprite3 fadeBlack = null;
         SpriteFont startGame = null;
         SpriteFont difficulty = null;
         SpriteFont controlsText = null;
@@ -33,10 +34,12 @@ namespace MiniGame
         bool showStory = true;
         bool showDifficulty = false;
         bool showControls = false;
+        bool changeScene = false;
+        float sceneTicks = 0;
 
         SoundEffectInstance instanceMusic = Game1.music.CreateInstance();
 
-        string story = "This is the story of Gunther. Born into poverty, Gunther has experienced all the hardships this forsaken world has to offer. His father, Funther, was brutally murder by a group of bandits when he was only a young boy. His mother, Munther, on her own with young Gunther had no choice but to sell her body to make ends meet. Eventually they find a brothel in the city of Yict that takes the both of them in and cares for them. Years pass and Gunther reaches the age of 16. He has decided to set out into the chaotic world to find riches and glory with the hopes of one day buying a house for him and his mother to move into and live happily ever after. But first he must test himself...";
+        string story = "Welcome to a video game created by Blake Baldwin. This game is inspired from another game called Mount and Blade. This game is brutal. Losing a battle results in severe punishments so be careful. But please do enjoy playing.";
 
         public override void LoadContent()
         {
@@ -52,7 +55,10 @@ namespace MiniGame
             arrowHead.setWidthHeight(40, 40);
             instanceMusic.IsLooped = false;
 
-            
+            fadeBlack = new Sprite3(false, Game1.texBlackSquare, 0, 0);
+            fadeBlack.setColor(Color.Transparent);
+            fadeBlack.setWidthHeight(800, 600);
+            fadeBlack.setFadeDetails(true, Color.Transparent, Color.Black, 100, false);
 
             startGame = Content.Load<SpriteFont>("MedievalFont");
             difficulty = Content.Load<SpriteFont>("MedievalFont");
@@ -63,7 +69,16 @@ namespace MiniGame
         }
         public override void Update(GameTime gameTime)
         {
-            
+            if (changeScene)
+            {
+                sceneTicks += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                fadeBlack.doTheFade();
+            }
+            if(sceneTicks > 2000)
+            {
+                instanceMusic.Stop();
+                gameStateManager.setLevel(6);
+            }
             if (gameStateManager.getCurrentLevelNum() == 4)
                 instanceMusic.Play();
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Down) && arrowCount < 3)
@@ -87,11 +102,14 @@ namespace MiniGame
 
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Enter) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Enter) && !showDifficulty)
             {
-                instanceMusic.Stop();
+                
                 switch (arrowCount)
                 {
                     case 0:
-                        Game1.levelManager.setLevel(3);
+                        //Game1.levelManager.setLevel(3);
+                        
+                        changeScene = true;
+                        fadeBlack.setVisible(true);
                         break;
                     case 1:
                         arrowHead.setPosX(410);
@@ -168,6 +186,7 @@ namespace MiniGame
                 spriteBatch.DrawString(endGame, "Interact", new Vector2(420, 300), Color.Black);
                 spriteBatch.DrawString(endGame, "Attack", new Vector2(420, 360), Color.Black);
             }
+            fadeBlack.Draw(spriteBatch);
             spriteBatch.End();
         }
 

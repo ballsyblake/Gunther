@@ -1878,7 +1878,7 @@ namespace RC_Framework
                     active = false;
                     return;
                 }
-                visible = false;
+                //visible = false;
             }
             float lerp = (float)ticksFaded / (float)fadeTicks;
             colour = Color.Lerp(fadeColorStart, fadeColorEnd, lerp);

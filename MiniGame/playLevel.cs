@@ -62,6 +62,9 @@ namespace MiniGame
         SoundEffectInstance instanceHorse = Game1.soundEffects[1].CreateInstance();
 
         public static int enemyCounter;
+        public static int enemySpawnAmount;
+        int spawnCounter = 0;
+        
 
         //Arrays for animations
         Vector2[] anim = new Vector2[8];
@@ -80,6 +83,7 @@ namespace MiniGame
         bool playing = false;
         public static int enemyToKill;
         int activeEnemies;
+        
 
         public override void LoadContent()
         {
@@ -139,7 +143,7 @@ namespace MiniGame
         public override void Update(GameTime gameTime)
         {
             activeEnemies = enemies.count();
-            Console.WriteLine(enemies.count());
+            //Console.WriteLine(enemies.count());
             if (gameStateManager.getCurrentLevelNum() == 0 && !playing && !gameOver)
             {
                 instanceHorse.Play();
@@ -181,11 +185,12 @@ namespace MiniGame
 
             enemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (enemySpawnTimer > difficultyOffset && enemies.count() < enemyCounter)
+            if (enemySpawnTimer > difficultyOffset && spawnCounter < enemySpawnAmount)
             {
-                Console.WriteLine(enemies.count());
+                spawnCounter++;
                 enemySpawnTimer = 0;
                 LoadEnemies();
+                Console.WriteLine(spawnCounter);
             }
 
             //Game over is a bool that is used to ensure the player can't move horse after it is dead, causes errors otherwise
@@ -345,6 +350,7 @@ namespace MiniGame
             {
                 instanceHorse.Stop();
                 WorldMap.enemiesList.RemoveAt(enemyToKill);
+                spawnCounter = 0;
                 gameStateManager.setLevel(3);
             }
 
@@ -429,7 +435,9 @@ namespace MiniGame
         public static void LoadLevelDetails(int totalEnemies, int enemyNum)
         {
             enemyCounter = totalEnemies;
-            enemyToKill = enemyNum;
+            enemySpawnAmount = totalEnemies;
+            if(enemyNum >= 0)
+                enemyToKill = enemyNum;
         }
 
         public override void Draw(GameTime gameTime)

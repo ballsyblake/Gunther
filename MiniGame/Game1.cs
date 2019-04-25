@@ -57,6 +57,8 @@ namespace MiniGame
         static public Texture2D texArmorer = null;
         static public Texture2D texBarMaid = null;
         static public Texture2D texTavern = null;
+        static public Texture2D texGunther = null;
+        static public Texture2D texBlackSquare = null;
 
         //Sound
         static public List<SoundEffect> soundEffects;
@@ -65,6 +67,7 @@ namespace MiniGame
         //Cities, towns and villages
         public static Vector2[] pointsPos = new Vector2[22];
         public static Dictionary<Vector2, string> cities = new Dictionary<Vector2, string>();
+        public static Dictionary<string, string> dialogueList = new Dictionary<string, string>();
 
         //Random variable for, well, you know.. random things
         static public Random random = new Random();
@@ -78,6 +81,10 @@ namespace MiniGame
 
         static public bool showbb = false;
         static public bool endGame = false;
+
+        //Values that effect players experience with people
+        public static int renown = 0;
+        public static bool onQuest = false;
 
 
         //Set screen size here, declare the content directory and graphics
@@ -139,13 +146,15 @@ namespace MiniGame
             texCity = Util.texFromFile(GraphicsDevice, dir + "Concept_City1.jpg");
             texScroll = Util.texFromFile(GraphicsDevice, dir + "scroll.png");
             texPaper = Util.texFromFile(GraphicsDevice, dir + "oldpaper.png");
-            texCityScreen = Util.texFromFile(GraphicsDevice, dir + "cityScreen.png");
+            texCityScreen = Util.texFromFile(GraphicsDevice, dir + "cityScreen800x600.png");
             texMapLand = Util.texFromFile(GraphicsDevice, dir + "GPTMapLand.png");
             texKing = Util.texFromFile(GraphicsDevice, dir + "King.png");
             texArmorer = Util.texFromFile(GraphicsDevice, dir + "Armorer.png");
             texBarMaid = Util.texFromFile(GraphicsDevice, dir + "BarMaid.png");
-            texTavern = Util.texFromFile(GraphicsDevice, dir + "Tavern.jpg");
-            texWeaponsShop = Util.texFromFile(GraphicsDevice, dir + "WeaponsShop.jpg");
+            texTavern = Util.texFromFile(GraphicsDevice, dir + "Tavern.png");
+            texWeaponsShop = Util.texFromFile(GraphicsDevice, dir + "WeaponsShop.png");
+            texGunther = Util.texFromFile(GraphicsDevice, dir + "Gunther.png");
+            texBlackSquare = Util.texFromFile(GraphicsDevice, dir + "blackSquare.png");
 
             //Points positions
             pointsPos[0] = new Vector2(277, 260);
@@ -194,6 +203,27 @@ namespace MiniGame
             cities.Add(pointsPos[20], "Arioledo");
             cities.Add(pointsPos[21], "Qisa");
 
+            dialogueList.Add("opening1", "This is the story of Gunther. Born into poverty, Gunther has experienced all the hardships this forsaken world has to offer. His father, Bunther, left the family without a word when he was only a young boy. His mother, Sunther, on her own with young Gunther had no choice but to sell her body to make ends meet. Eventually they find a brothel in the city of Yict that takes the both of them in and cares for them. Years pass and Gunther reaches the age of 16. He has decided to set out into the chaos of world to find his father and figure out why his father left him and his mother all alone. But first he must test himself...");
+            dialogueList.Add("opening2", "You are about to be put into a battle scene, the combat in this scene is how the combat will play out throughout your playing experience. There will be options for upgrades to both your weapons and horse but that will cost gold");
+            dialogueList.Add("opening3", "Learn fast as this will be your only chance to practice");
+            dialogueList.Add("king", "Welcome to my castle. What brings you here?");
+            dialogueList.Add("kingallegianceno", "Sorry, I don't trust you enough.");
+            dialogueList.Add("kingallegianceyes", "I gladly accept your offer. Welcome to my kingdom.");
+            dialogueList.Add("kingfatherno", "Looking for a lost soul I see. Unfortunately I have not heard about or seen this man you speak of. Sorry");
+            dialogueList.Add("kingfatheryes", "I believe I have seen this man you speak of. He came for a visit not too long ago. He mentioned he was heading west somewhere. That's all I know.");
+            dialogueList.Add("kingquest", "Ahh, you are looking for fame and glory. I do have something in mind for you.");
+            dialogueList.Add("kingquestno", "It appears you already have a quest. Finish that one first then come ask me.");
+
+            dialogueList.Add("kingquest1", "If you are interested, I need someone to go to the town of ");
+            dialogueList.Add("kingquest1.1", " and ask for the tax money they owe me. Can you do this for me?");
+            dialogueList.Add("kingquest2", "There is a man by the name of ");
+            dialogueList.Add("kingquest2.1", ". He was found stealing precious items from my castle but esacped before my guards could apprend him. My scouts tell me he can be found somewhere in the town of ");
+            dialogueList.Add("kingquest2.2", ". Could you him back to me? Or if that's not possible, his head will suffice.");
+            dialogueList.Add("kingquest3", "We are currently at war with the ");
+            dialogueList.Add("kingquest3.1", " and I'm building an army to siege the city of ");
+            dialogueList.Add("kingquest3.2", ". Would you be interested in joining this army?");
+            dialogueList.Add("test", "test");
+
             //Sound
             soundEffects.Add(Content.Load<SoundEffect>("Audio/deathSound01"));//Death sounds in position 0
             soundEffects.Add(Content.Load<SoundEffect>("Audio/horseRun"));//horse run sounds in position 1
@@ -226,7 +256,11 @@ namespace MiniGame
             levelManager.AddLevel(5, new City()); // note city is level 5
             levelManager.getLevel(5).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
             levelManager.getLevel(5).LoadContent();
-            levelManager.setLevel(3);
+
+            levelManager.AddLevel(6, new OpeningDialogue()); // note opening dialogue is level 5
+            levelManager.getLevel(6).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
+            levelManager.getLevel(6).LoadContent();
+            levelManager.setLevel(4);
         }
 
         /// <summary>

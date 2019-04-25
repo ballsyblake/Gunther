@@ -45,6 +45,7 @@ namespace MiniGame
 
         public void Update()
         {
+            
             if (WorldMap.gameStateManager.getCurrentLevelNum() == 3)
             {
                 
@@ -80,6 +81,7 @@ namespace MiniGame
                 if (moving)
                 {
                     movingTimer += plus;
+                    CheckWater();
                     Move();
                 }
                     
@@ -109,37 +111,37 @@ namespace MiniGame
 
         void CheckWater()
         {
+            
             uint temp;
-            for (int xx = (int)enemyScript.getPosX(); xx < (int)enemyScript.getPosX() + enemyScript.getWidth(); xx++)
+            for (uint xx = (uint)enemyScript.getPosX(); xx < (int)enemyScript.getPosX() + enemyScript.getWidth(); xx++)
             {
-                for (int yy = (int)enemyScript.getPosY(); yy < (int)enemyScript.getPosY() + enemyScript.getHeight(); yy++)
+                for (uint yy = (uint)enemyScript.getPosY(); yy < (int)enemyScript.getPosY() + enemyScript.getHeight(); yy++)
                 {
-                    if (xx + yy * Game1.texMapLand.Width < 12000000)
+                    
+                    //Console.WriteLine(xx + " " + yy);
+                    temp = WorldMap.pixelData[xx + yy * Game1.texMapLand.Width];
+                    if (temp == 0)
                     {
-                        temp = WorldMap.pixelData[xx + yy * Game1.texMapLand.Width];
-                        if (temp == 0)
-                        {
-                            moving = false;
-                            if (randomValue == 1)
-                                enemyScript.setPosX(enemyScript.getPosX() - enemyScript.getWidth());
-                            else if (randomValue == 2)
-                                enemyScript.setPosX(enemyScript.getPosX() + enemyScript.getWidth());
-                            else if (randomValue == 3)
-                                enemyScript.setPosY(enemyScript.getPosX() - enemyScript.getHeight());
-                            else if (randomValue == 4)
-                                enemyScript.setPosX(enemyScript.getPosX() + enemyScript.getHeight());
-                            else if (randomValue == 0)
-                                enemyScript = null;
-                        }
+                        moving = false;
+                        if (randomValue == 1)
+                            enemyScript.setPosX(enemyScript.getPosX() - enemyScript.getWidth());
+                        else if (randomValue == 2)
+                            enemyScript.setPosX(enemyScript.getPosX() + enemyScript.getWidth());
+                        else if (randomValue == 3)
+                            enemyScript.setPosY(enemyScript.getPosX() - enemyScript.getHeight());
+                        else if (randomValue == 4)
+                            enemyScript.setPosX(enemyScript.getPosX() + enemyScript.getHeight());
+                        else if (randomValue == 0)
+                            enemyScript = null;
                     }
+                    
                 }
             }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             enemyScript.Draw(spriteBatch);
-            if(moving && movingTimer > 0.5f)
-                CheckWater();
+            
         }
     }
 }

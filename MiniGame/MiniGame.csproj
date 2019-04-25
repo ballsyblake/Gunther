@@ -72,6 +72,8 @@
     <Compile Include="Backgrounds.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="City.cs" />
+    <Compile Include="Dialogue.cs" />
+    <Compile Include="OpeningDialogue.cs" />
     <Compile Include="Enemies.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="MainMenu.cs" />

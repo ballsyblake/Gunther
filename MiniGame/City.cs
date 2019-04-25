@@ -18,7 +18,7 @@ namespace MiniGame
         Sprite3 arrowHead = null;
 
         bool doneCheck = false;
-        private static Vector2 currentLoc;
+        public static Vector2 currentLoc;
         int arrowHeadOffsetY = 5;
         int arrowJump = 100;
         int arrowCount = 0;
@@ -67,20 +67,22 @@ namespace MiniGame
                             mainScreen = false;
                             break;
                         case 1:
-                            city.setTexture(Game1.texTavern, false);
+                            city.setTexture(Game1.texTavern, true);
                             pub = true;
                             mainScreen = false;
                             break;
                         case 2:
-                            city.setTexture(Game1.texWeaponsShop, false);
+                            city.setTexture(Game1.texWeaponsShop, true);
                             shop = true;
                             mainScreen = false;
                             break;
                         case 3:
                             gameStateManager.setLevel(3);
+                            WorldMap.horse.setPos(WorldMap.horse.getPosX() - 30, WorldMap.horse.getPosX() - 30);
                             break;
                         default:
                             gameStateManager.setLevel(3);
+                            WorldMap.horse.setPos(WorldMap.horse.getPosX() - 30, WorldMap.horse.getPosX() - 30);
                             break;
                     }
                 }
@@ -100,12 +102,12 @@ namespace MiniGame
                         case 3:
                             mainScreen = true;
                             castle = false;
-                            city.setTexture(Game1.texCityScreen, false);
+                            city.setTexture(Game1.texCityScreen, true);
                             break;
                         default:
                             mainScreen = true;
                             castle = false;
-                            city.setTexture(Game1.texCityScreen, false);
+                            city.setTexture(Game1.texCityScreen, true);
                             break;
                     }
                 }
@@ -159,6 +161,8 @@ namespace MiniGame
                             break;
                     }
                 }
+                arrowCount = 0;
+                arrowHead.setPosY(200);
             }
         }
         public override void Draw(GameTime gameTime)

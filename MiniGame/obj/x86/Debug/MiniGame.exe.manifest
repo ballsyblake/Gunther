@@ -31,14 +31,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="310784">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="313856">
       <assemblyIdentity name="MiniGame" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>pldqwIfeBHkRQ+uA5T/jGXPVlJgCmYlLH2tLzus7dEY=</dsig:DigestValue>
+        <dsig:DigestValue>EcLlROWo+vRqQhggNedKbcpGEO5GrHxe6xzAKPL/f0c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -207,7 +207,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>yqkaPU/mLxorCUbUh9Cwu4IHtiZCU4PgFAlDg8pYNjk=</dsig:DigestValue>
+      <dsig:DigestValue>iv9noPvpXh+9avQ/kB2j+P9b38RLKfrmIUKN7FTjl3I=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Icon.ico" size="147541">
