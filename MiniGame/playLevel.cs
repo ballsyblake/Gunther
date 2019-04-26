@@ -18,6 +18,7 @@ namespace MiniGame
         Sprite3 enemy = null;
         Sprite3 horse = null;
         Sprite3 goldBanner = null;
+        Sprite3 paperEnd = null;
 
         SpriteList bloodSplat = null;
         SpriteList enemies = null;
@@ -99,6 +100,8 @@ namespace MiniGame
             goldBanner = new Sprite3(true, Game1.texGoldBanner, 15, 15);
             goldBanner.setWidthHeight(130, 40);
             horse = new Sprite3(true, Game1.texHorseRun, xx, yy);
+            paperEnd = new Sprite3(true, Game1.texPaper, 200, 100);
+            paperEnd.setWidthHeight(400,400);
 
             //Load some empty spritelists
             enemies = new SpriteList();
@@ -459,7 +462,11 @@ namespace MiniGame
             /*if (textFadeTimer < 3)
                 spriteBatch.DrawString(Game1.directions, "< : slow down | > : speed up " + Environment.NewLine + "^ : move up | v : move down" + Environment.NewLine + "spacebar : shoot arrow", new Vector2(400, 10), Color.Black);
             */
-          
+            if (gameOver)
+            {
+                paperEnd.Draw(spriteBatch);
+                spriteBatch.DrawString(Game1.font, "Gunther has died. His journey ends here... also you suck", new Vector2(250, 150), Color.Black);
+            }
             //Bounding boxes for player, enemies, arrows and the play area    
             if (Game1.showbb)
             {

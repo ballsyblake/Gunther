@@ -39,6 +39,8 @@ namespace MiniGame
             {
                 gameStateManager.setLevel(0);
                 PlayLevel.LoadLevelDetails(10,-1);
+                dialogueTick = 1;
+                //blackSquare.setActive(false);
             }
                 
         }

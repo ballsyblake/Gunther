@@ -71,6 +71,7 @@ namespace MiniGame
         {
             if (changeScene)
             {
+                fadeBlack.setActive(true);
                 sceneTicks += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
                 fadeBlack.doTheFade();
             }
@@ -78,6 +79,9 @@ namespace MiniGame
             {
                 instanceMusic.Stop();
                 gameStateManager.setLevel(6);
+                sceneTicks = 0;
+                changeScene = false;
+                fadeBlack.setActive(false);
             }
             if (gameStateManager.getCurrentLevelNum() == 4)
                 instanceMusic.Play();
