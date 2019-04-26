@@ -15,6 +15,7 @@ namespace MiniGame
     {
         Sprite3 background = null;
         Sprite3 portrait = null;
+        Sprite3 border = null;
         Vector2 portraitLoc = new Vector2(0, 0);
         Vector2 dialogueLoc = new Vector2(20, 300);
         Vector2 answersLoc = new Vector2(400, 0);
@@ -30,6 +31,7 @@ namespace MiniGame
         bool inChat = false;
         string currentDialogue;
         int currentNum;
+        int counter = 0;
         
 
         public static string dialogueType;
@@ -41,11 +43,30 @@ namespace MiniGame
             background = new Sprite3(true, Game1.texPaper, 0, 0);
             background.setWidthHeight(800, 600);
             arrowHead = new Sprite3(true, Game1.texArrowHead, answersLoc.X, answersLoc.Y);
+            border = new Sprite3(true, Game1.texBorder, 0, 300);
 
         }
         public override void Update(GameTime gameTime)
         {
-            if(buttonPressed && !inChat)
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Down) && arrowCount < 3)
+            {
+                Game1.soundEffects[3].Play(0.5f, 0, 0);
+                arrowHead.setPosY(arrowHead.getPosY() + arrowJump);
+                arrowCount++;
+            }
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Up) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Up) && arrowCount > 0)
+            {
+                Game1.soundEffects[3].Play(0.5f, 0, 0);
+                arrowHead.setPosY(arrowHead.getPosY() - arrowJump);
+                arrowCount--;
+            }
+            if (arrowCount > 3)
+                arrowCount = 3;
+
+            if (arrowCount < 0)
+                arrowCount = 0;
+
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Enter) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Enter) && !inChat || buttonPressed)
                 switch (portraitType)
                 {
                     case 0:
@@ -95,56 +116,18 @@ namespace MiniGame
                 buttonPressed = false;
             if (inChat)
             {
-
-                if(RC_GameStateParent.keyState.IsKeyDown(Keys.Enter) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Enter))
+                if(counter < 3)
                 {
-                    dialogue = Game1.dialogueList[currentDialogue + currentNum.ToString()];
+                    if (RC_GameStateParent.keyState.IsKeyDown(Keys.Enter) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Enter))
+                    {
+                        dialogue = Game1.dialogueList[currentDialogue + currentNum.ToString() + "." + counter.ToString()];
+                        counter++;
+                    }
                 }
-            }
-            
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Down) && arrowCount < 3)
-            {
-                Game1.soundEffects[3].Play(0.5f, 0, 0);
-                arrowHead.setPosY(arrowHead.getPosY() + arrowJump);
-                arrowCount++;
-            }
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Up) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Up) && arrowCount > 0)
-            {
-                Game1.soundEffects[3].Play(0.5f, 0, 0);
-                arrowHead.setPosY(arrowHead.getPosY() - arrowJump);
-                arrowCount--;
-            }
-
-            if (arrowCount > 3)
-                arrowCount = 3;
-
-            if (arrowCount < 0)
-                arrowCount = 0;
-
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Enter) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Enter) && !inChat)
-            {
-                buttonPressed = true;
-                switch (arrowCount)
+                else
                 {
-                    case 0:
-                        if(Game1.cities[City.currentLoc] == "Pandia")
-                            dialogue = Game1.dialogueList["kingfatheryes"];
-                        else
-                            dialogue = Game1.dialogueList["kingfatherno"];
-
-                        break;
-                    case 1:
-                        
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-                        
-                        break;
-                    default:
-                        
-                        break;
+                    counter = 0;
+                    inChat = false;
                 }
             }
         }
