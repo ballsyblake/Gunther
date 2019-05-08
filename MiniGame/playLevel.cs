@@ -81,7 +81,9 @@ namespace MiniGame
         float arrowTimer = 0f;
 
         float deathTimer = 0;
+        float winTimer = 0;
         bool playing = false;
+        bool won = false;
         public static int enemyToKill;
         int activeEnemies;
         
@@ -336,7 +338,6 @@ namespace MiniGame
 
             if (gameOver)
             {
-                
                 deathTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 instanceHorse.Stop();
             }
@@ -351,6 +352,13 @@ namespace MiniGame
 
             if(enemyCounter == 0)
             {
+                winTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                won = true;
+            }
+            if(winTimer > 2)
+            {
+                won = false;
+                winTimer = 0;
                 instanceHorse.Stop();
                 WorldMap.enemiesList.RemoveAt(enemyToKill);
                 spawnCounter = 0;
@@ -476,6 +484,11 @@ namespace MiniGame
                 //horse.drawHS(spriteBatch, Color.Green); //don't know if this is required for assessment or not
                 quiver.drawInfo(spriteBatch, Color.Brown, Color.SandyBrown);
                 LineBatch.drawLineRectangle(spriteBatch, playArea, Color.Blue);
+            }
+            if (won)
+            {
+                paperEnd.Draw(spriteBatch);
+                spriteBatch.DrawString(Game1.font, "You won the battle", new Vector2(350, 250), Color.Black);
             }
             spriteBatch.End();
         }

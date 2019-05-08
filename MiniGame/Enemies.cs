@@ -111,14 +111,41 @@ namespace MiniGame
 
         void CheckWater()
         {
-            
-            uint temp;
-            for (uint xx = (uint)enemyScript.getPosX(); xx < (int)enemyScript.getPosX() + enemyScript.getWidth(); xx++)
+            if (enemyScript == null)
             {
-                for (uint yy = (uint)enemyScript.getPosY(); yy < (int)enemyScript.getPosY() + enemyScript.getHeight(); yy++)
+                Console.WriteLine("null enemy");
+
+                return;
+            }
+            uint temp;
+            for (int xx = (int)enemyScript.getPosX(); xx < enemyScript.getPosX() + enemyScript.getWidth(); xx++)
+            {
+                for (int yy = (int)enemyScript.getPosY(); yy < enemyScript.getPosY() + enemyScript.getHeight(); yy++)
                 {
+                    if (enemyScript == null)
+                    {
+                        Console.WriteLine("null enemy");
+
+                        return;
+                    }
+                    if (xx + yy * Game1.texMapLand.Width > 12000000)
+                    {
+                        Console.WriteLine(xx + yy * Game1.texMapLand.Width);
+                        Console.WriteLine(xx + " " + yy);
+                        enemyScript = null;
+                        return;
+                    }
+                        
+                    if (xx < 0 || yy < 0)
+                    {
+                        Console.WriteLine("xx or yy was less than 0");
+                        Console.WriteLine(xx + " " + yy);
+                        enemyScript = null;
+                        return;
+                    }
+                        
                     
-                    //Console.WriteLine(xx + " " + yy);
+                    
                     temp = WorldMap.pixelData[xx + yy * Game1.texMapLand.Width];
                     if (temp == 0)
                     {

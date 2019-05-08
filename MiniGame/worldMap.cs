@@ -30,10 +30,12 @@ namespace MiniGame
         float timer = 0f;
         int count = 0;
         bool touchingWater = false;
-        int maxEnemies = 5;
+        int maxEnemies = 50;
 
         Vector2[] anim = new Vector2[8];
         Vector2[] animEnemy = new Vector2[50];
+
+        Vector2[] enemySpawnPoints = new Vector2[12];
 
         public static uint[] pixelData;
         uint temp;
@@ -68,10 +70,22 @@ namespace MiniGame
 
             pixelData = new uint[Game1.texMapLand.Width * Game1.texMapLand.Height];
             Game1.texMapLand.GetData(pixelData, 0, Game1.texMapLand.Width * Game1.texMapLand.Height);
-            
+            Console.WriteLine(pixelData.Count());
+           
             enemiesList.Add(new Enemies(Game1.texEnemy, new Vector2(rand.Next(400, 600), rand.Next(400, 600))));
-            
 
+            enemySpawnPoints[0] = new Vector2(282, 478);
+            enemySpawnPoints[1] = new Vector2(754, 1058);
+            enemySpawnPoints[2] = new Vector2(888, 1788);
+            enemySpawnPoints[3] = new Vector2(278, 2746);
+            enemySpawnPoints[4] = new Vector2(1170, 2530);
+            enemySpawnPoints[5] = new Vector2(1604, 2176);
+            enemySpawnPoints[6] = new Vector2(2052, 1966);
+            enemySpawnPoints[7] = new Vector2(2302, 1040);
+            enemySpawnPoints[8] = new Vector2(2552, 784);
+            enemySpawnPoints[9] = new Vector2(3134, 402);
+            enemySpawnPoints[10] = new Vector2(3684, 804);
+            enemySpawnPoints[11] = new Vector2(2950, 1316);
         }
 
         public override void Update(GameTime gameTime)
@@ -79,8 +93,19 @@ namespace MiniGame
             
             worldTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            if(worldTime % 10 >= 0 && worldTime % 10 <= 0.02 && enemiesList.Count() < maxEnemies && (int)worldTime > 0)
-                enemiesList.Add(new Enemies(Game1.texEnemy, new Vector2(rand.Next(400, 600), rand.Next(400, 600))));
+            if(worldTime % 2 >= 0 && worldTime % 2 <= 0.02 && enemiesList.Count() < maxEnemies && (int)worldTime > 0)
+            {
+                for (int o = 0; o < enemySpawnPoints.Count(); o++)
+                {
+                    float temp;
+                    temp = Vector2.Distance(horse.getPos(), enemySpawnPoints[o]);
+                    Console.WriteLine(temp);
+                    if(temp > 500)
+                        enemiesList.Add(new Enemies(Game1.texEnemy, enemySpawnPoints[rand.Next(0, 11)]));
+                }
+                
+            }
+                
             
             if (gameStateManager.getCurrentLevelNum() == 3)
             {
@@ -98,6 +123,8 @@ namespace MiniGame
             }
 
             curPos = horse.getPos();
+            
+
             bool keyDown = false;
             
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !botCol)
@@ -156,7 +183,7 @@ namespace MiniGame
             land.Draw(spriteBatch);
             worldMap.Draw(spriteBatch);
             points.Draw(spriteBatch);
-            //spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
+            spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
             
             for (int i = 0; i < enemiesList.Count(); i++)
             {
