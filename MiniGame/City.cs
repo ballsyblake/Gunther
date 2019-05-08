@@ -16,8 +16,10 @@ namespace MiniGame
     {
         Sprite3 city = null;
         Sprite3 arrowHead = null;
-
-        bool doneCheck = false;
+        Sprite3 border = null;
+        Sprite3 dialoguePaper = null;
+        Sprite3 questionsPaper = null;
+        //bool doneCheck = false;
         public static Vector2 currentLoc;
         int arrowHeadOffsetY = 5;
         int arrowJump = 100;
@@ -26,6 +28,9 @@ namespace MiniGame
         bool shop = false;
         bool castle = false;
         bool pub = false;
+        bool inChat = false;
+        int maxArrowCount = 3;
+        int currentPick;
 
         public override void LoadContent()
         {
@@ -33,11 +38,15 @@ namespace MiniGame
             city.setWidthHeight(800, 600);
             arrowHead = new Sprite3(true, Game1.texArrowHead, 600, 200 - arrowHeadOffsetY);
             arrowHead.setWidthHeight(40, 40);
+            border = new Sprite3(true, Game1.texBorder, 10, 500);
+            border.setWidthHeight(780, 100);
+            dialoguePaper = new Sprite3(true, Game1.texPaper, 0, 500);
+            dialoguePaper.setWidthHeight(800, 100);
 
         }
         public override void Update(GameTime gameTime)
         {
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Down) && arrowCount < 3)
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Down) && arrowCount < maxArrowCount)
             {
                 Game1.soundEffects[3].Play(0.5f, 0, 0);
                 arrowHead.setPosY(arrowHead.getPosY() + arrowJump);
@@ -49,15 +58,37 @@ namespace MiniGame
                 arrowHead.setPosY(arrowHead.getPosY() - arrowJump);
                 arrowCount--;
             }
-            if (arrowCount > 3)
-                arrowCount = 3;
+            if (arrowCount > maxArrowCount)
+                arrowCount = maxArrowCount;
 
             if (arrowCount < 0)
                 arrowCount = 0;
 
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Enter) && RC_GameStateParent.prevKeyState.IsKeyUp(Keys.Enter)) // ***
             {
-                if (mainScreen)
+                Console.WriteLine(inChat);
+                if (inChat)
+                {
+                    Console.WriteLine("inchat");
+                    Console.WriteLine(arrowCount);
+                    switch (arrowCount)
+                    {
+                        case 0:
+                            inChat = false;
+                            maxArrowCount = 3;
+                            break;
+                        case 1:
+                            inChat = false;
+                            maxArrowCount = 3;
+                            break;
+                        default:
+                            inChat = false;
+                            maxArrowCount = 3;
+                            break;
+                    }
+                    
+                }
+                else if (mainScreen)
                 {
                     switch (arrowCount)
                     {
@@ -91,13 +122,16 @@ namespace MiniGame
                     switch (arrowCount)
                     {
                         case 0:
-                            //chat stuff
+                            inChat = true;
+                            currentPick = 0;
                             break;
                         case 1:
-                            //chat stuff
+                            inChat = true;
+                            currentPick = 1;
                             break;
                         case 2:
-                            //chat stuff
+                            currentPick = 2;
+                            inChat = true;
                             break;
                         case 3:
                             mainScreen = true;
@@ -161,6 +195,7 @@ namespace MiniGame
                             break;
                     }
                 }
+
                 arrowCount = 0;
                 arrowHead.setPosY(200);
             }
@@ -181,29 +216,99 @@ namespace MiniGame
             else if (castle)
             {
                 graphicsDevice.Clear(Color.White);
-                spriteBatch.DrawString(Game1.font, "All hail the King", new Vector2(100, 100), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Offer fealty", new Vector2(650, 200), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Ask for jobs", new Vector2(650, 300), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Ask about father", new Vector2(650, 400), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                dialoguePaper.Draw(spriteBatch);
+                border.Draw(spriteBatch);
+                if (!inChat)
+                {
+                    spriteBatch.DrawString(Game1.font, "I am the king of this marvelous city. Please, tell me why you have come?", new Vector2(20, 520), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "All hail the King", new Vector2(100, 100), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Offer fealty", new Vector2(650, 200), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Ask for jobs", new Vector2(650, 300), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Ask about father", new Vector2(650, 400), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                }
+                else if (inChat)
+                {
+                    
+                    switch (currentPick)
+                    {
+                        case 0:
+                            maxArrowCount = 0;
+                            spriteBatch.DrawString(Game1.font, Game1.dialogueList["kingallegianceno"], new Vector2(20, 520), Color.Black);
+                            break;
+                        case 1:
+                            maxArrowCount = 1;
+                            spriteBatch.DrawString(Game1.font, "Yes", new Vector2(650, 200), Color.Black);
+                            spriteBatch.DrawString(Game1.font, "No", new Vector2(650, 300), Color.Black);
+                            spriteBatch.DrawString(Game1.font, Game1.dialogueList["kingquest1"], new Vector2(20, 520), Color.Black);
+                            Game1.onQuest = true;
+                            break;
+                        case 2:
+                            maxArrowCount = 0;
+                            spriteBatch.DrawString(Game1.font, Game1.dialogueList["kingfatherno"], new Vector2(20, 520), Color.Black);
+                            break;
+                        default:
+                            break;
+                    }
+                    spriteBatch.DrawString(Game1.font, "All hail the King", new Vector2(100, 100), Color.Black);
+                    
+                }
+                    
             }
             else if (pub)
             {
                 graphicsDevice.Clear(Color.White);
-                spriteBatch.DrawString(Game1.font, "Welcome to the tavern", new Vector2(100, 100), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Buy some beer", new Vector2(650, 200), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Ask about jobs", new Vector2(650, 300), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Ask about nearby raiders", new Vector2(650, 400), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                dialoguePaper.Draw(spriteBatch);
+                border.Draw(spriteBatch);
+                if (!inChat)
+                {
+                    spriteBatch.DrawString(Game1.font, "Come, sit. Drink away your worldly problems with some nice cold beer.", new Vector2(20, 520), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Welcome to the tavern", new Vector2(100, 100), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Buy some beer", new Vector2(650, 200), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Ask about jobs", new Vector2(650, 300), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Ask about nearby raiders", new Vector2(650, 400), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                }
+                else if (inChat)
+                {
+                    switch (currentPick)
+                    {
+                        case 0:
+                            spriteBatch.DrawString(Game1.font, "Here you go", new Vector2(20, 520), Color.Black);
+                            break;
+                        case 1:
+                            spriteBatch.DrawString(Game1.font, "Yes", new Vector2(650, 200), Color.Black);
+                            spriteBatch.DrawString(Game1.font, "No", new Vector2(650, 300), Color.Black);
+                            spriteBatch.DrawString(Game1.font, Game1.dialogueList["kingquest" + Game1.random.Next(1, 3)], new Vector2(20, 520), Color.Black);
+                            Game1.onQuest = true;
+                            break;
+                        case 2:
+                            spriteBatch.DrawString(Game1.font, "I will mark them on your map for you. ", new Vector2(20, 520), Color.Black);
+                            break;
+                        default:
+                            break;
+                    }
+                    spriteBatch.DrawString(Game1.font, "Welcome to the tavern", new Vector2(100, 100), Color.Black);
+
+                }
+
             }
             else if (shop)
             {
                 graphicsDevice.Clear(Color.White);
-                spriteBatch.DrawString(Game1.font, "Weapons and Armor Shop", new Vector2(100, 100), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Buy Shield", new Vector2(650, 200), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Upgrade Bow", new Vector2(650, 300), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Buy Horse Armor", new Vector2(650, 400), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                dialoguePaper.Draw(spriteBatch);
+                border.Draw(spriteBatch);
+                if (!inChat)
+                {
+                    spriteBatch.DrawString(Game1.font, "Welcome to the shop, what can I do for you?", new Vector2(20, 520), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Weapons and Armor Shop", new Vector2(100, 100), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Buy Shield", new Vector2(650, 200), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Upgrade Bow", new Vector2(650, 300), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Buy Horse Armor", new Vector2(650, 400), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                }
+                
+                    
             }
             spriteBatch.End();
         }

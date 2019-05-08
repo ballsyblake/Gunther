@@ -72,7 +72,7 @@ namespace MiniGame
             Game1.texMapLand.GetData(pixelData, 0, Game1.texMapLand.Width * Game1.texMapLand.Height);
             Console.WriteLine(pixelData.Count());
            
-            enemiesList.Add(new Enemies(Game1.texEnemy, new Vector2(rand.Next(400, 600), rand.Next(400, 600))));
+            //enemiesList.Add(new Enemies(Game1.texEnemy, new Vector2(rand.Next(400, 600), rand.Next(400, 600))));
 
             enemySpawnPoints[0] = new Vector2(282, 478);
             enemySpawnPoints[1] = new Vector2(754, 1058);
@@ -91,7 +91,7 @@ namespace MiniGame
         public override void Update(GameTime gameTime)
         {
             
-            worldTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //worldTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             
             if(worldTime % 2 >= 0 && worldTime % 2 <= 0.02 && enemiesList.Count() < maxEnemies && (int)worldTime > 0)
             {

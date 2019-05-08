@@ -16,7 +16,7 @@ namespace MiniGame
     public class Game1 : Game                                                                                                                                                                                                 
     {
         //Direction for art, please change according to where you have put the project files
-        static public string dir = @"C:\Repo\MiniGame\MiniGame\Content\Sprites\";
+        static public string dir = @"D:\GitHubRepos\MiniGame\MiniGame\MiniGame\Content\Sprites\";
 
         //Graphics stuff
         GraphicsDeviceManager graphics;
@@ -86,6 +86,7 @@ namespace MiniGame
         //Values that effect players experience with people
         public static int renown = 0;
         public static bool onQuest = false;
+        public static string fealty;
 
 
         //Set screen size here, declare the content directory and graphics
@@ -216,16 +217,9 @@ namespace MiniGame
             dialogueList.Add("kingquest", "Ahh, you are looking for fame and glory. I do have something in mind for you. ");
             dialogueList.Add("kingquestno", "It appears you already have a quest. Finish that one first then come ask me. ");
 
-            dialogueList.Add("kingquest1.0", "If you are interested, I need someone to go to the town of ");
-            dialogueList.Add("kingquest1.1", " and ask for the tax money they owe me. ");
-            dialogueList.Add("kingquest1.2", "If you have any issues, just remind them I'm their king, if you know what I mean.");
-            dialogueList.Add("kingquest2.0", "There is a man on the run that needs to be caught. ");
-            dialogueList.Add("kingquest2.1", "He was found stealing precious items from my castle but esacped before my guards could apprend him. My scouts tell me he can be found somewhere in the town of ");
-            dialogueList.Add("kingquest2.2", ". Could you him back to me? Or if that's not possible, his head will suffice. ");
-            dialogueList.Add("kingquest3.0", "We are currently at war with the ");
-            dialogueList.Add("kingquest3.1", " and I'm building an army to siege the city of ");
-            dialogueList.Add("kingquest3.2", ". Would you be interested in joining this army? ");
-            dialogueList.Add("test", "test");
+            dialogueList.Add("kingquest1", "If you are interested, I need you to go to this town near my city and ask for the tax money they owe me. If you have any issues, just remind them I'm their king, if you know what I mean.");
+            dialogueList.Add("kingquest2", "There is a man on the run that needs to be caught. He was found stealing precious items from my castle but esacped before my guards could apprend him. My scouts tell me he can be found somewhere in this town. Could you him back to me? Or if that's not possible, his head will suffice. ");
+            dialogueList.Add("kingquest3", "I'm building an army to siege this city. Would you be interested in joining my army? ");
 
             //Sound
             soundEffects.Add(Content.Load<SoundEffect>("Audio/deathSound01"));//Death sounds in position 0

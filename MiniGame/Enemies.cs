@@ -45,7 +45,8 @@ namespace MiniGame
 
         public void Update()
         {
-            
+            if (enemyScript.getPosX() < 0 || enemyScript.getPosY() < 0 || enemyScript.getPosX() > 4000 || enemyScript.getPosY() > 3000)
+                enemyScript.setActive(false);
             if (WorldMap.gameStateManager.getCurrentLevelNum() == 3)
             {
                 
@@ -81,7 +82,8 @@ namespace MiniGame
                 if (moving)
                 {
                     movingTimer += plus;
-                    CheckWater();
+                    if(enemyScript != null)
+                        CheckWater();
                     Move();
                 }
                     
@@ -111,23 +113,13 @@ namespace MiniGame
 
         void CheckWater()
         {
-            if (enemyScript == null)
-            {
-                Console.WriteLine("null enemy");
-
-                return;
-            }
+            
             uint temp;
             for (int xx = (int)enemyScript.getPosX(); xx < enemyScript.getPosX() + enemyScript.getWidth(); xx++)
             {
                 for (int yy = (int)enemyScript.getPosY(); yy < enemyScript.getPosY() + enemyScript.getHeight(); yy++)
                 {
-                    if (enemyScript == null)
-                    {
-                        Console.WriteLine("null enemy");
-
-                        return;
-                    }
+                    
                     if (xx + yy * Game1.texMapLand.Width > 12000000)
                     {
                         Console.WriteLine(xx + yy * Game1.texMapLand.Width);
@@ -168,7 +160,6 @@ namespace MiniGame
         public void Draw(SpriteBatch spriteBatch)
         {
             enemyScript.Draw(spriteBatch);
-            
         }
     }
 }
