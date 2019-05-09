@@ -31,17 +31,20 @@ namespace MiniGame
         bool inChat = false;
         int maxArrowCount = 3;
         int currentPick;
+        string dialogueForced = "";
 
         public override void LoadContent()
         {
             city = new Sprite3(true, Game1.texCityScreen, 0, 0);            
             city.setWidthHeight(800, 600);
-            arrowHead = new Sprite3(true, Game1.texArrowHead, 600, 200 - arrowHeadOffsetY);
+            arrowHead = new Sprite3(true, Game1.texArrowHead, 600, 90 - arrowHeadOffsetY);
             arrowHead.setWidthHeight(40, 40);
-            border = new Sprite3(true, Game1.texBorder, 10, 500);
-            border.setWidthHeight(780, 100);
-            dialoguePaper = new Sprite3(true, Game1.texPaper, 0, 500);
-            dialoguePaper.setWidthHeight(800, 100);
+            border = new Sprite3(true, Game1.texBorder, 5, 505);
+            border.setWidthHeight(600, 90);
+            dialoguePaper = new Sprite3(true, Game1.texPaper, -25, 500);
+            dialoguePaper.setWidthHeight(635, 100);
+            questionsPaper = new Sprite3(true, Game1.texPaper, 600, -50);
+            questionsPaper.setWidthHeight(250, 570);
 
         }
         public override void Update(GameTime gameTime)
@@ -74,8 +77,18 @@ namespace MiniGame
                     switch (arrowCount)
                     {
                         case 0:
-                            inChat = false;
-                            maxArrowCount = 3;
+                            if (!Game1.onQuest)
+                            {
+                                Game1.onQuest = true;
+                                inChat = false;
+                                maxArrowCount = 3;
+                            }
+                            else
+                            {
+
+                                inChat = false;
+                                maxArrowCount = 3;
+                            }
                             break;
                         case 1:
                             inChat = false;
@@ -197,35 +210,39 @@ namespace MiniGame
                 }
 
                 arrowCount = 0;
-                arrowHead.setPosY(200);
+                arrowHead.setPosY(90);
             }
         }
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
             city.Draw(spriteBatch);
-            arrowHead.Draw(spriteBatch);
+            spriteBatch.DrawString(Game1.font,dialogueForced, new Vector2(20, 520), Color.Black);
             if (mainScreen)
             {
+                city.setWidthHeight(800, 600);
                 spriteBatch.DrawString(Game1.font, Game1.cities[currentLoc], new Vector2(100, 100), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Castle", new Vector2(650, 200), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Tavern", new Vector2(650, 300), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Shop", new Vector2(650, 400), Color.Black);
-                spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                spriteBatch.DrawString(Game1.font, "Castle", new Vector2(650, 100), Color.Black);
+                spriteBatch.DrawString(Game1.font, "Tavern", new Vector2(650, 200), Color.Black);
+                spriteBatch.DrawString(Game1.font, "Shop", new Vector2(650, 300), Color.Black);
+                spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 400), Color.Black);
             }
             else if (castle)
             {
                 graphicsDevice.Clear(Color.White);
+                city.setWidthHeight(610, 510);
+                questionsPaper.Draw(spriteBatch);
                 dialoguePaper.Draw(spriteBatch);
                 border.Draw(spriteBatch);
+                
                 if (!inChat)
                 {
                     spriteBatch.DrawString(Game1.font, "I am the king of this marvelous city. Please, tell me why you have come?", new Vector2(20, 520), Color.Black);
                     spriteBatch.DrawString(Game1.font, "All hail the King", new Vector2(100, 100), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Offer fealty", new Vector2(650, 200), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Ask for jobs", new Vector2(650, 300), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Ask about father", new Vector2(650, 400), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Offer fealty", new Vector2(650, 100), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Ask for jobs", new Vector2(650, 200), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Ask about father", new Vector2(650, 300), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 400), Color.Black);
                 }
                 else if (inChat)
                 {
@@ -238,10 +255,10 @@ namespace MiniGame
                             break;
                         case 1:
                             maxArrowCount = 1;
-                            spriteBatch.DrawString(Game1.font, "Yes", new Vector2(650, 200), Color.Black);
-                            spriteBatch.DrawString(Game1.font, "No", new Vector2(650, 300), Color.Black);
+                            spriteBatch.DrawString(Game1.font, "Yes", new Vector2(650, 100), Color.Black);
+                            spriteBatch.DrawString(Game1.font, "No", new Vector2(650, 200), Color.Black);
                             spriteBatch.DrawString(Game1.font, Game1.dialogueList["kingquest1"], new Vector2(20, 520), Color.Black);
-                            Game1.onQuest = true;
+                            
                             break;
                         case 2:
                             maxArrowCount = 0;
@@ -258,29 +275,37 @@ namespace MiniGame
             else if (pub)
             {
                 graphicsDevice.Clear(Color.White);
+                city.setWidthHeight(610, 510);
+                questionsPaper.Draw(spriteBatch);
                 dialoguePaper.Draw(spriteBatch);
                 border.Draw(spriteBatch);
                 if (!inChat)
                 {
                     spriteBatch.DrawString(Game1.font, "Come, sit. Drink away your worldly problems with some nice cold beer.", new Vector2(20, 520), Color.Black);
                     spriteBatch.DrawString(Game1.font, "Welcome to the tavern", new Vector2(100, 100), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Buy some beer", new Vector2(650, 200), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Ask about jobs", new Vector2(650, 300), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Ask about nearby raiders", new Vector2(650, 400), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Buy some beer", new Vector2(650, 100), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Ask about jobs", new Vector2(650, 200), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Ask about nearby raiders", new Vector2(650, 300), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 400), Color.Black);
                 }
                 else if (inChat)
                 {
                     switch (currentPick)
                     {
                         case 0:
-                            spriteBatch.DrawString(Game1.font, "Here you go", new Vector2(20, 520), Color.Black);
+                            if(Game1.gold > 5)
+                            {
+                                spriteBatch.DrawString(Game1.font, "Here you go", new Vector2(20, 520), Color.Black);
+                                Game1.gold = Game1.gold - 5;
+                            }
+                            else
+                                spriteBatch.DrawString(Game1.font, "Sorry buddy but you are gonna need more gold than that. Come back when you have at least 5 gold pieces.", new Vector2(20, 520), Color.Black);
                             break;
                         case 1:
-                            spriteBatch.DrawString(Game1.font, "Yes", new Vector2(650, 200), Color.Black);
-                            spriteBatch.DrawString(Game1.font, "No", new Vector2(650, 300), Color.Black);
-                            spriteBatch.DrawString(Game1.font, Game1.dialogueList["kingquest" + Game1.random.Next(1, 3)], new Vector2(20, 520), Color.Black);
-                            Game1.onQuest = true;
+                            spriteBatch.DrawString(Game1.font, "Yes", new Vector2(650, 100), Color.Black);
+                            spriteBatch.DrawString(Game1.font, "No", new Vector2(650, 200), Color.Black);
+                            spriteBatch.DrawString(Game1.font, Game1.dialogueList["pubQuest1"], new Vector2(20, 520), Color.Black);
+                            
                             break;
                         case 2:
                             spriteBatch.DrawString(Game1.font, "I will mark them on your map for you. ", new Vector2(20, 520), Color.Black);
@@ -296,20 +321,77 @@ namespace MiniGame
             else if (shop)
             {
                 graphicsDevice.Clear(Color.White);
+                city.setWidthHeight(610, 510);
+                questionsPaper.Draw(spriteBatch);
                 dialoguePaper.Draw(spriteBatch);
                 border.Draw(spriteBatch);
                 if (!inChat)
                 {
                     spriteBatch.DrawString(Game1.font, "Welcome to the shop, what can I do for you?", new Vector2(20, 520), Color.Black);
                     spriteBatch.DrawString(Game1.font, "Weapons and Armor Shop", new Vector2(100, 100), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Buy Shield", new Vector2(650, 200), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Upgrade Bow", new Vector2(650, 300), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Buy Horse Armor", new Vector2(650, 400), Color.Black);
-                    spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 500), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Buy Shield", new Vector2(650, 100), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Upgrade Bow", new Vector2(650, 200), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Buy Horse Armor", new Vector2(650, 300), Color.Black);
+                    spriteBatch.DrawString(Game1.font, "Leave", new Vector2(650, 400), Color.Black);
                 }
-                
-                    
+                else if (inChat)
+                {
+                    switch (currentPick)
+                    {
+                        case 0:
+                            if (!Game1.shieldBought)
+                            {
+                                if (Game1.gold > 10000)
+                                {
+                                    spriteBatch.DrawString(Game1.font, "Enjoy the brand new shield. Don't forget to click tab to use it.", new Vector2(20, 520), Color.Black);
+                                    Game1.gold = Game1.gold - 10000;
+                                    Game1.shieldBought = true;
+                                }
+                                else
+                                    spriteBatch.DrawString(Game1.font, "Sorry buddy but you are gonna need more gold than that. Come back when you have at least 10,000 gold pieces.", new Vector2(20, 520), Color.Black);
+                            }
+                            else
+                                spriteBatch.DrawString(Game1.font, "You already own that.", new Vector2(20, 520), Color.Black);
+                            break;
+                        case 1:
+                            if (!Game1.upgradedBow)
+                            {
+                                if (Game1.gold > 20000)
+                                {
+                                    spriteBatch.DrawString(Game1.font, "Enjoy the brand new shield. Don't forget to click 'v' to use it.", new Vector2(20, 520), Color.Black);
+                                    Game1.gold = Game1.gold - 20000;
+                                    Game1.upgradedBow = true;
+                                }
+                                else
+                                    spriteBatch.DrawString(Game1.font, "Sorry buddy but you are gonna need more gold than that. Come back when you have at least 20,000 gold pieces.", new Vector2(20, 520), Color.Black);
+                            }
+                            else
+                                spriteBatch.DrawString(Game1.font, "You already own that.", new Vector2(20, 520), Color.Black);
+                            break;
+                        case 2:
+                            if (!Game1.horseArmorBought)
+                            {
+                                if (Game1.gold > 30000)
+                                {
+                                    spriteBatch.DrawString(Game1.font, "Enjoy the brand new shield. Don't forget to click tab to use it.", new Vector2(20, 520), Color.Black);
+                                    Game1.gold = Game1.gold - 30000;
+                                    Game1.horseArmorBought = true;
+                                }
+                                else
+                                    spriteBatch.DrawString(Game1.font, "Sorry buddy but you are gonna need more gold than that. Come back when you have at least 30,000 gold pieces.", new Vector2(20, 520), Color.Black);
+                            }
+                            else
+                                spriteBatch.DrawString(Game1.font, "You already own that.", new Vector2(20, 520), Color.Black);
+                            break;
+                        default:
+                            break;
+                    }
+                    spriteBatch.DrawString(Game1.font, "Welcome to the tavern", new Vector2(100, 100), Color.Black);
+
+                }
+
             }
+            arrowHead.Draw(spriteBatch);
             spriteBatch.End();
         }
 

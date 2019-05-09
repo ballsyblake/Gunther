@@ -60,6 +60,8 @@ namespace MiniGame
         static public Texture2D texGunther = null;
         static public Texture2D texBlackSquare = null;
         static public Texture2D texBorder = null;
+        static public Texture2D texShield = null;
+        static public Texture2D texArcher = null;
 
         //Sound
         static public List<SoundEffect> soundEffects;
@@ -87,6 +89,10 @@ namespace MiniGame
         public static int renown = 0;
         public static bool onQuest = false;
         public static string fealty;
+        public static int gold;
+        public static bool shieldBought = false;
+        public static bool upgradedBow = false;
+        public static bool horseArmorBought = false;
 
 
         //Set screen size here, declare the content directory and graphics
@@ -158,6 +164,9 @@ namespace MiniGame
             texGunther = Util.texFromFile(GraphicsDevice, dir + "Gunther.png");
             texBlackSquare = Util.texFromFile(GraphicsDevice, dir + "blackSquare.png");
             texBorder = Util.texFromFile(GraphicsDevice, dir + "Border.png");
+            texShield = Util.texFromFile(GraphicsDevice, dir + "shield.png");
+            texArcher = Util.texFromFile(GraphicsDevice, dir + "NobleRanger.png");
+            
 
             //Points positions
             pointsPos[0] = new Vector2(277, 260);
@@ -216,10 +225,11 @@ namespace MiniGame
             dialogueList.Add("kingfatheryes", "I believe I have seen this man you speak of. He came for a visit not too long ago. He mentioned he was heading west somewhere. That's all I know. ");
             dialogueList.Add("kingquest", "Ahh, you are looking for fame and glory. I do have something in mind for you. ");
             dialogueList.Add("kingquestno", "It appears you already have a quest. Finish that one first then come ask me. ");
-
+            dialogueList.Add("pubQuest1", "Could you deliver these barrels of rum to this city for me?");
             dialogueList.Add("kingquest1", "If you are interested, I need you to go to this town near my city and ask for the tax money they owe me. If you have any issues, just remind them I'm their king, if you know what I mean.");
             dialogueList.Add("kingquest2", "There is a man on the run that needs to be caught. He was found stealing precious items from my castle but esacped before my guards could apprend him. My scouts tell me he can be found somewhere in this town. Could you him back to me? Or if that's not possible, his head will suffice. ");
             dialogueList.Add("kingquest3", "I'm building an army to siege this city. Would you be interested in joining my army? ");
+            dialogueList.Add("alreadyOnQuest", "Sorry but you appear to already be on a quest. Finish that one first and then I can give you another one.");
 
             //Sound
             soundEffects.Add(Content.Load<SoundEffect>("Audio/deathSound01"));//Death sounds in position 0

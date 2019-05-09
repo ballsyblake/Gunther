@@ -15,15 +15,19 @@ namespace MiniGame
     class PlayLevel : RC_GameStateParent
     {
         Sprite3 arrow = null;
+        Sprite3 enemyArrow = null;
         Sprite3 enemy = null;
         Sprite3 horse = null;
         Sprite3 goldBanner = null;
         Sprite3 paperEnd = null;
+        Sprite3 shield = null;
 
         SpriteList bloodSplat = null;
         SpriteList enemies = null;
         SpriteList horseRun = null;
         SpriteList quiver = null;
+
+        List<Sprite3> enemyArrows = new List<Sprite3>();
 
         float xx = 50;
         float yy = 500;
@@ -75,7 +79,7 @@ namespace MiniGame
         Scrolling scrolling1;
         Scrolling scrolling2;
 
-        private int score = 0;
+        bool shieldUp = false;
         
         float textFadeTimer = 0f;
         float arrowTimer = 0f;
@@ -104,6 +108,8 @@ namespace MiniGame
             horse = new Sprite3(true, Game1.texHorseRun, xx, yy);
             paperEnd = new Sprite3(true, Game1.texPaper, 200, 100);
             paperEnd.setWidthHeight(400,400);
+            shield = new Sprite3(true, Game1.texShield, horse.getPosX(), horse.getPosY());
+            
 
             //Load some empty spritelists
             enemies = new SpriteList();
@@ -183,6 +189,17 @@ namespace MiniGame
                     break;
             }
 
+            if(Game1.shieldBought)
+                if (RC_GameStateParent.keyState.IsKeyDown(Keys.V))
+                {
+                    shield.setPos(horse.getPosX() + 100,horse.getPosY());
+                    shieldUp = true;
+                }
+                else
+                {
+                    shieldUp = false;
+                }
+            
             
             //This timer makes basic instructions disappear after 3 seconds
             if (textFadeTimer < 3) { }
@@ -194,7 +211,7 @@ namespace MiniGame
             {
                 spawnCounter++;
                 enemySpawnTimer = 0;
-                LoadEnemies();
+                LoadEnemies(1);
                 Console.WriteLine(spawnCounter);
             }
 
@@ -215,10 +232,21 @@ namespace MiniGame
 
             for (int e = 0; e < enemies.count(); e++)
             {
-                if (enemies[e].getVisible())
-                    enemies[e].setPosX(enemies[e].getPosX() - enemyMovementSpeed);
-                if (enemies[e].getPosX() < 0 - Game1.texEnemy.Width)
-                    enemies[e].setPos(850, Game1.random.Next(350, 550));
+                if(enemies[e].getFrame() < 30) { 
+                    if (enemies[e].getVisible())
+                        enemies[e].setPosX(enemies[e].getPosX() - enemyMovementSpeed);
+                    if (enemies[e].getPosX() < 0 - Game1.texEnemy.Width)
+                        enemies[e].setPos(850, Game1.random.Next(350, 550));
+                }
+                else if(enemies[e].getFrame() >= 30)
+                {
+                    if (enemies[e].getVisible() && enemies[e].getPosX() > 780)
+                        enemies[e].setPosX(enemies[e].getPosX() - enemyMovementSpeed);
+                }
+                if(enemies[e].getFrame() == 36)
+                {
+
+                }
             }
 
             //Collision detection, arrow to enemy
@@ -230,7 +258,7 @@ namespace MiniGame
                     Console.WriteLine(enemies.getSprite(ac).getPos());
                     SoundEffectInstance instanceDeath = Game1.soundEffects[0].CreateInstance();
                     instanceDeath.Play();
-                    score++;
+                    Game1.gold++;
                     enemyCounter--;
                     Blood(enemies.getSprite(ac).getPosX(), enemies.getSprite(ac).getPosY(), false);
                     enemies.getSprite(ac).setActive(false);
@@ -278,17 +306,25 @@ namespace MiniGame
                     SoundEffectInstance instanceDeath = Game1.soundEffects[0].CreateInstance();
                     instanceDeath.Play();
                     Blood(horse.getPosX(), horse.getPosY(), true);
-                    
-                    scrolling1.speed = 0;
-                    scrolling2.speed = 0;
-                    horse.setActive(false);
-                    horse.setPos(0, 0);
-                    /*for (int i = 0; i < horseRun.count(); i++)
+                    if (!Game1.horseArmorBought)
                     {
-                        horseRun.deleteSprite(i);
-                    }*/
-                    playing = false;
-                    gameOver = true;
+                        scrolling1.speed = 0;
+                        scrolling2.speed = 0;
+                        horse.setActive(false);
+                        horse.setPos(0, 0);
+                        /*for (int i = 0; i < horseRun.count(); i++)
+                        {
+                            horseRun.deleteSprite(i);
+                        }*/
+                        playing = false;
+                        gameOver = true;
+                    }
+                    else
+                    {
+                        //Play armor breaking sound
+                        Game1.horseArmorBought = false;
+                    }
+                        
                 }
             }
 
@@ -324,7 +360,7 @@ namespace MiniGame
 
             for (int totalArrows = 0; totalArrows < quiver.count(); totalArrows++)
             {
-                if (quiver[totalArrows].getPosX() > 700)
+                if (quiver[totalArrows].getPosX() > 790)
                 {
                     quiver[totalArrows].setVisible(false);
                     quiver[totalArrows].setPos(0, 0);
@@ -368,9 +404,56 @@ namespace MiniGame
         }
 
         //Sets position of enemy to a random spawn point on the right side of the screen
-        public void LoadEnemies()
+        public void LoadEnemies(int enemyType)
         {
-            int randY = Game1.random.Next(350, 550);
+            if(enemyType == 0)
+            {
+                int randY = Game1.random.Next(350, 550);
+                enemy = new Sprite3(true, Game1.texEnemy, 850, randY);
+                enemy.setXframes(10);
+                enemy.setYframes(5);
+                enemy.setWidthHeight(320 / 10, 160 / 5);
+                enemy.setBB(0, 0, enemy.getWidth(), enemy.getHeight());
+                int count = 0;
+                for (int i = 0; i < 5; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        animEnemy[count].X = j;
+                        animEnemy[count].Y = i;
+                        count++;
+                    }
+                }
+                enemy.setAnimationSequence(animEnemy, 20, 29, 15);
+                enemy.setAnimFinished(0);
+                enemy.animationStart();
+                enemies.addSpriteReuse(enemy);
+            }
+            else if(enemyType == 1)
+            {
+                int randY = Game1.random.Next(350, 550);
+                enemy = new Sprite3(true, Game1.texArcher, 850, randY);
+                enemy.setFlip(SpriteEffects.FlipHorizontally);
+                enemy.setXframes(10);
+                enemy.setYframes(5);
+                enemy.setWidthHeight(320 / 10, 160 / 5);
+                enemy.setBB(0, 0, enemy.getWidth(), enemy.getHeight());
+                int count = 0;
+                for (int i = 0; i < 5; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        animEnemy[count].X = j;
+                        animEnemy[count].Y = i;
+                        count++;
+                    }
+                }
+                enemy.setAnimationSequence(animEnemy, 30, 39, 15);
+                enemy.setAnimFinished(0);
+                enemy.animationStart();
+                enemies.addSpriteReuse(enemy);
+            }
+            
             /*for (int i = 0; i < enemies.count(); i++)
             {
                 //Console.WriteLine(enemies[i].getVisible());
@@ -382,25 +465,7 @@ namespace MiniGame
                 }
             }*/
 
-            enemy = new Sprite3(true, Game1.texEnemy, 850, randY);
-            enemy.setXframes(10);
-            enemy.setYframes(5);
-            enemy.setWidthHeight(320 / 10, 160 / 5);
-            enemy.setBB(0, 0, enemy.getWidth(), enemy.getHeight());
-            int count = 0;
-            for (int i = 0; i < 5; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    animEnemy[count].X = j;
-                    animEnemy[count].Y = i;
-                    count++;
-                }
-            }
-            enemy.setAnimationSequence(animEnemy, 20, 29, 15);
-            enemy.setAnimFinished(0);
-            enemy.animationStart();
-            enemies.addSpriteReuse(enemy);
+            
 
         }
 
@@ -424,6 +489,11 @@ namespace MiniGame
             blood.animationStart();
 
             bloodSplat.addSpriteReuse(blood);
+        }
+
+        public void EnemyArrow()
+        {
+            enemyArrows.Add(enemyArrow);
         }
 
         //Creates arrow that is shot from player
@@ -459,10 +529,11 @@ namespace MiniGame
             enemies.Draw(spriteBatch);
             horseRun.Draw(spriteBatch);
             bloodSplat.Draw(spriteBatch);
-            
+            if (shieldUp)
+                shield.Draw(spriteBatch);
             quiver.Draw(spriteBatch);
             goldBanner.Draw(spriteBatch);
-            spriteBatch.DrawString(Game1.font, "Gold: " + score, new Vector2(30, 20), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Gold: " + Game1.gold, new Vector2(30, 20), Color.Black);
             spriteBatch.DrawString(Game1.font, "Enemies: " + enemyCounter, new Vector2(600, 20), Color.Black);
             //This is the start screen that goes away once player presses the enter key
 

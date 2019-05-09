@@ -31,14 +31,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="322048">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="325632">
       <assemblyIdentity name="MiniGame" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>+HRflW/A1gChRheZFqRTZB5ezxn115Yu6dFsmoHwwOk=</dsig:DigestValue>
+        <dsig:DigestValue>sLCQ9x6ZHMhqgZCpiD1w7f4Svlc4iYwzevy0bYSbokQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
