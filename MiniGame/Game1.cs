@@ -90,7 +90,7 @@ namespace MiniGame
         public static bool onQuest = false;
         public static string fealty;
         public static int gold;
-        public static bool shieldBought = false;
+        public static bool shieldBought = true;
         public static bool upgradedBow = false;
         public static bool horseArmorBought = false;
 
