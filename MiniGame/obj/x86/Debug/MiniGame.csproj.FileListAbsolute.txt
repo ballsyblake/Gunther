@@ -167,3 +167,5 @@ C:\GithubRepos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\deathSound0
 C:\GithubRepos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\deathSounds.xnb
 C:\GithubRepos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\horseRun.xnb
 C:\GithubRepos\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\shoot.xnb
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\ArmourCrack.xnb
+D:\GitHubRepos\MiniGame\MiniGame\MiniGame\bin\Windows\x86\Debug\Content\Audio\ShieldHit.xnb

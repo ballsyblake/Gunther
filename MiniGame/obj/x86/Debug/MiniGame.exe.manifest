@@ -31,14 +31,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="326656">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MiniGame.exe" size="328192">
       <assemblyIdentity name="MiniGame" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>oj7K80Zv+bVle8uNlyjZUDjOO0AFstU5xomvQ4sFGGM=</dsig:DigestValue>
+        <dsig:DigestValue>AYHUq9eROlITR5a+nZRikU7NZAn5amOEoY3l9jFSdn0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -138,6 +138,15 @@
       </hash>
     </dependentAssembly>
   </dependency>
+  <file name="Content\Audio\ArmourCrack.xnb" size="85361">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>kCH9ery/JoKokeaiXwmhh8NguPKO1gyawzm5DlJ65k4=</dsig:DigestValue>
+    </hash>
+  </file>
   <file name="Content\Audio\arrowHit01.xnb" size="125333">
     <hash>
       <dsig:Transforms>
@@ -181,6 +190,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>6+K8a/00uRlUUkM0ySXoVZf+qQsLaRndjeO6L4Lpm/c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Audio\ShieldHit.xnb" size="61805">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QZVgnu+UgUiZUYhUrAhs/vgvbrsitfgdVEYiOh7y5iA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Audio\shoot.xnb" size="40553">

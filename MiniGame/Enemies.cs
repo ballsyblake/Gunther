@@ -21,7 +21,7 @@ namespace MiniGame
 
         //Random variables
         bool moving = false;
-        float stopTimer;
+        float stopTimer = 1f;
         float plus =0.01f ;
         Random random = new Random();
         int randomValue;

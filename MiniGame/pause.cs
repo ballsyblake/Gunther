@@ -15,9 +15,10 @@ namespace MiniGame
     {
         ImageBackground pause1 = null;
         Sprite3 arrowHead = null;
+        Sprite3 controls = null;
         ColorField trans = null;
 
-        int arrowHeadOffsetY = 5;
+        int arrowHeadOffsetY = 10;
         int arrowJump = 100;
         int arrowCount = 0;
 
@@ -27,12 +28,14 @@ namespace MiniGame
             pause1.setPos(100, 100);
             pause1.setWidthHeight(600, 400);
             trans = new ColorField(new Color(255, 255, 255, 100), new Rectangle(0, 0, 800, 600));
-            arrowHead = new Sprite3(true, Game1.texArrowHead, 250, 200 - arrowHeadOffsetY);
+            arrowHead = new Sprite3(true, Game1.texArrowHead, 110, 150 - arrowHeadOffsetY);
             arrowHead.setWidthHeight(40, 40);
+            controls = new Sprite3(true, Game1.texControls, 530, 150);
+            controls.setWidthHeight(150, 350);
         }
         public override void Update(GameTime gameTime)
         {
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Down) && arrowCount < 1)
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.Down) && !RC_GameStateParent.prevKeyState.IsKeyDown(Keys.Down) && arrowCount < 2)
             {
                 Game1.soundEffects[3].Play(0.5f, 0, 0);
                 arrowHead.setPosY(arrowHead.getPosY() + arrowJump);
@@ -44,17 +47,19 @@ namespace MiniGame
                 arrowHead.setPosY(arrowHead.getPosY() - arrowJump);
                 arrowCount--;
             }
-            if (arrowCount > 1)
-                arrowCount = 1;
+            if (arrowCount > 2)
+                arrowCount = 2;
 
             if (arrowCount < 0)
                 arrowCount = 0;
 
             if (RC_GameStateParent.keyState.IsKeyDown(Keys.Enter) && RC_GameStateParent.prevKeyState.IsKeyUp(Keys.Enter)) // ***
             {
-                if(arrowCount == 0)
+                if (arrowCount == 0)
                     Game1.levelManager.popLevel();
-                else if(arrowCount == 1)
+                else if (arrowCount == 1)
+                    gameStateManager.setLevel(4);
+                else if (arrowCount == 2)
                     Game1.endGame = true;
 
             }
@@ -68,9 +73,15 @@ namespace MiniGame
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             trans.Draw(spriteBatch);
             pause1.Draw(spriteBatch);
-            spriteBatch.DrawString(Game1.font, "Continue", new Vector2(300, 200), Color.Black);
-            spriteBatch.DrawString(Game1.font, "Exit Game", new Vector2(300, 300), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Continue", new Vector2(150, 150), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Main Menu (will end your progress in game)", new Vector2(150, 250), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Exit Game", new Vector2(150, 350), Color.Black);
             arrowHead.Draw(spriteBatch);
+            controls.Draw(spriteBatch);
+            spriteBatch.DrawString(Game1.font, "Movement/Navigation", new Vector2(500, 130), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Confirm", new Vector2(570, 245), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Fire Arrow", new Vector2(560, 370), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Shield", new Vector2(570, 418), Color.Black);
             spriteBatch.End();
 
         }

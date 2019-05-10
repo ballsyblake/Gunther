@@ -21,6 +21,7 @@ namespace MiniGame
         Sprite3 goldBanner = null;
         Sprite3 paperEnd = null;
         Sprite3 shield = null;
+        Sprite3 armourIcon = null;
 
         SpriteList bloodSplat = null;
         SpriteList enemies = null;
@@ -64,7 +65,7 @@ namespace MiniGame
         int arrowOffsetY = 10;
 
         //Sound
-        SoundEffectInstance instanceHorse = Game1.soundEffects[1].CreateInstance();
+       public static SoundEffectInstance instanceHorse = Game1.soundEffects[1].CreateInstance();
 
         public static int enemyCounter;
         public static int enemySpawnAmount;
@@ -107,10 +108,11 @@ namespace MiniGame
             goldBanner = new Sprite3(true, Game1.texGoldBanner, 15, 15);
             goldBanner.setWidthHeight(130, 40);
             horse = new Sprite3(true, Game1.texHorseRun, xx, yy);
-            paperEnd = new Sprite3(true, Game1.texPaper, 200, 100);
-            paperEnd.setWidthHeight(400,400);
-            shield = new Sprite3(true, Game1.texShield, 0, 0);
-            
+            paperEnd = new Sprite3(true, Game1.texPaper, 230, 150);
+            paperEnd.setWidthHeight(300,50);
+            shield = new Sprite3(false, Game1.texShield, 0, 0);
+            armourIcon = new Sprite3(true, Game1.texArmourIcon, 380, 20);
+            armourIcon.setWidthHeight(40, 40);
 
             //Load some empty spritelists
             enemies = new SpriteList();
@@ -157,6 +159,8 @@ namespace MiniGame
             
             activeEnemies = enemies.count();
             //Console.WriteLine(enemies.count());
+            if(gameStateManager.getCurrentLevelNum() == 0)
+                instanceHorse.Play();
             if (gameStateManager.getCurrentLevelNum() == 0 && !playing && !gameOver)
             {
                 instanceHorse.Play();
@@ -169,7 +173,7 @@ namespace MiniGame
                 }*/
                 playing = true;
             }
-
+           
             if (playing)
             {
                 scrolling1.speed = scrollingSpeed;
@@ -195,7 +199,7 @@ namespace MiniGame
                 if (RC_GameStateParent.keyState.IsKeyDown(Keys.V))
                 {   
                     shield.setActive(true);
-                    shield.setPos(horse.getPosX() + 50, horse.getPosY());
+                    shield.setPos(horse.getPosX() + 50, horse.getPosY()-5);
                 }
                 else
                 {
@@ -283,13 +287,20 @@ namespace MiniGame
                     }
                     else
                     {
-                        //Play armor breaking sound
+                        SoundEffectInstance instanceHorseArmour = Game1.soundEffects[4].CreateInstance();
+                        instanceHorseArmour.Play();
                         Game1.horseArmorBought = false;
                     }
                 }
-                if(shield.active)
+                if (shield.getActive() && RC_GameStateParent.keyState.IsKeyDown(Keys.V))
+                {
                     if (shield.collision(enemyArrows[ar]))
+                    {
+                        SoundEffectInstance instanceShieldHit = Game1.soundEffects[5].CreateInstance();
+                        instanceShieldHit.Play();
                         enemyArrows.Remove(enemyArrows[ar]);
+                    }
+                }
             }
 
             //Collision detection, arrow to enemy
@@ -614,12 +625,12 @@ namespace MiniGame
             if (gameOver)
             {
                 paperEnd.Draw(spriteBatch);
-                spriteBatch.DrawString(Game1.font, "Gunther has died. His journey ends here... also you suck", new Vector2(250, 150), Color.Black);
+                spriteBatch.DrawString(Game1.font, Game1.WrapText(Game1.font,"Gunther has died. His journey ends here... also you suck", 250), new Vector2(250, 150), Color.Black);
             }
             //Bounding boxes for player, enemies, arrows and the play area    
             if (Game1.showbb)
             {
-                Console.WriteLine("bb stuff");
+                
                 enemies.drawInfo(spriteBatch, Color.Red, Color.DarkRed);
                 horse.drawBB(spriteBatch, Color.Black);
                 //horse.drawHS(spriteBatch, Color.Green); //don't know if this is required for assessment or not
@@ -630,8 +641,10 @@ namespace MiniGame
             if (won)
             {
                 paperEnd.Draw(spriteBatch);
-                spriteBatch.DrawString(Game1.font, "You won the battle", new Vector2(300, 250), Color.Black);
+                spriteBatch.DrawString(Game1.font, "You won the battle", new Vector2(250, 150), Color.Black);
             }
+            armourIcon.Draw(spriteBatch);
+            
             spriteBatch.End();
         }
     }

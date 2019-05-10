@@ -7,6 +7,8 @@ using RC_Framework;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Audio;
+using System.Text;
+
 
 namespace MiniGame
 {
@@ -62,6 +64,7 @@ namespace MiniGame
         static public Texture2D texBorder = null;
         static public Texture2D texShield = null;
         static public Texture2D texArcher = null;
+        static public Texture2D texArmourIcon = null;
 
         //Sound
         static public List<SoundEffect> soundEffects;
@@ -89,10 +92,12 @@ namespace MiniGame
         public static int renown = 0;
         public static bool onQuest = false;
         public static string fealty;
-        public static int gold;
-        public static bool shieldBought = true;
+        public static int gold = 10000000;
+        public static bool shieldBought = false;
         public static bool upgradedBow = false;
         public static bool horseArmorBought = false;
+
+        
 
 
         //Set screen size here, declare the content directory and graphics
@@ -166,7 +171,8 @@ namespace MiniGame
             texBorder = Util.texFromFile(GraphicsDevice, dir + "Border.png");
             texShield = Util.texFromFile(GraphicsDevice, dir + "shield.png");
             texArcher = Util.texFromFile(GraphicsDevice, dir + "NobleRanger.png");
-            
+            texArmourIcon = Util.texFromFile(GraphicsDevice, dir + "LeatherArmor.png");
+
 
             //Points positions
             pointsPos[0] = new Vector2(277, 260);
@@ -237,6 +243,8 @@ namespace MiniGame
             soundEffects.Add(Content.Load<SoundEffect>("Audio/shoot"));//shoot arrow sounds in position 2
             soundEffects.Add(Content.Load<SoundEffect>("Audio/arrowHit01"));//Menu arrow in position 3
             music = Content.Load<SoundEffect>("Audio/cave theme");
+            soundEffects.Add(Content.Load<SoundEffect>("Audio/ArmourCrack"));//Armour crack sound in position 4
+            soundEffects.Add(Content.Load<SoundEffect>("Audio/ShieldHit"));//shield hit sound in position 5
 
             levelManager = new RC_GameStateManager();
             levelManager.AddLevel(0, new PlayLevel()); // note play level is level 0
@@ -267,7 +275,9 @@ namespace MiniGame
             levelManager.AddLevel(6, new OpeningDialogue()); // note opening dialogue is level 5
             levelManager.getLevel(6).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
             levelManager.getLevel(6).LoadContent();
-            levelManager.setLevel(3);
+            levelManager.setLevel(4);
+
+            
         }
 
         /// <summary>
@@ -288,7 +298,9 @@ namespace MiniGame
         protected override void Update(GameTime gameTime)
         {
             levelManager.getCurrentLevel().Update(gameTime);
-            
+            if (levelManager.getCurrentLevelNum() != 0)
+                PlayLevel.instanceHorse.Stop();
+           
             //Keyboard current and previous state
             RC_GameStateParent.getKeyboardAndMouse();
             
@@ -306,13 +318,12 @@ namespace MiniGame
                 showbb = !showbb;
             }
             
-            if (RC_GameStateParent.keyState.IsKeyDown(Keys.P) && RC_GameStateParent.prevKeyState.IsKeyUp(Keys.P)) // ***
+            if (RC_GameStateParent.keyState.IsKeyDown(Keys.P) && RC_GameStateParent.prevKeyState.IsKeyUp(Keys.P) && levelManager.getCurrentLevelNum() != 4) // ***
             {
                 //Console.WriteLine("paused");
                 levelManager.pushLevel(2);
             }
             
-
 
             base.Update(gameTime);
         }
@@ -326,7 +337,7 @@ namespace MiniGame
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            
             //All the elements that are displayed on screen are drawn here
             levelManager.getCurrentLevel().Draw(gameTime);
 
@@ -341,7 +352,31 @@ namespace MiniGame
             fs.Close();
             return rc;
         }
-        
-        
+        public static string WrapText(SpriteFont spriteFont, string text, float maxLineWidth)
+        {
+            string[] words = text.Split(' ');
+            StringBuilder sb = new StringBuilder();
+            float lineWidth = 0f;
+            float spaceWidth = spriteFont.MeasureString(" ").X;
+
+            foreach (string word in words)
+            {
+                Vector2 size = spriteFont.MeasureString(word);
+
+                if (lineWidth + size.X < maxLineWidth)
+                {
+                    sb.Append(word + " ");
+                    lineWidth += size.X + spaceWidth;
+                }
+                else
+                {
+                    sb.Append("\n" + word + " ");
+                    lineWidth = size.X + spaceWidth;
+                }
+            }
+
+            return sb.ToString();
+        }
+
     }
 }

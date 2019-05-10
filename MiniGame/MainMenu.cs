@@ -194,6 +194,8 @@ namespace MiniGame
             spriteBatch.End();
         }
 
+       
+
         public string WrapText(SpriteFont spriteFont, string text, float maxLineWidth)
         {
             string[] words = text.Split(' ');
