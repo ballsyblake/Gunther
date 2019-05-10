@@ -18,7 +18,7 @@ namespace MiniGame
         Sprite3 enemyArrow = null;
         Sprite3 enemy = null;
         Sprite3 horse = null;
-        Sprite3 goldBanner = null;
+        public static Sprite3 goldBanner = null;
         Sprite3 paperEnd = null;
         Sprite3 shield = null;
         Sprite3 armourIcon = null;
@@ -59,18 +59,19 @@ namespace MiniGame
         int fastEnemy = 6;
         int fastPlayer = 3;
         int arrowSpeed = 10;
+        
 
         //Arrow related variables
         int arrowOffsetX = 60;
         int arrowOffsetY = 10;
-
+        
         //Sound
-       public static SoundEffectInstance instanceHorse = Game1.soundEffects[1].CreateInstance();
+        public static SoundEffectInstance instanceHorse = Game1.soundEffects[1].CreateInstance();
 
         public static int enemyCounter;
         public static int enemySpawnAmount;
         int spawnCounter = 0;
-        
+        float arrowDelay = 0.5f;
 
         //Arrays for animations
         Vector2[] anim = new Vector2[8];
@@ -110,7 +111,7 @@ namespace MiniGame
             horse = new Sprite3(true, Game1.texHorseRun, xx, yy);
             paperEnd = new Sprite3(true, Game1.texPaper, 230, 150);
             paperEnd.setWidthHeight(300,50);
-            shield = new Sprite3(false, Game1.texShield, 0, 0);
+            shield = new Sprite3(true, Game1.texShield, -500, -500);
             armourIcon = new Sprite3(true, Game1.texArmourIcon, 380, 20);
             armourIcon.setWidthHeight(40, 40);
 
@@ -143,12 +144,7 @@ namespace MiniGame
 
             //enemy.setBBToTexture();
 
-            //Enemy animation setup
-            for (int k = 0; k < enemyCounter; k++)
-            {
-                
-
-            }
+            
 
             //Load scrolling background images
             scrolling1 = new Scrolling(Util.texFromFile(graphicsDevice, Game1.dir + "GPT Background 800x600.png"), new Rectangle(0, 0, 800, 600), scrollingSpeed);
@@ -156,7 +152,8 @@ namespace MiniGame
         }
         public override void Update(GameTime gameTime)
         {
-            
+            if (Game1.upgradedBow)
+                arrowDelay = 0.1f;
             activeEnemies = enemies.count();
             //Console.WriteLine(enemies.count());
             if(gameStateManager.getCurrentLevelNum() == 0)
@@ -218,7 +215,7 @@ namespace MiniGame
             {
                 spawnCounter++;
                 enemySpawnTimer = 0;
-                LoadEnemies(1);
+                LoadEnemies(Game1.random.Next(0,10));
                 
             }
 
@@ -245,12 +242,12 @@ namespace MiniGame
                     if (enemies[e].getPosX() < 0 - Game1.texEnemy.Width)
                         enemies[e].setPos(850, Game1.random.Next(350, 550));
                 }
-                else if(enemies[e].getFrame() >= 30)
+                if(enemies[e].getFrame() >= 30)
                 {
                     if (enemies[e].getVisible() && enemies[e].getPosX() > 780)
                         enemies[e].setPosX(enemies[e].getPosX() - enemyMovementSpeed);
                     if (enemies[e].getVisible() && enemies[e].getPosX() <= 780)
-                        enemies[e].setPosX(enemies[e].getPosX() - (enemyMovementSpeed/2));
+                        enemies[e].setPosX(enemies[e].getPosX() - (enemyMovementSpeed*0.1f));
                     if (enemies[e].getPosX() < 0 - Game1.texEnemy.Width)
                         enemies[e].setPos(850, Game1.random.Next(350, 550));
                 }
@@ -259,7 +256,7 @@ namespace MiniGame
                     if(!enemyArrowShot)
                         EnemyArrow(enemies[e].getPos());
                     enemyArrowShot = true;
-                    break;
+                    continue;
                 }
                 else if (enemies[e].getFrame() == 35)
                     enemyArrowShot = false;
@@ -308,8 +305,7 @@ namespace MiniGame
             {
                 int ac = enemies.collisionWithRect(quiver[ea].getBoundingBoxAA());
                 if (ac != -1)
-                {
-                    
+                {                    
                     SoundEffectInstance instanceDeath = Game1.soundEffects[0].CreateInstance();
                     instanceDeath.Play();
                     Game1.gold++;
@@ -329,16 +325,22 @@ namespace MiniGame
             {
                 enemyMovementSpeed = fastEnemy;
                 horse.setAnimationSequence(anim, 0, 7, fastPlayer);
+                
+                arrowSpeed = 12;
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !gameOver)
             {
                 enemyMovementSpeed = slowEnemy;
                 horse.setAnimationSequence(anim, 0, 7, slowPlayer);
+                
+                arrowSpeed = 8;
             }
             else
             {
                 enemyMovementSpeed = normalEnemy;
                 horse.setAnimationSequence(anim, 0, 7, normalPlayer);
+                
+                arrowSpeed = 10;
             }
             
             
@@ -397,7 +399,7 @@ namespace MiniGame
             {
                 arrowTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-            if (arrowTimer > 0.5f)
+            if (arrowTimer > arrowDelay)
             {
                 arrowTimer = 0;
                 arrowShot = false;
@@ -481,7 +483,7 @@ namespace MiniGame
         //Sets position of enemy to a random spawn point on the right side of the screen
         public void LoadEnemies(int enemyType)
         {
-            if(enemyType == 0)
+            if(enemyType < 5)
             {
                 int randY = Game1.random.Next(350, 550);
                 enemy = new Sprite3(true, Game1.texEnemy, 850, randY);
@@ -504,7 +506,7 @@ namespace MiniGame
                 enemy.animationStart();
                 enemies.addSpriteReuse(enemy);
             }
-            else if(enemyType == 1)
+            else if(enemyType >= 5)
             {
                 int randY = Game1.random.Next(350, 550);
                 enemy = new Sprite3(true, Game1.texArcher, 850, randY);
@@ -643,7 +645,8 @@ namespace MiniGame
                 paperEnd.Draw(spriteBatch);
                 spriteBatch.DrawString(Game1.font, "You won the battle", new Vector2(250, 150), Color.Black);
             }
-            armourIcon.Draw(spriteBatch);
+            if(Game1.horseArmorBought)
+                armourIcon.Draw(spriteBatch);
             
             spriteBatch.End();
         }

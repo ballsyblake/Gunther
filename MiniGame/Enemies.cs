@@ -39,8 +39,27 @@ namespace MiniGame
             waypoints[2] = new Vector2(enemyScript.getPosX() - random.Next(50, 300), enemyScript.getPosY());
             waypoints[3] = new Vector2(enemyScript.getPosX(), enemyScript.getPosY() + random.Next(50, 300));
             waypoints[4] = new Vector2(enemyScript.getPosX(), enemyScript.getPosY() - random.Next(50, 300));
-            ArmySize = 4;//random.Next(1, 5);
-            Console.WriteLine(ArmySize);
+            Console.WriteLine(Game1.difficulty);
+            switch (Game1.difficulty)
+            {
+                
+                case 1:
+                    ArmySize = Game1.random.Next(3, 5);
+                    Console.WriteLine("easy");
+                    break;
+                case 2:
+                    ArmySize = Game1.random.Next(10, 13);
+                    Console.WriteLine("medium");
+                    break;
+                case 3:
+                    ArmySize = Game1.random.Next(30, 50);
+                    Console.WriteLine("hard");
+                    break;
+                default:
+                    break;
+            }
+             
+            
         }
 
         public void Update()

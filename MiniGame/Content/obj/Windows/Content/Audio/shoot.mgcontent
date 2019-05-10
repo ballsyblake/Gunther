@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/Audio/shoot.wav</SourceFile>
-  <SourceTime>2019-04-16T10:41:49.8303703+10:00</SourceTime>
-  <DestFile>D:/GitHubRepos/MiniGame/MiniGame/MiniGame/Content/bin/Windows/Content/Audio/shoot.xnb</DestFile>
-  <DestTime>2019-05-08T18:12:42.8846328+10:00</DestTime>
+  <SourceFile>C:/Repo/MiniGame/MiniGame/Content/Audio/shoot.wav</SourceFile>
+  <SourceTime>2019-05-10T18:49:53.713584+10:00</SourceTime>
+  <DestFile>C:/Repo/MiniGame/MiniGame/Content/bin/Windows/Content/Audio/shoot.xnb</DestFile>
+  <DestTime>2019-05-10T18:50:56.3823747+10:00</DestTime>
   <Importer>WavImporter</Importer>
-  <ImporterTime>2018-12-09T03:35:54+11:00</ImporterTime>
+  <ImporterTime>2018-09-24T07:55:52+10:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>
-  <ProcessorTime>2018-12-09T03:35:54+11:00</ProcessorTime>
+  <ProcessorTime>2018-09-24T07:55:52+10:00</ProcessorTime>
   <Parameters>
     <Key>Quality</Key>
     <Value>Best</Value>

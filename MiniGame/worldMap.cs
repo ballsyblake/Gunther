@@ -16,7 +16,7 @@ namespace MiniGame
     {
         public static float worldTime;
         Sprite3 worldMap = null;
-        Sprite3 points = null;
+        //Sprite3 points = null;
         Sprite3 land = null;
         Camera mainCamera;
         private Vector2 curPos;
@@ -52,7 +52,7 @@ namespace MiniGame
         {
             mainCamera = new Camera();
             worldMap = new Sprite3(true, Game1.texWorldMap, 0, 0);
-            points = new Sprite3(true, Game1.texPoints, 0, 0);
+            //points = new Sprite3(true, Game1.texPoints, 0, 0);
             
             land = new Sprite3(true, Game1.texMapLand, 0, 0);
             //worldMap.setWidthHeight(6400, 4800);
@@ -72,9 +72,7 @@ namespace MiniGame
             Game1.texMapLand.GetData(pixelData, 0, Game1.texMapLand.Width * Game1.texMapLand.Height);
             Console.WriteLine(pixelData.Count());
            
-            enemiesList.Add(new Enemies(Game1.texEnemy, new Vector2(rand.Next(400, 600), rand.Next(400, 600))));
-            enemiesList.Add(new Enemies(Game1.texEnemy, new Vector2(rand.Next(400, 600), rand.Next(400, 600))));
-            enemiesList.Add(new Enemies(Game1.texEnemy, new Vector2(rand.Next(400, 600), rand.Next(400, 600))));
+            
 
             enemySpawnPoints[0] = new Vector2(282, 478);
             enemySpawnPoints[1] = new Vector2(754, 1058);
@@ -88,6 +86,12 @@ namespace MiniGame
             enemySpawnPoints[9] = new Vector2(3134, 402);
             enemySpawnPoints[10] = new Vector2(3684, 804);
             enemySpawnPoints[11] = new Vector2(2950, 1316);
+            enemiesList.Add(new Enemies(Game1.texEnemy, enemySpawnPoints[0]));
+            enemiesList.Add(new Enemies(Game1.texEnemy, enemySpawnPoints[0]));
+            enemiesList.Add(new Enemies(Game1.texEnemy, enemySpawnPoints[1]));
+            enemiesList.Add(new Enemies(Game1.texEnemy, enemySpawnPoints[1]));
+            enemiesList.Add(new Enemies(Game1.texEnemy, enemySpawnPoints[2]));
+            enemiesList.Add(new Enemies(Game1.texEnemy, enemySpawnPoints[2]));
         }
 
         public override void Update(GameTime gameTime)
@@ -184,8 +188,8 @@ namespace MiniGame
             spriteBatch.Begin(transformMatrix: mainCamera.Transform);
             land.Draw(spriteBatch);
             worldMap.Draw(spriteBatch);
-            points.Draw(spriteBatch);
-            spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
+            //points.Draw(spriteBatch);
+            //spriteBatch.DrawString(Game1.font, "Current position: " + curPos, new Vector2(horse.getPosX() - 200, horse.getPosY() - 200), Color.White);
             
             for (int i = 0; i < enemiesList.Count(); i++)
             {
@@ -194,7 +198,8 @@ namespace MiniGame
             
             horse.Draw(spriteBatch);
             CheckWaterCollision();
-            
+            PlayLevel.goldBanner.Draw(spriteBatch);
+            spriteBatch.DrawString(Game1.font, "Gold: " + Game1.gold, new Vector2(30, 20), Color.Black);
             spriteBatch.End();
         }
 

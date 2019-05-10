@@ -18,7 +18,7 @@ namespace MiniGame
     public class Game1 : Game                                                                                                                                                                                                 
     {
         //Direction for art, please change according to where you have put the project files
-        static public string dir = @"D:\GitHubRepos\MiniGame\MiniGame\MiniGame\Content\Sprites\";
+        static public string dir = @"C:\Repo\MiniGame\MiniGame\Content\Sprites\";
 
         //Graphics stuff
         GraphicsDeviceManager graphics;
@@ -93,9 +93,9 @@ namespace MiniGame
         public static bool onQuest = false;
         public static string fealty;
         public static int gold = 10000000;
-        public static bool shieldBought = false;
-        public static bool upgradedBow = false;
-        public static bool horseArmorBought = false;
+        public static bool shieldBought = true;
+        public static bool upgradedBow = true;
+        public static bool horseArmorBought = true;
 
         
 
@@ -275,7 +275,7 @@ namespace MiniGame
             levelManager.AddLevel(6, new OpeningDialogue()); // note opening dialogue is level 5
             levelManager.getLevel(6).InitializeLevel(GraphicsDevice, spriteBatch, Content, levelManager);
             levelManager.getLevel(6).LoadContent();
-            levelManager.setLevel(4);
+            levelManager.setLevel(1);
 
             
         }
